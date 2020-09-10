@@ -1,0 +1,18 @@
+.idea
+.vscode
+packages/*/node_modules
+
+# next.js
+packages/app/.next/
+packages/app/out/
+
+# vercel
+packages/app/.vercel
+
+# production
+packages/app/build
+
+# debug
+yarn-debug.log*
+yarn-error.log*
+
