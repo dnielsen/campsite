@@ -1,6 +1,6 @@
-import { EventInfo, Person } from "./interfaces";
+import { EventInfo, Person, Session, SessionPreview } from "./interfaces";
 
-export const eventInfo: EventInfo = {
+const eventInfo: EventInfo = {
   id: "asd123-das-asd",
   name: "The Big Data Event",
   photo:
@@ -18,7 +18,7 @@ export const eventInfo: EventInfo = {
   address: null,
 };
 
-export const people: Person[] = [
+const people: Person[] = [
   {
     id: "123",
     bio: "I'm John and I like computers",
@@ -44,3 +44,23 @@ export const people: Person[] = [
       "https://images.unsplash.com/photo-1599748779346-5e30cd4d1635?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=80",
   },
 ];
+
+const sessions: Session[] = [
+  {
+    id: "23423-dfksk",
+    title: "Session Title",
+    description: "Session description.",
+    startDate: new Date("11-11-2015"),
+    endDate: new Date("12-12-2017"),
+    speakers: people.slice(2),
+  },
+];
+
+const sessionPreviews: SessionPreview[] = sessions.map((s) => ({
+  id: s.id,
+  title: s.title,
+  startDate: s.startDate,
+  endDate: s.endDate,
+}));
+
+export default { eventInfo, people, sessions, sessionPreviews };

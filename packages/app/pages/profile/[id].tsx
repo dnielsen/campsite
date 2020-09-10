@@ -1,9 +1,9 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import Layout from "../../components/Layout";
 import React from "react";
-import { people } from "../../common/devData";
 import { Person } from "../../common/interfaces";
 import Profile from "../../components/Profile";
+import devData from "../../common/devData";
 
 type Props = {
   data: Person;
@@ -25,7 +25,7 @@ export default StaticPropsDetail;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   // Get the paths we want to pre-render based on users
-  const paths = people.map((person) => ({
+  const paths = devData.people.map((person) => ({
     params: { id: person.id },
   }));
 
@@ -36,7 +36,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params?.id;
-  const foundPerson = people.find((person) => person.id === id);
+  const foundPerson = devData.people.find((person) => person.id === id);
   if (!foundPerson) throw new Error("Person not found");
   return { props: { data: foundPerson } };
 };

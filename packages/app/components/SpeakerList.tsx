@@ -1,12 +1,12 @@
 import React from "react";
 import SpeakerItem from "./SpeakerItem";
-import { people } from "../common/devData";
+import devData from "../common/devData";
 
 function SpeakerList() {
   return (
     <div>
-      {people.map((speaker) => (
-        <SpeakerItem key={speaker.id} speaker={speaker} />
+      {devData.people.map((person) => (
+        <SpeakerItem key={person.id} speaker={person} />
       ))}
     </div>
   );

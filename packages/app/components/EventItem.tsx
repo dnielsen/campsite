@@ -2,6 +2,7 @@ import React from "react";
 import { EventInfo } from "../common/interfaces";
 import OrganizerItem from "./OrganizerItem";
 import SpeakerList from "./SpeakerList";
+import SessionSchedule from "./SessionSchedule";
 
 interface Props {
   eventInfo: EventInfo;
@@ -19,6 +20,7 @@ function EventItem(props: Props) {
       <img src={props.eventInfo.photo} alt="" height={200} />
       <p>event description</p>
       <SpeakerList />
+      <SessionSchedule />
     </div>
   );
 }
