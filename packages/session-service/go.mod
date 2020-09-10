@@ -1,4 +1,4 @@
-module github.com/dnielsen/campsite
+module github.com/dnielsen/campsite/packages/session-service
 
 go 1.14
 

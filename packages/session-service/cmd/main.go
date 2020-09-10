@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/dnielsen/campsite/packages/session-service@latest"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
