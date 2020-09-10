@@ -1,15 +1,9 @@
-export interface Speaker {
+export interface Person {
   id: string;
   name: string;
   photo: string;
   headline: string;
   bio: string;
-}
-
-export interface Organizer {
-  id: string;
-  name: string;
-  photo: string;
 }
 
 export interface EventInfo {
@@ -18,7 +12,7 @@ export interface EventInfo {
   startDate: Date;
   endDate: Date;
   photo: string;
-  organizer: Organizer;
+  organizer: Person;
   // We can later define Address interface.
   // When address is null then the event is online (remote).
   address: string | null;
