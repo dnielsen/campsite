@@ -16,3 +16,6 @@ packages/app/build
 yarn-debug.log*
 yarn-error.log*
 
+# Docker
+docker.env
+data
