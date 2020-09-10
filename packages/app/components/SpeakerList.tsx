@@ -1,6 +1,6 @@
 import React from "react";
 import SpeakerItem from "./SpeakerItem";
-import { Speaker } from "../interfaces";
+import { Speaker } from "../common/interfaces";
 
 function SpeakerList() {
   const speakers: Speaker[] = [

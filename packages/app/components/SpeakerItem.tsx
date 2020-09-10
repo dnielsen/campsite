@@ -1,5 +1,5 @@
 import React from "react";
-import { Speaker } from "../interfaces";
+import { Speaker } from "../common/interfaces";
 
 interface Props {
   speaker: Speaker;
@@ -15,19 +15,7 @@ function SpeakerItem(props: Props) {
       />
       <div>
         <h5>
-          <a
-            href={
-              // For example:
-              // name: John Doe
-              // href: /speaker/john-doe
-              `/speaker/${props.speaker.name
-                .split(" ")
-                .map((namePart) => namePart.toLowerCase())
-                .join("-")}`
-            }
-          >
-            {props.speaker.name}
-          </a>
+          <a href={`/profile/${props.speaker.id}`}>{props.speaker.name}</a>
         </h5>
         <span>{props.speaker.headline}</span>
         <p>{props.speaker.bio}</p>
