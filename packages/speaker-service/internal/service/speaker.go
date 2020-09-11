@@ -1,7 +1,11 @@
 package service
 
+import (
+	"github.com/google/uuid"
+)
+
 type Speaker struct {
-	ID        uint       `gorm:"primaryKey" json:"id"`
+	ID        uuid.UUID       `gorm:"type:uuid;primaryKey" json:"id"`
 	Name string `json:"name"`
 }
 

@@ -2,21 +2,38 @@ package handler
 
 import (
 	"dave-web-app/packages/speaker-service/internal/service"
-	"dave-web-app/packages/speaker-service/testUtil"
+	"dave-web-app/packages/speaker-service/internal/testUtil"
+	"encoding/json"
 	"errors"
+	"github.com/google/uuid"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
 func TestGetSpeakers(t *testing.T) {
+	speakers := []service.Speaker{
+		{
+			ID:   uuid.New(),
+			Name: "Warren Smith",
+		},
+		{
+			ID:   uuid.New(),
+			Name: "Thomas Smith",
+		},
+	}
+
+	jsonSpeakers, err := json.Marshal(speakers)
+	if err != nil {
+		t.Fatalf("Failed to marshal speakers: %v", err)
+	}
+
 	testCases := []struct {
-		name               string
-		getAllSpeakers 	   func() (*[]service.Speaker, error)
-		wantCode           int
-		wantBody           string
+		name           string
+		getAllSpeakers func() (*[]service.Speaker, error)
+		wantCode       int
+		wantBody       string
 	}{
-		// API can't return an error, so there's no test for that
 		{
 			"api returns an error",
 			func() (*[]service.Speaker, error) {
@@ -24,6 +41,15 @@ func TestGetSpeakers(t *testing.T) {
 			},
 			http.StatusInternalServerError,
 			"oops\n",
+		},
+		{
+			"api returns speakers",
+			func() (*[]service.Speaker, error) {
+				return &speakers, nil
+			},
+			http.StatusOK,
+			//fmt.Sprintf("%v", jsonSpeakers),
+			string(jsonSpeakers),
 		},
 	}
 
