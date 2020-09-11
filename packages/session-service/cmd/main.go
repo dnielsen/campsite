@@ -1,8 +1,9 @@
 package main
 
 import (
+	"../internal/handler"
+	"../internal/service"
 	"fmt"
-	"github.com/dnielsen/campsite/packages/session-service@latest"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -12,22 +13,27 @@ import (
 
 const PORT = 8080
 
+//type Config struct {
+//	Name     string `json:"name"`
+//	User     string `json:"user"`
+//	Password string `json:"password"`
+//	Host     string `json:"host"`
+//	Port     string `json:"port"`
+//	SSLMode  string `json:"sslmode"`
+//}
 
-type Config struct {
-	Name     string `json:"name"`
-	User     string `json:"user"`
-	Password string `json:"password"`
-	Host     string `json:"host"`
-	Port     string `json:"port"`
-	SSLMode  string `json:"sslmode"`
-}
 
 func main() {
-	db, err := gorm.Open(postgres.Open(connString))
-	mux := http.DefaultServeMux
+	connStr := "user=postgres password=postgres dbname=campsite port=5432 sslmode=disable"
+	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("Failed to initialize the database: %v", err)
+	}
+	api := service.NewAPI(db)
 
 	// Set up handlers.
-	mux.Handle("/speakers", handler.GetSpeakers())
+	mux := http.DefaultServeMux
+	mux.Handle("/speakers", handler.GetSpeakers(api))
 	// The handler serving our static files.
 
 	// Set up the server.
@@ -40,6 +46,6 @@ func main() {
 	}
 	// Start the server.
 	log.Printf("Listening on port %v", PORT)
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	log.Fatalf("Failed to listen: %v", err)
 }
