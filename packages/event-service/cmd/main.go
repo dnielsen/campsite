@@ -35,7 +35,8 @@ func main() {
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
 		OrganizerName: "John Tim",
 		Address:       "San Francisco, California",
-		SessionIds:    []string{uuid.New().String()},
+		SessionIds:    []string{"dbff6d0a-31b1-4e4d-9138-1bea431a9248"},
+		SpeakerIds: []string{"7fd20c48-2575-4a88-91fa-34665f76c6f0"},
 	}
 	res := db.Create(&event)
 	log.Println(event)

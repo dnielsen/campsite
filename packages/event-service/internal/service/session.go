@@ -42,6 +42,7 @@ func (api *api) GetSessionsByIds(ids []string) (*[]Session, error) {
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
 	}
+	log.Println(res)
 
 	// Read the response body.
 	readBytes, err := ioutil.ReadAll(res.Body)

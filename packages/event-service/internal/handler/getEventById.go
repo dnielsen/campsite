@@ -2,27 +2,19 @@ package handler
 
 import (
 	"dave-web-app/packages/event-service/internal/service"
-	"dave-web-app/packages/event-service/internal/util"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 const ID = "id"
 
+
 func GetEventById(datastore service.Datastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
-		strId := vars[ID]
-		intId, err := strconv.Atoi(strId)
-		if err != nil {
-			log.Printf("Failed to convert string id to integer")
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		id := uint(intId)
+		id := vars[ID]
 		event, err := datastore.GetEventById(id)
 		if err != nil {
 			log.Printf("Failed to get event: %v", err)
@@ -34,17 +26,21 @@ func GetEventById(datastore service.Datastore) http.HandlerFunc {
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
+		event.Sessions = *sessions
 
 		speakers, err := datastore.GetSpeakersByIds(event.SpeakerIds)
 		if err != nil {
 			log.Printf("Failed to get speakers: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
+		event.Speakers = *speakers
 
 		eventBytes, err := json.Marshal(event)
 		if err != nil {
-			log.Printf("Failed to marshal event: %v", err)
+			log.Printf("Failed to marshal full event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

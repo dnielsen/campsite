@@ -15,6 +15,7 @@ type getSessionsByIdsRequestBody struct {
 
 func GetSessionsByIds(datastore service.SessionDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("hello session")
 		var body getSessionsByIdsRequestBody
 		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 			log.Printf("Failed to decode request body: %v", err)
@@ -24,13 +25,14 @@ func GetSessionsByIds(datastore service.SessionDatastore) http.HandlerFunc {
 		defer r.Body.Close()
 		log.Println(body.SessionIds)
 
-		session, err := datastore.GetSessionsByIds(body.SessionIds)
+		sessions, err := datastore.GetSessionsByIds(body.SessionIds)
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		sessionBytes, err := json.Marshal(session)
+		log.Println(sessions)
+		sessionBytes, err := json.Marshal(sessions)
 		if err != nil {
 			log.Printf("Failed to marshal sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

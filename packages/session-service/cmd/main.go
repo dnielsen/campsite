@@ -43,7 +43,7 @@ func main() {
 
 	// Set up handlers.
 	r := mux.NewRouter()
-	r.HandleFunc("/events/{id}", handler.GetSessionsByIds(api)).Methods(http.MethodGet)
+	r.HandleFunc("/", handler.GetSessionsByIds(api)).Methods(http.MethodGet)
 
 	// Set up the server.
 	server := &http.Server{
