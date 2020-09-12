@@ -13,7 +13,7 @@ interface Props {
 const StaticPropsDetail = (props: Props) => {
   return (
     <Layout title={`${props.data.name}`}>
-      <FullSpeakerItem person={props.data} />
+      <FullSpeakerItem speaker={props.data} />
     </Layout>
   );
 };

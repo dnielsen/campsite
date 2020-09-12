@@ -8,10 +8,9 @@ interface Props {
 }
 
 function SpeakerList(props: Props) {
-  const speakers = [...props.speakers, ...props.speakers];
   return (
     <Grid container justify={"center"} spacing={8}>
-      {speakers.map((speaker) => (
+      {props.speakers.map((speaker) => (
         <Grid item key={speaker.id}>
           <SpeakerItem key={speaker.id} speaker={speaker} />
         </Grid>

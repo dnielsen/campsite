@@ -1,6 +1,4 @@
 import React from "react";
-import devData from "../common/devData";
-import SessionPreview from "./SessionItemPreview";
 import { Session } from "../common/interfaces";
 import {
   Link,

@@ -10,7 +10,7 @@ interface Props {
   eventDetails: EventDetails;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     img: {
       width: "100%",
@@ -21,10 +21,14 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: "2rem 0",
     },
     info: {
-      margin: "100px",
+      marginRight: "0.5em",
+      marginBottom: "0.5em",
     },
     schedule: {
-      margin: "0 1em",
+      margin: "2em",
+    },
+    description: {
+      padding: "1em",
     },
   }),
 );
@@ -38,7 +42,7 @@ function EventItem(props: Props) {
       </Typography>
       {/*<Paper>*/}
       {/*For now we'll just use the startDate info*/}
-      <div className={"info"}>
+      <div className={classes.info}>
         <Typography align={"right"}>
           When: {moment(props.eventDetails.startDate).format("MM/DD/YYYY")}
         </Typography>
@@ -51,11 +55,18 @@ function EventItem(props: Props) {
         alt={props.eventDetails.name}
         className={classes.img}
       />
-      <p>{props.eventDetails.description}</p>
+      <Typography variant={"body1"} className={classes.description}>
+        {props.eventDetails.description}
+      </Typography>
       <div className={classes.schedule}>
         <SessionSchedule sessions={props.eventDetails.sessions} />
       </div>
-      <SpeakerList speakers={props.eventDetails.speakers} />
+      <SpeakerList
+        speakers={
+          // Double the array for development.
+          [...props.eventDetails.speakers, ...props.eventDetails.speakers]
+        }
+      />
     </Paper>
   );
 }

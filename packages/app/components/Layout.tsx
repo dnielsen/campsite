@@ -1,7 +1,14 @@
 import React, { ReactNode } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import { Container, CssBaseline } from "@material-ui/core";
+import {
+  AppBar,
+  Container,
+  CssBaseline,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
+import HomeIcon from "@material-ui/icons/Home";
 
 type Props = {
   children?: ReactNode;
@@ -16,17 +23,30 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
     <CssBaseline />
-    <header>
-      <nav>
-        <Link href="/">
-          <a>Home</a>
+    <header style={{ marginBottom: "2em" }}>
+      <AppBar position={"static"}>
+        <Link href={"/"}>
+          <IconButton edge={"start"} color={"inherit"} disableRipple>
+            <HomeIcon fontSize={"large"} />
+          </IconButton>
         </Link>
-      </nav>
+      </AppBar>
+      {/*<nav>*/}
+      {/*  <Link href="/">*/}
+      {/*    <a>Home</a>*/}
+      {/*  </Link>*/}
+      {/*</nav>*/}
     </header>
     <Container maxWidth="md">{children}</Container>
-    <footer>
-      <hr />
-      <span>I'm here to stay (Footer)</span>
+    <footer style={{ marginTop: "2em" }}>
+      <Typography variant="body2" color="textSecondary" align="center">
+        {"Copyright © "}
+        <Link color="inherit" href="http://localhost:3000">
+          Campsite.org
+        </Link>{" "}
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
     </footer>
   </div>
 );

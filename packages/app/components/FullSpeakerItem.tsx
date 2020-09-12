@@ -1,20 +1,22 @@
 import React from "react";
 import { Speaker } from "../common/interfaces";
 import StyledAvatar from "../styled/StyledAvatar";
-import { createStyles, Theme, Typography } from "@material-ui/core";
+import { createStyles, Paper, Theme, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import SpeakerPreviewItem from "./SpeakerPreviewItem";
 
 interface Props {
-  person: Speaker;
+  speaker: Speaker;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       width: "100%",
       display: "flex",
       alignItems: "center",
       justifyContent: "spaceBetween",
+      // flexDirection: "column",
       "& > *": {
         margin: "2em",
       },
@@ -25,17 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
 function FullSpeakerItem(props: Props) {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <div>
-        <StyledAvatar
-          src={props.person.photo}
-          alt={props.person.name}
-        />
-        <Typography align={"center"}>{props.person.name}</Typography>
-        <Typography align={"center"}>{props.person.headline}</Typography>
-      </div>
-      <Typography>{props.person.bio}</Typography>
-    </div>
+    <Paper style={{ padding: "1em" }} className={classes.root}>
+      <SpeakerPreviewItem speaker={props.speaker} />
+      <Typography>{props.speaker.bio}</Typography>
+    </Paper>
   );
 }
 
