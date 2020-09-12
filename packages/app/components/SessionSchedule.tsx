@@ -2,29 +2,51 @@ import React from "react";
 import devData from "../common/devData";
 import SessionPreview from "./SessionItemPreview";
 import { Session } from "../common/interfaces";
+import {
+  Link,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
+import util from "../common/util";
 
 interface Props {
   sessions: Session[];
 }
 
 function SessionSchedule(props: Props) {
-  console.log(props.sessions);
   return (
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>Session schedule</th>
-          </tr>
-        </thead>
-        <tbody>
+    <TableContainer component={Paper}>
+      <Typography variant={"h6"} align={"center"}>
+        Session schedule
+      </Typography>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell>Time</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {/*temporarily we're passing a full session object */}
           {props.sessions.map((session) => (
-            <SessionPreview key={session.id} sessionPreview={session} />
+            <TableRow key={session.id}>
+              <TableCell>
+                <Link href={`/sessions/${session.id}`}>{session.name}</Link>
+              </TableCell>
+              <TableCell>
+                {util.getHourRangeString(session.startDate, session.endDate)}
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 
