@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) =>
     info: {
       margin: "100px",
     },
+    schedule: {
+      margin: "0 1em",
+    },
   }),
 );
 
@@ -49,7 +52,9 @@ function EventItem(props: Props) {
         className={classes.img}
       />
       <p>{props.eventDetails.description}</p>
-      <SessionSchedule sessions={props.eventDetails.sessions} />
+      <div className={classes.schedule}>
+        <SessionSchedule sessions={props.eventDetails.sessions} />
+      </div>
       <SpeakerList speakers={props.eventDetails.speakers} />
     </Paper>
   );

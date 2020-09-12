@@ -18,7 +18,7 @@ type Session struct {
 	EndDate     time.Time `json:"endDate"`
 	Description string    `json:"description"`
 	Speakers []Speaker `json:"speakers,omitempty"`
-	SpeakerIds []string `json:"-"`
+	SpeakerIds []string `json:"speakerIds" gorm:"type:uuid[]"`
 }
 
 func (api *api) GetAllSessions() (*[]Session, error) {

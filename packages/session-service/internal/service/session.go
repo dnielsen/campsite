@@ -11,15 +11,10 @@ type Session struct {
 	StartDate   time.Time `json:"startDate"`
 	EndDate     time.Time `json:"endDate"`
 	Description string    `json:"description"`
-	SpeakerIds pq.StringArray `json:"-" gorm:"type:uuid[]"`
+	SpeakerIds pq.StringArray `json:"speakerIds" gorm:"type:uuid[]"`
 	EventId string 		   `gorm:"type:uuid"`
 }
 
-type SessionDatastore interface {
-	GetSessionsByEventId(id string) (*[]Session, error)
-	GetSessionById(id string) (*Session, error)
-	GetAllSessions() (*[]Session, error)
-}
 
 func (api *api) GetSessionsByEventId(id string) (*[]Session, error) {
 	var sessions []Session

@@ -16,6 +16,7 @@ export const getStaticProps: GetStaticProps = async ({
   params,
 }): Promise<{ props: { eventDetails: EventDetails } }> => {
   const res = await fetch(
+    // Temporarily until there's multi event support
     "http://localhost:4444/ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
   );
   const eventDetails = await res.json();

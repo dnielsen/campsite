@@ -23,7 +23,7 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
         </Link>
       </nav>
     </header>
-    <Container maxWidth="sm">{children}</Container>
+    <Container maxWidth="md">{children}</Container>
     <footer>
       <hr />
       <span>I'm here to stay (Footer)</span>

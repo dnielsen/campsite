@@ -6,6 +6,14 @@ type api struct {
 	db *gorm.DB
 }
 
+
+
 func NewAPI(db *gorm.DB) *api {
 	return &api{db}
+}
+
+type SpeakerDatastore interface {
+	GetSpeakersByIds(ids []string) (*[]Speaker, error)
+	GetAllSpeakers() (*[]Speaker, error)
+	GetSpeakerById(id string) (*Speaker, error)
 }

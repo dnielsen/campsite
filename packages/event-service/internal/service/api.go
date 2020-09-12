@@ -22,8 +22,10 @@ type HttpClient interface {
 
 type Datastore interface {
 	GetEventById(id string) (*Event, error)
-	GetSpeakersByIds(ids []string) (*[]Speaker, error)
+	GetAllSessions() (*[]Session, error)
 	GetSessionsByEventId(id string) (*[]Session, error)
 	GetSessionById(id string) (*Session, error)
-	GetAllSessions() (*[]Session, error)
+	GetAllSpeakers() (*[]Speaker, error)
+	GetSpeakersByIds(ids []string) (*[]Speaker, error)
+	GetSpeakerById(id string) (*Speaker, error)
 }

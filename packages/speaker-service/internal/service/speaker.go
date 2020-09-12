@@ -9,12 +9,22 @@ type Speaker struct {
 	Photo string `json:"photo"`
 }
 
-type SpeakerDatastore interface {
-	GetSpeakersByIds(ids []string) (*[]Speaker, error)
-}
+
 
 func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
 	var speakers []Speaker
-	_ = api.db.Find(&speakers, ids)
+	_ = api.db.Where("id IN ?", ids).Find(&speakers)
 	return &speakers, nil
+}
+
+func (api api) GetAllSpeakers() (*[]Speaker, error) {
+	var speakers []Speaker
+	_ = api.db.Find(&speakers)
+	return &speakers, nil
+}
+
+func (api api) GetSpeakerById(id string) (*Speaker, error) {
+	var speaker Speaker
+	_ = api.db.Where("id = ?", id).First(&speaker)
+	return &speaker, nil
 }

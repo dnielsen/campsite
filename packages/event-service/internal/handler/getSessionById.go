@@ -22,6 +22,7 @@ func GetSessionById(datastore service.Datastore) http.HandlerFunc {
 		}
 
 		speakers, err := datastore.GetSpeakersByIds(session.SpeakerIds)
+		log.Println(session.SpeakerIds)
 		if err != nil {
 			log.Printf("Failed to get speakers: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

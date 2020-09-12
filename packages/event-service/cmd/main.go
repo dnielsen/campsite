@@ -50,8 +50,13 @@ func main() {
 
 	// Set up handlers.
 	r := mux.NewRouter()
+
 	r.HandleFunc("/sessions/{sessionId}", handler.GetSessionById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/sessions", handler.GetAllSessions(api)).Methods(http.MethodGet)
+
+	r.HandleFunc("/speakers/{speakerId}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/speakers", handler.GetAllSpeakers(api)).Methods(http.MethodGet)
+
 	r.HandleFunc("/{eventId}", handler.GetEventById(api)).Methods(http.MethodGet)
 	// Set up the server.
 	server := &http.Server{
