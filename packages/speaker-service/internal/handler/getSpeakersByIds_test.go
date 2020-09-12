@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-func TestGetSpeakers(t *testing.T) {
+func TestGetSpeakersByEventId(t *testing.T) {
 	speakers := []service.Speaker{
 		{
 			ID:   uuid.New(),
@@ -29,14 +29,14 @@ func TestGetSpeakers(t *testing.T) {
 	}
 
 	testCases := []struct {
-		name           string
-		getAllSpeakers func() (*[]service.Speaker, error)
-		wantCode       int
-		wantBody       string
+		name                 string
+		getSpeakersByEventId func(id uuid.UUID) (*[]service.Speaker, error)
+		wantCode             int
+		wantBody             string
 	}{
 		{
 			"api returns an error",
-			func() (*[]service.Speaker, error) {
+			func(id uuid.UUID) (*[]service.Speaker, error) {
 				return nil, errors.New("oops")
 			},
 			http.StatusInternalServerError,
@@ -44,7 +44,7 @@ func TestGetSpeakers(t *testing.T) {
 		},
 		{
 			"api returns speakers",
-			func() (*[]service.Speaker, error) {
+			func(id uuid.UUID) (*[]service.Speaker, error) {
 				return &speakers, nil
 			},
 			http.StatusOK,
@@ -56,12 +56,12 @@ func TestGetSpeakers(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			api := &service.MockAPI{}
-			if tc.getAllSpeakers != nil {
-				api.MockGetAllSpeakers = tc.getAllSpeakers
+			if tc.getSpeakersByEventId != nil {
+				api.MockGetSpeakersByEventId = tc.getSpeakersByEventId
 			}
 			res := httptest.NewRecorder()
 			req := httptest.NewRequest("GET", "/speakers", nil)
-			h := GetSpeakers(api)
+			h := GetSpeakersByEventId(api)
 
 			h(res, req)
 			gotCode := res.Code
