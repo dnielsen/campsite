@@ -26,7 +26,6 @@ export interface SessionPreview {
 }
 
 export interface Session extends SessionPreview {
-  id: string;
   description: string;
   speakers: Person[];
 }

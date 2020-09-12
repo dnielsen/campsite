@@ -1,26 +1,23 @@
 package service
 
 import (
-	"github.com/google/uuid"
 	"time"
 )
 
 type Event struct {
-	ID        uuid.UUID `gorm:"type:uuid;primaryKey" json:"id"`
+	ID        string `gorm:"primaryKey;type:uuid" json:"id"`
 	Name      string    `json:"name"`
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Photo     string    `json:"photo"`
 	// Temporarily there's no Organizer structure
-	OrganizerName string `json:"organizerName"`
-	Address       string `json:"address"`
+	OrganizerName string   `json:"organizerName"`
+	Address       string   `json:"address"`
+	SessionIds    []string `gorm:"type:uuid[]" json:"-"`
+	SpeakerIds    []string `gorm:"type:uuid[]" json:"-"`
 }
 
-type EventDatastore interface {
-	GetEventById(id uuid.UUID) (*Event, error)
-}
-
-func (api *api) GetEventById(id uuid.UUID) (*Event, error) {
+func (api *api) GetEventById(id uint) (*Event, error) {
 	var event Event
 	_ = api.db.First(&event, id)
 	return &event, nil

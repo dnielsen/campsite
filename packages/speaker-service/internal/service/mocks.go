@@ -5,12 +5,12 @@ import (
 )
 
 type MockAPI struct {
-	MockGetAllSpeakers func() (*[]Speaker, error)
+	MockGetSpeakersByIds func(ids []string) (*[]Speaker, error)
 }
 
-func (api *MockAPI) GetAllSpeakers() (*[]Speaker, error) {
-	if api.MockGetAllSpeakers != nil {
-		return api.MockGetAllSpeakers()
+func (api *MockAPI) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
+	if api.MockGetSpeakersByIds != nil {
+		return api.MockGetSpeakersByIds(ids)
 	}
 	return nil, errors.New("something went wrong")
 }

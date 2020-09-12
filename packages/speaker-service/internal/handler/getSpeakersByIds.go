@@ -3,25 +3,27 @@ package handler
 import (
 	"dave-web-app/packages/speaker-service/internal/service"
 	"encoding/json"
-	"github.com/google/uuid"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-const ID = "id"
+type getSpeakersByIdsRequestBody struct {
+	SpeakerIds []string `json:"speakerIds"`
+}
 
-func GetSpeakersByEventId(datastore service.SpeakerDatastore) http.HandlerFunc {
+func GetSpeakersByIds(datastore service.SpeakerDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		strId := vars[ID]
-		id, err := uuid.Parse(strId)
-		if err != nil {
-			log.Printf("Failed to convert id to uuid")
+		var body getSpeakersByIdsRequestBody
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			log.Printf("Failed to decode request body: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		speakers, err := datastore.GetSpeakersByIds(id)
+		defer r.Body.Close()
+		log.Println(body.SpeakerIds)
+
+
+		speakers, err := datastore.GetSpeakersByIds(body.SpeakerIds)
 		if err != nil {
 			log.Printf("Failed to get all speakers: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

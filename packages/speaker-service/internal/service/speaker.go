@@ -1,20 +1,20 @@
 package service
 
-import (
-	"github.com/google/uuid"
-)
 
 type Speaker struct {
-	ID        uuid.UUID       `gorm:"type:uuid;primaryKey" json:"id"`
-	Name string `json:"name"`
+	ID        string `gorm:"primaryKey;type:uuid" json:"id"`
+	Name string    `json:"name"`
+	Bio string `json:"bio"`
+	Headline string `json:"headline"`
+	Photo string `json:"photo"`
 }
 
 type SpeakerDatastore interface {
-	GetAllSpeakers() (*[]Speaker, error)
+	GetSpeakersByIds(ids []string) (*[]Speaker, error)
 }
 
-func (api *api) GetAllSpeakers() (*[]Speaker, error) {
+func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
 	var speakers []Speaker
-	_ = api.db.Find(&speakers)
+	_ = api.db.Find(&speakers, ids)
 	return &speakers, nil
 }
