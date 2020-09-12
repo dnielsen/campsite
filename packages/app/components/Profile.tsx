@@ -1,8 +1,8 @@
 import React from "react";
-import { Person } from "../common/interfaces";
+import { Speaker } from "../common/interfaces";
 
 interface Props {
-  person: Person;
+  person: Speaker;
 }
 
 function Profile(props: Props) {

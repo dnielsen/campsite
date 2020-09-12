@@ -8,13 +8,13 @@ import (
 	"net/http"
 )
 
-const ID = "id"
+const EVENT_ID = "eventId"
 
 
 func GetEventById(datastore service.Datastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
-		id := vars[ID]
+		id := vars[EVENT_ID]
 		event, err := datastore.GetEventById(id)
 		if err != nil {
 			log.Printf("Failed to get event: %v", err)
@@ -22,7 +22,7 @@ func GetEventById(datastore service.Datastore) http.HandlerFunc {
 			return
 		}
 
-		sessions, err := datastore.GetSessionsByIds(event.SessionIds)
+		sessions, err := datastore.GetSessionsByEventId(id)
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

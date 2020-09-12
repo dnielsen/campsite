@@ -29,10 +29,12 @@ func main() {
 	// ---------
 	session := service.Session{
 		ID:          uuid.New().String(),
-		Title:       "Session Title",
+		Name:        "Session Name",
 		StartDate:   time.Now(),
 		EndDate:     time.Now().AddDate(1, 1, 1),
 		Description: "description of the session",
+		SpeakerIds: []string{"e0e8c283-9d75-4c5e-aa0f-5b979e0fa586"},
+		EventId: "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 	}
 	res := db.Create(&session)
 	log.Println(session)
@@ -43,7 +45,9 @@ func main() {
 
 	// Set up handlers.
 	r := mux.NewRouter()
-	r.HandleFunc("/", handler.GetSessionsByIds(api)).Methods(http.MethodGet)
+	r.HandleFunc("/event/{eventId}", handler.GetSessionsByEventId(api)).Methods(http.MethodGet)
+	r.HandleFunc("/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/", handler.GetAllSessions(api)).Methods(http.MethodGet)
 
 	// Set up the server.
 	server := &http.Server{

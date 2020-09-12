@@ -1,26 +1,27 @@
 import React from "react";
-import { EventInfo } from "../common/interfaces";
-import OrganizerItem from "./OrganizerItem";
+import { EventDetails } from "../common/interfaces";
 import SpeakerList from "./SpeakerList";
 import SessionSchedule from "./SessionSchedule";
 
+import "../styles.module.css";
+
 interface Props {
-  eventInfo: EventInfo;
+  eventDetails: EventDetails;
 }
 
 function EventItem(props: Props) {
   return (
     <div>
-      <h2>{props.eventInfo.name}</h2>
+      <h2 className={"comments"}>{props.eventDetails.name}</h2>
       <div>
         {/*For now we'll just use the startDate info*/}
-        <div>When: {props.eventInfo.startDate.toLocaleString()}</div>
+        <div>When: {props.eventDetails.startDate.toLocaleString()}</div>
       </div>
-      <OrganizerItem organizer={props.eventInfo.organizer} />
-      <img src={props.eventInfo.photo} alt="" height={200} />
-      <p>event description</p>
-      <SpeakerList />
-      <SessionSchedule />
+      <h4>{props.eventDetails.organizerName}</h4>
+      <img src={props.eventDetails.photo} alt="" height={200} />
+      <p>{props.eventDetails.description}</p>
+      <SessionSchedule sessions={props.eventDetails.sessions} />
+      <SpeakerList speakers={props.eventDetails.speakers} />
     </div>
   );
 }

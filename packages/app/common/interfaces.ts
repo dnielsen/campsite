@@ -1,4 +1,4 @@
-export interface Person {
+export interface Speaker {
   id: string;
   name: string;
   photo: string;
@@ -6,30 +6,29 @@ export interface Person {
   bio: string;
 }
 
-export interface EventInfo {
+export interface EventDetails {
   id: string;
   name: string;
+  description: string;
   startDate: Date;
   endDate: Date;
   photo: string;
-  organizer: Person;
+  organizerName: string;
   // We can later define Address interface.
   // When address is null then the event is online (remote).
   address: string | null;
+  speakers: Speaker[];
+  sessions: Session[];
 }
 
 export interface SessionPreview {
   id: string;
-  title: string;
+  name: string;
   startDate: Date;
   endDate: Date;
 }
 
 export interface Session extends SessionPreview {
   description: string;
-  speakers: Person[];
+  speakers: Speaker[];
 }
-
-// Converts startDate and endDate into strings from Date's
-export type SerializedSession = Omit<Session, "startDate"> &
-  Omit<Session, "endDate"> & { startDate: string; endDate: string };

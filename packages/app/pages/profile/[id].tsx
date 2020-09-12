@@ -1,12 +1,12 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import Layout from "../../components/Layout";
 import React from "react";
-import { Person } from "../../common/interfaces";
+import { Speaker } from "../../common/interfaces";
 import Profile from "../../components/Profile";
 import devData from "../../common/devData";
 
 type Props = {
-  data: Person;
+  data: Speaker;
   error: Error | null;
 };
 

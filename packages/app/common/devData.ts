@@ -1,6 +1,6 @@
-import { EventInfo, Person, Session, SessionPreview } from "./interfaces";
+import { EventDetails, Speaker, Session, SessionPreview } from "./interfaces";
 
-const eventInfo: EventInfo = {
+const eventInfo: EventDetails = {
   id: "asd123-das-asd",
   name: "The Big Data Event",
   photo:
@@ -18,7 +18,7 @@ const eventInfo: EventInfo = {
   address: null,
 };
 
-const people: Person[] = [
+const people: Speaker[] = [
   {
     id: "123",
     bio: "I'm John and I like computers",

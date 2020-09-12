@@ -1,8 +1,14 @@
 import React from "react";
 import devData from "../common/devData";
 import SessionPreview from "./SessionItemPreview";
+import { Session } from "../common/interfaces";
 
-function SessionSchedule() {
+interface Props {
+  sessions: Session[];
+}
+
+function SessionSchedule(props: Props) {
+  console.log(props.sessions);
   return (
     <div>
       <table>
@@ -12,8 +18,9 @@ function SessionSchedule() {
           </tr>
         </thead>
         <tbody>
-          {devData.sessionPreviews.map((preview) => (
-            <SessionPreview key={preview.id} sessionPreview={preview} />
+          {/*temporarily we're passing a full session object */}
+          {props.sessions.map((session) => (
+            <SessionPreview key={session.id} sessionPreview={session} />
           ))}
         </tbody>
       </table>

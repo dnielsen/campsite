@@ -3,23 +3,14 @@ package handler
 import (
 	"dave-web-app/packages/session-service/internal/service"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
 
-type getSessionsByIdsRequestBody struct {
-	SessionIds []string `json:"sessionIds"`
-}
-
-const EVENT_ID = "eventId"
-
-func GetSessionsByEventId(datastore service.SessionDatastore) http.HandlerFunc {
+func GetAllSessions(datastore service.SessionDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		eventId := vars[EVENT_ID]
-		sessions, err := datastore.GetSessionsByEventId(eventId)
+		sessions, err := datastore.GetAllSessions()
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

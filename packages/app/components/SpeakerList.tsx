@@ -1,12 +1,17 @@
 import React from "react";
 import SpeakerItem from "./SpeakerItem";
 import devData from "../common/devData";
+import { Speaker } from "../common/interfaces";
 
-function SpeakerList() {
+interface Props {
+  speakers: Speaker[];
+}
+
+function SpeakerList(props: Props) {
   return (
     <div>
-      {devData.people.map((person) => (
-        <SpeakerItem key={person.id} speaker={person} />
+      {props.speakers.map((speaker) => (
+        <SpeakerItem key={speaker.id} speaker={speaker} />
       ))}
     </div>
   );

@@ -8,27 +8,21 @@ import (
 	"net/http"
 )
 
+const ID = "id"
 
-type getSessionsByIdsRequestBody struct {
-	SessionIds []string `json:"sessionIds"`
-}
-
-const EVENT_ID = "eventId"
-
-func GetSessionsByEventId(datastore service.SessionDatastore) http.HandlerFunc {
+func GetSessionById(datastore service.SessionDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
-		eventId := vars[EVENT_ID]
-		sessions, err := datastore.GetSessionsByEventId(eventId)
+		id := vars[ID]
+		session, err := datastore.GetSessionById(id)
 		if err != nil {
-			log.Printf("Failed to get sessions: %v", err)
+			log.Printf("Failed to get session: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		log.Println(sessions)
-		sessionBytes, err := json.Marshal(sessions)
+		sessionBytes, err := json.Marshal(session)
 		if err != nil {
-			log.Printf("Failed to marshal sessions: %v", err)
+			log.Printf("Failed to marshal session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

@@ -30,12 +30,12 @@ func main() {
 	event := service.Event{
 		ID:            uuid.New().String(),
 		Name:          "Great Event",
+		Description: "Very interesting",
 		StartDate:     time.Now(),
 		EndDate:       time.Date(2022, time.November, 10, 23, 0, 0, 0, time.UTC),
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
 		OrganizerName: "John Tim",
 		Address:       "San Francisco, California",
-		SessionIds:    []string{"dbff6d0a-31b1-4e4d-9138-1bea431a9248"},
 		SpeakerIds: []string{"7fd20c48-2575-4a88-91fa-34665f76c6f0"},
 	}
 	res := db.Create(&event)
@@ -50,8 +50,9 @@ func main() {
 
 	// Set up handlers.
 	r := mux.NewRouter()
-	r.HandleFunc("/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
-
+	r.HandleFunc("/sessions/{sessionId}", handler.GetSessionById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/sessions", handler.GetAllSessions(api)).Methods(http.MethodGet)
+	r.HandleFunc("/{eventId}", handler.GetEventById(api)).Methods(http.MethodGet)
 	// Set up the server.
 	server := &http.Server{
 		Addr:         fmt.Sprintf(":%v", PORT),

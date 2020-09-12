@@ -8,13 +8,13 @@ import (
 type Event struct {
 	ID        string `gorm:"primaryKey;type:uuid" json:"id"`
 	Name      string    `json:"name"`
+	Description string `json:"description"`
 	StartDate time.Time `json:"startDate"`
 	EndDate   time.Time `json:"endDate"`
 	Photo     string    `json:"photo"`
 	// Temporarily there's no Organizer structure
 	OrganizerName string   `json:"organizerName"`
 	Address       string   `json:"address"`
-	SessionIds    pq.StringArray `gorm:"type:uuid[]" json:"-"`
 	Sessions []Session `json:"sessions,omitempty" gorm:"-"`
 	SpeakerIds    pq.StringArray `gorm:"type:uuid[]" json:"-"`
 	Speakers []Speaker `json:"speakers,omitempty" gorm:"-"`

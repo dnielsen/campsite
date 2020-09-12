@@ -19,14 +19,14 @@ func TestGetSessionsByIds(t *testing.T) {
 	sessions := []service.Session{
 		{
 			ID:          uuid.New().String(),
-			Title:       "dddd Title",
+			Name:        "dddd Name",
 			StartDate:   time.Now(),
 			EndDate:     time.Now().AddDate(1, 1, 1),
 			Description: "ddd of the session",
 		},
 		{
 			ID:          uuid.New().String(),
-			Title:       "dd Title",
+			Name:        "dd Name",
 			StartDate:   time.Now(),
 			EndDate:     time.Now().AddDate(1, 1, 1),
 			Description: "desddcription of the session",
@@ -93,7 +93,7 @@ func TestGetSessionsByIds(t *testing.T) {
 				t.Fatalf("Failed to marshal body: %v", err)
 			}
 			req := httptest.NewRequest("GET", "/speakers", bytes.NewBuffer(b))
-			h := GetSessionsByIds(api)
+			h := GetSessionsByEventId(api)
 			h(res, req)
 			gotCode := res.Code
 			gotBody := res.Body.String()

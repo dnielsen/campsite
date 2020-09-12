@@ -10,8 +10,8 @@ function SessionItemPreview(props: Props) {
   return (
     <tr>
       <td>
-        <a href={`/session/${props.sessionPreview.id}`}>
-          {props.sessionPreview.title}
+        <a href={`/sessions/${props.sessionPreview.id}`}>
+          {props.sessionPreview.name}
         </a>
       </td>
       <td>
