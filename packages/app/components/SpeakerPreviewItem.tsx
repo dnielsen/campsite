@@ -14,7 +14,12 @@ function SpeakerPreviewItem(props: Props) {
       <Typography align={"center"} variant={"h6"}>
         {props.speaker.name}
       </Typography>
-      <Typography align={"center"} variant={"caption"} component={"h6"}>
+      <Typography
+        align={"center"}
+        variant={"caption"}
+        component={"h6"}
+        gutterBottom
+      >
         {props.speaker.headline}
       </Typography>
     </div>

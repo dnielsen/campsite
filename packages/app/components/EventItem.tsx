@@ -2,7 +2,14 @@ import React from "react";
 import { EventDetails } from "../common/interfaces";
 import SpeakerList from "./SpeakerList";
 import SessionSchedule from "./SessionSchedule";
-import { createStyles, Paper, Theme, Typography } from "@material-ui/core";
+import {
+  createStyles,
+  Link,
+  Paper,
+  TextField,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import moment from "moment";
 import { makeStyles } from "@material-ui/styles";
 
@@ -24,11 +31,8 @@ const useStyles = makeStyles(() =>
       marginRight: "0.5em",
       marginBottom: "0.5em",
     },
-    schedule: {
-      margin: "2em",
-    },
-    description: {
-      padding: "1em",
+    container: {
+      margin: "1.5em",
     },
   }),
 );
@@ -40,14 +44,22 @@ function EventItem(props: Props) {
       <Typography align={"center"} variant={"h3"}>
         {props.eventDetails.name}
       </Typography>
-      {/*<Paper>*/}
       {/*For now we'll just use the startDate info*/}
       <div className={classes.info}>
         <Typography align={"right"}>
-          When: {moment(props.eventDetails.startDate).format("MM/DD/YYYY")}
+          When:{" "}
+          {moment(props.eventDetails.startDate).format("MM/DD/YYYY HH:MM")}
+        </Typography>
+        <Typography align={"right"}>
+          Where: {props.eventDetails.address}
         </Typography>
         <Typography align={"right"}>
           Organizer: {props.eventDetails.organizerName}
+        </Typography>
+        <Typography align={"right"}>
+          <Link href={"/"} variant={"h5"}>
+            Register now!
+          </Link>
         </Typography>
       </div>
       <img
@@ -55,18 +67,23 @@ function EventItem(props: Props) {
         alt={props.eventDetails.name}
         className={classes.img}
       />
-      <Typography variant={"body1"} className={classes.description}>
+      <Typography variant={"body1"} className={classes.container}>
         {props.eventDetails.description}
       </Typography>
-      <div className={classes.schedule}>
+      <div className={classes.container}>
         <SessionSchedule sessions={props.eventDetails.sessions} />
       </div>
-      <SpeakerList
-        speakers={
-          // Double the array for development.
-          [...props.eventDetails.speakers, ...props.eventDetails.speakers]
-        }
-      />
+      <Typography align={"center"} variant={"h4"}>
+        Our speakers
+      </Typography>
+      <div className={classes.container}>
+        <SpeakerList
+          speakers={
+            // Double the array for development.
+            [...props.eventDetails.speakers, ...props.eventDetails.speakers]
+          }
+        />
+      </div>
     </Paper>
   );
 }

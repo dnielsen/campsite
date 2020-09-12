@@ -26,7 +26,7 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
     <header style={{ marginBottom: "2em" }}>
       <AppBar position={"static"}>
         <Link href={"/"}>
-          <IconButton edge={"start"} color={"inherit"} disableRipple>
+          <IconButton edge={"start"} color={"inherit"}>
             <HomeIcon fontSize={"large"} />
           </IconButton>
         </Link>

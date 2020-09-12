@@ -1,7 +1,13 @@
 import React from "react";
 import { Speaker } from "../common/interfaces";
 import StyledAvatar from "../styled/StyledAvatar";
-import { createStyles, Paper, Theme, Typography } from "@material-ui/core";
+import {
+  createStyles,
+  Link,
+  Paper,
+  Theme,
+  Typography,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import SpeakerPreviewItem from "./SpeakerPreviewItem";
 
@@ -15,11 +21,12 @@ const useStyles = makeStyles(() =>
       width: "100%",
       display: "flex",
       alignItems: "center",
-      justifyContent: "spaceBetween",
-      // flexDirection: "column",
       "& > *": {
         margin: "2em",
       },
+    },
+    link: {
+      display: "block",
     },
   }),
 );
@@ -28,7 +35,23 @@ function FullSpeakerItem(props: Props) {
   const classes = useStyles();
   return (
     <Paper style={{ padding: "1em" }} className={classes.root}>
-      <SpeakerPreviewItem speaker={props.speaker} />
+      <div>
+        <SpeakerPreviewItem speaker={props.speaker} />
+        <Link
+          variant={"subtitle2"}
+          href={"https://twitter.com/elonmusk"}
+          className={classes.link}
+        >
+          Twitter
+        </Link>
+        <Link
+          href={"https://linkedin.com"}
+          className={classes.link}
+          variant={"subtitle2"}
+        >
+          LinkedIn
+        </Link>
+      </div>
       <Typography>{props.speaker.bio}</Typography>
     </Paper>
   );

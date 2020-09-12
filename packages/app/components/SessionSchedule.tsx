@@ -20,7 +20,7 @@ interface Props {
 function SessionSchedule(props: Props) {
   return (
     <TableContainer component={Paper}>
-      <Typography variant={"h6"} align={"center"}>
+      <Typography variant={"h4"} align={"center"}>
         Session schedule
       </Typography>
       <Table>
