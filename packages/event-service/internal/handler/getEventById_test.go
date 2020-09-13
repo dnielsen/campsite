@@ -74,7 +74,7 @@ func TestGetSpeakers(t *testing.T) {
 			res := httptest.NewRecorder()
 			req := httptest.NewRequest("GET", fmt.Sprintf("/events/%v", tc.id), nil)
 			// We have to set url vars for unit testing, otherwise gorilla mux won't register
-			// our vars, so the email would be an empty string.
+			// our vars, so the id would be an empty string.
 			vars := map[string]string{
 				ID: tc.id.String(),
 			}
