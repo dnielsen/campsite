@@ -2,7 +2,6 @@ package handler
 
 import (
 	"dave-web-app/packages/event-service/internal/service"
-	"dave-web-app/packages/event-service/internal/testUtil"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -14,74 +13,86 @@ import (
 	"time"
 )
 
-func TestGetSpeakers(t *testing.T) {
-	eventId := uuid.New()
-	event := service.Event{
-		ID:            eventId,
-		Name:          "Great Event",
-		StartDate:     time.Now(),
-		EndDate:       time.Date(2022, time.November, 10, 23, 0, 0, 0, time.UTC),
-		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-		OrganizerName: "John Tim",
-		Address:       "San Francisco, California",
-	}
-
-	jsonEvent, err := json.Marshal(event)
-	if err != nil {
-		t.Fatalf("Failed to marshal event: %v", err)
+func TestGetEventById(t *testing.T) {
+	ids := []string{uuid.New().String(), uuid.New().String()}
+	events := []service.Event{
+		{
+			ID:            "",
+			Name:          "",
+			Description:   "",
+			StartDate:     time.Time{},
+			EndDate:       time.Time{},
+			Photo:         "",
+			OrganizerName: "",
+			Address:       "",
+			Sessions:      nil,
+			SpeakerIds:    nil,
+			Speakers:      nil,
+		},
 	}
 
 	testCases := []struct {
-		id           uuid.UUID
-		name         string
-		getEventById func(id uuid.UUID) (*service.Event, error)
-		wantCode     int
-		wantBody     string
+		name             string
+		id string
+		getSpeakerById func(id string) (*service.Speaker, error)
+		wantCode         int
+		wantBody         string
 	}{
 		{
-			eventId,
-			"api returns the event when passing id of an existing event",
-			func(id uuid.UUID) (*service.Event, error) {
-				if id == eventId {
-					return &event, nil
+			"speaker found",
+			uuid.New().String(),
+			func(id string) (*service.Speaker, error) {
+				if id == speakers[0].ID {
+					return &speakers[0], nil
 				}
-				return nil, errors.New("event not found")
-			},
-			http.StatusOK,
-			string(jsonEvent),
-		},
-		{
-			uuid.New(),
-			"api returns an error when event not found",
-			// It's the same func as above, however, in Go, a little bit of code duplication is ok.
-			func(id uuid.UUID) (*service.Event, error) {
-				if id == eventId {
-					return &event, nil
+				if id == speakers[1].ID {
+					return &speakers[1], nil
 				}
-				return nil, errors.New("event not found")
+
+				return nil, errors.New("speaker not found")
 			},
 			http.StatusBadRequest,
-			fmt.Sprintf("%v\n", errors.New("event not found").Error()),
+			"speaker not found\n",
+		},
+		{
+			"speaker not found",
+			ids[1],
+			func(id string) (*service.Speaker, error) {
+				if id == speakers[0].ID {
+					return &speakers[0], nil
+				}
+				if id == speakers[1].ID {
+					return &speakers[1], nil
+				}
+
+				return nil, errors.New("speaker not found")
+			},
+			http.StatusOK,
+			func() string {
+				jsonSpeaker, _ := json.Marshal(speakers[1])
+				return string(jsonSpeaker)
+			}(),
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			api := &service.MockAPI{}
-			if tc.getEventById != nil {
-				api.MockGetEventById = tc.getEventById
+			if tc.getSpeakerById != nil {
+				api.MockGetSpeakerById = tc.getSpeakerById
 			}
 			res := httptest.NewRecorder()
-			req := httptest.NewRequest("GET", fmt.Sprintf("/events/%v", tc.id), nil)
+			req := httptest.NewRequest(http.MethodGet, fmt.Sprintf("/speakers/%v",tc.id), nil)
 			// We have to set url vars for unit testing, otherwise gorilla mux won't register
 			// our vars, so the id would be an empty string.
 			vars := map[string]string{
-				ID: tc.id.String(),
+				ID: tc.id,
 			}
 			req = mux.SetURLVars(req, vars)
 
-			h := GetEventById(api)
+			h := GetSpeakerById(api)
 			h(res, req)
+
 			gotCode := res.Code
 			gotBody := res.Body.String()
 

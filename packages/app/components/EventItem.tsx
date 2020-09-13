@@ -70,12 +70,7 @@ function EventItem(props: Props) {
         Our speakers
       </Typography>
       <div className={classes.container}>
-        <SpeakerList
-          speakers={
-            // Double the array for development.
-            [...props.eventDetails.speakers, ...props.eventDetails.speakers]
-          }
-        />
+        <SpeakerList speakers={props.eventDetails.speakers} />
       </div>
     </Paper>
   );

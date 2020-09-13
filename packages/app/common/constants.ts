@@ -1,1 +1,1 @@
-export const BASE_API_URL = "http://localhost:4444";
+export const BASE_API_URL = "http://event-service:4444";

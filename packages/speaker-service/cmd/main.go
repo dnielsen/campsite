@@ -4,7 +4,6 @@ import (
 	"dave-web-app/packages/speaker-service/internal/handler"
 	"dave-web-app/packages/speaker-service/internal/service"
 	"fmt"
-	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -29,7 +28,7 @@ func main() {
 	// For dev
 	// ---------
 	speaker := service.Speaker{
-		ID: 		uuid.New().String(),
+		ID: 		"bf432767-0830-4b84-a9d2-651f2b3e7ac8",
 		Name:     "Warren Josh",
 		Bio:      "I'm a computer geek",
 		Headline: "CEO of Hello",

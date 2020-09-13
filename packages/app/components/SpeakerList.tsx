@@ -8,6 +8,7 @@ interface Props {
 }
 
 function SpeakerList(props: Props) {
+  console.log(props);
   return (
     <Grid container justify={"center"} spacing={8}>
       {props.speakers.map((speaker) => (

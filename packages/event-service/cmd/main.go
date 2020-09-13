@@ -4,7 +4,6 @@ import (
 	"dave-web-app/packages/event-service/internal/handler"
 	"dave-web-app/packages/event-service/internal/service"
 	"fmt"
-	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -28,7 +27,7 @@ func main() {
 	// For dev
 	// ---------
 	event := service.Event{
-		ID:            uuid.New().String(),
+		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 		Name:          "Great Event",
 		Description: "Very interesting",
 		StartDate:     time.Now(),
@@ -36,7 +35,7 @@ func main() {
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
 		OrganizerName: "John Tim",
 		Address:       "San Francisco, California",
-		SpeakerIds: []string{"7fd20c48-2575-4a88-91fa-34665f76c6f0"},
+		SpeakerIds: []string{"bf432767-0830-4b84-a9d2-651f2b3e7ac8"},
 	}
 	res := db.Create(&event)
 	log.Println(event)

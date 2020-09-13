@@ -1,5 +1,15 @@
 version: "3"
 services:
+  ui:
+    container_name: campsite-ui
+    build: ./packages/app
+    ports:
+      - "3000:3000"
+    restart: always
+    networks:
+      - app
+    depends_on:
+      - event-service
   event-service:
     container_name: campsite-event-service
     build: ./packages/event-service
@@ -12,8 +22,6 @@ services:
       - postgres
       - "speaker-service"
       - "session-service"
-    expose:
-      - 4444
     links:
       - "speaker-service"
       - "session-service"
