@@ -25,8 +25,8 @@ func GetSpeakersByIds(datastore service.SpeakerDatastore) http.HandlerFunc {
 
 		speakers, err := datastore.GetSpeakersByIds(body.SpeakerIds)
 		if err != nil {
-			log.Printf("Failed to get all speakers: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			log.Printf("Failed to get speakers with specified ids: %v", err)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		speakerBytes, err := json.Marshal(speakers)

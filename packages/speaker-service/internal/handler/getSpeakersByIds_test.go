@@ -9,11 +9,10 @@ import (
 	"github.com/google/uuid"
 	"net/http"
 	"net/http/httptest"
-	"reflect"
 	"testing"
 )
 
-func TestGetSpeakersByEventId(t *testing.T) {
+func TestGetSpeakersByIds(t *testing.T) {
 	ids := []string{uuid.New().String(), uuid.New().String()}
 	speakers := []service.Speaker{
 		{
@@ -32,11 +31,6 @@ func TestGetSpeakersByEventId(t *testing.T) {
 		},
 	}
 
-	jsonSpeakers, err := json.Marshal(speakers)
-	if err != nil {
-		t.Fatalf("Failed to marshal speakers: %v", err)
-	}
-
 	testCases := []struct {
 		name             string
 		ids []string
@@ -45,36 +39,57 @@ func TestGetSpeakersByEventId(t *testing.T) {
 		wantBody         string
 	}{
 		{
-			"api returns an error",
-			ids,
+			"speakers not found",
+			[]string{uuid.New().String(), uuid.New().String()},
 			func(ids []string) (*[]service.Speaker, error) {
-				return nil, errors.New("oops")
-			},
-			http.StatusInternalServerError,
-			"oops\n",
-		},
-		{
-			"api returns all speakers given all speaker ids are in request body",
-			ids,
-			func(ids []string) (*[]service.Speaker, error) {
-				return &speakers, nil
-			},
-			http.StatusOK,
-			string(jsonSpeakers),
-		},
-		{
-			"api returns one speaker",
-			[]string{ids[1]},
-			func(ids []string) (*[]service.Speaker, error) {
-				wantIds := []string{ids[1]}
-
-				if reflect.DeepEqual(ids, wantIds) {
-					return &[]service.Speaker{speakers[1]}, nil
+				var foundSpeakers []service.Speaker
+				if len(ids) == 1 && (ids[0] == speakers[0].ID || ids[1] == speakers[0].ID) {
+					foundSpeakers = append(foundSpeakers, speakers[0])
 				}
-				return &speakers, nil
+				if len (ids) == 2 && (ids[0] == speakers[1].ID || ids[1] == speakers[1].ID) {
+					foundSpeakers = append(foundSpeakers, speakers[1])
+				}
+
+				if len(foundSpeakers) == 0 {
+					return nil, errors.New("speakers not found")
+				}
+
+				return &foundSpeakers, nil
+			},
+			http.StatusBadRequest,
+			"speakers not found\n",
+		},
+		{
+			"one speaker found",
+			[]string{speakers[1].ID},
+			func(ids []string) (*[]service.Speaker, error) {
+				var foundSpeakers []service.Speaker
+				if len(ids) == 1 {
+					if ids[0] == speakers[0].ID {
+						foundSpeakers = append(foundSpeakers, speakers[0])
+					} else if ids[0] == speakers[1].ID {
+						foundSpeakers = append(foundSpeakers, speakers[1])
+					}
+				}
+
+				if len (ids) == 2 {
+					if ids[0] == speakers[0].ID || ids[1] == speakers[0].ID {
+						foundSpeakers = append(foundSpeakers, speakers[0])
+					} else if ids[0] == speakers[1].ID || ids[1] == speakers[1].ID {
+						foundSpeakers = append(foundSpeakers, speakers[1])
+					}
+				}
+
+				if len(foundSpeakers) == 0 {
+					return nil, errors.New("speakers not found")
+				}
+				return &foundSpeakers, nil
 			},
 			http.StatusOK,
-			string(jsonSpeakers),
+			func() string {
+				jsonSpeakers, _ := json.Marshal([]service.Speaker{speakers[1]})
+				return string(jsonSpeakers)
+			}(),
 		},
 	}
 
@@ -85,13 +100,14 @@ func TestGetSpeakersByEventId(t *testing.T) {
 				api.MockGetSpeakersByIds = tc.getSpeakersByIds
 			}
 			res := httptest.NewRecorder()
-			b, err := json.Marshal(getSpeakersByIdsRequestBody{SpeakerIds: ids})
+			b, err := json.Marshal(getSpeakersByIdsRequestBody{SpeakerIds: tc.ids})
 			if err != nil {
 				t.Fatalf("Failed to marshal body: %v", err)
 			}
-			req := httptest.NewRequest("GET", "/speakers", bytes.NewBuffer(b))
+			req := httptest.NewRequest(http.MethodGet, "/speakers", bytes.NewBuffer(b))
 			h := GetSpeakersByIds(api)
 			h(res, req)
+
 			gotCode := res.Code
 			gotBody := res.Body.String()
 

@@ -17,13 +17,13 @@ func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
 	return &speakers, nil
 }
 
-func (api api) GetAllSpeakers() (*[]Speaker, error) {
+func (api *api) GetAllSpeakers() (*[]Speaker, error) {
 	var speakers []Speaker
 	_ = api.db.Find(&speakers)
 	return &speakers, nil
 }
 
-func (api api) GetSpeakerById(id string) (*Speaker, error) {
+func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 	var speaker Speaker
 	_ = api.db.Where("id = ?", id).First(&speaker)
 	return &speaker, nil
