@@ -11,7 +11,7 @@ import {
 import HomeIcon from "@material-ui/icons/Home";
 
 type Props = {
-  children?: ReactNode;
+  children?: any;
   title?: string;
 };
 
@@ -31,19 +31,12 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
           </IconButton>
         </Link>
       </AppBar>
-      {/*<nav>*/}
-      {/*  <Link href="/">*/}
-      {/*    <a>Home</a>*/}
-      {/*  </Link>*/}
-      {/*</nav>*/}
     </header>
     <Container maxWidth="md">{children}</Container>
     <footer style={{ marginTop: "2em" }}>
       <Typography variant="body2" color="textSecondary" align="center">
         {"Copyright © "}
-        <Link color="inherit" href="http://localhost:3000">
-          Campsite.org
-        </Link>{" "}
+        <Link href="http://localhost:3000">Campsite.org</Link>{" "}
         {new Date().getFullYear()}
         {"."}
       </Typography>

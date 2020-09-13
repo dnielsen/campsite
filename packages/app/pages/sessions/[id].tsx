@@ -3,12 +3,13 @@ import Layout from "../../components/Layout";
 import React from "react";
 import { Session } from "../../common/interfaces";
 import SessionItem from "../../components/SessionItem";
+import { BASE_API_URL } from "../../common/constants";
 
 interface Props {
   data: Session;
 }
 
-const BASE_SESSIONS_API_URL = "http://localhost:4444/sessions";
+const BASE_SESSION_API_URL = `${BASE_API_URL}/sessions`;
 
 function StaticPropsDetail(props: Props) {
   return (
@@ -23,14 +24,14 @@ export default StaticPropsDetail;
 export const getStaticProps: GetStaticProps = async ({
   params,
 }): Promise<{ props: Props }> => {
-  const res = await fetch(`${BASE_SESSIONS_API_URL}/${params?.id}`);
+  const res = await fetch(`${BASE_SESSION_API_URL}/${params?.id}`);
   const session: Session = await res.json();
   console.log(session);
   return { props: { data: session } };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch(BASE_SESSIONS_API_URL);
+  const res = await fetch(BASE_SESSION_API_URL);
   const sessions: Session[] = await res.json();
   const paths = sessions.map((s) => ({ params: { id: s.id } }));
   return {

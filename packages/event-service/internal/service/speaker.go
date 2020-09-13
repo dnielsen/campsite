@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-const BASE_SPEAKER_API_URL = "http://localhost:3333"
+const BASE_SPEAKER_API_URL = "http://speaker-service:3333"
 
 type Speaker struct {
 	ID        string `gorm:"primaryKey;type:uuid" json:"id"`

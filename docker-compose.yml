@@ -1,5 +1,42 @@
 version: "3"
 services:
+  event-service:
+    container_name: campsite-event-service
+    build: ./packages/event-service
+    ports:
+      - "4444:4444"
+    restart: always
+    networks:
+      - app
+    depends_on:
+      - postgres
+      - "speaker-service"
+      - "session-service"
+    expose:
+      - 4444
+    links:
+      - "speaker-service"
+      - "session-service"
+  speaker-service:
+    container_name: campsite-speaker-service
+    build: ./packages/speaker-service
+    ports:
+      - "3333:3333"
+    restart: always
+    networks:
+      - app
+    depends_on:
+      - postgres
+  session-service:
+    container_name: campsite-session-service
+    build: ./packages/session-service
+    ports:
+      - "5555:5555"
+    restart: always
+    networks:
+      - app
+    depends_on:
+      - postgres
   postgres:
     image: postgres:latest
     ports:
@@ -9,10 +46,10 @@ services:
     env_file:
       - docker.env
     networks:
-      - postgres
+      - app
   pgadmin:
     links:
-      - postgres:postgres
+      - postgres
     container_name: pgadmin
     image: dpage/pgadmin4
     ports:
@@ -22,8 +59,7 @@ services:
     env_file:
       - docker.env
     networks:
-      - postgres
-
+      - app
 networks:
-  postgres:
+  app:
     driver: bridge

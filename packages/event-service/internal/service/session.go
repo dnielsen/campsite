@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const BASE_SESSION_API_URL = "http://localhost:5555"
+const BASE_SESSION_API_URL = "http://session-service:5555"
 
 type Session struct {
 	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`

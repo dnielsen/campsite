@@ -2,14 +2,7 @@ import React from "react";
 import { EventDetails } from "../common/interfaces";
 import SpeakerList from "./SpeakerList";
 import SessionSchedule from "./SessionSchedule";
-import {
-  createStyles,
-  Link,
-  Paper,
-  TextField,
-  Theme,
-  Typography,
-} from "@material-ui/core";
+import { createStyles, Link, Paper, Typography } from "@material-ui/core";
 import moment from "moment";
 import { makeStyles } from "@material-ui/styles";
 

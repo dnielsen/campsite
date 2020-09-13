@@ -17,7 +17,7 @@ const PORT = 3333
 
 func main() {
 	// Temporary solution
-	connStr := "user=postgres password=postgres dbname=postgres port=5432 sslmode=disable"
+	connStr := "host=host.docker.internal user=postgres password=postgres dbname=postgres port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to initialize the database: %v", err)
