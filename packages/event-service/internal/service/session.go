@@ -1,6 +1,7 @@
 package service
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -9,8 +10,6 @@ import (
 	"time"
 )
 
-const BASE_SESSION_API_URL = "http://localhost:5555"
-
 type Session struct {
 	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
 	Name        string    `json:"name"`
@@ -18,18 +17,62 @@ type Session struct {
 	EndDate     time.Time `json:"endDate"`
 	Description string    `json:"description"`
 	Speakers []Speaker `json:"speakers,omitempty"`
-	SpeakerIds []string `json:"speakerIds" gorm:"type:uuid[]"`
+	SpeakerIds []string `json:"speakerIds"`
 }
 
-func (api *api) GetAllSessions() (*[]Session, error) {
-	req, err := http.NewRequest(http.MethodGet, BASE_SESSION_API_URL, nil)
+type getSessionsBody struct {
+	SessionIds []string `json:"sessionIds"`
+}
+
+func (api *api) GetSessionsByIds(ids []string) (*[]Session, error) {
+	var body getSessionsBody
+	body.SessionIds = ids
+
+	b, err := json.Marshal(body)
+	if err != nil {
+		log.Printf("Failed to marshal body: %v", err)
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, api.c.Service.Session.Address, bytes.NewBuffer(b))
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
 	}
 
 	// Make the request.
-	res, err := api.c.Do(req)
+	res, err := api.client.Do(req)
+	if err != nil {
+		log.Printf("Failed to do request: %v", err)
+	}
+
+	// Read the response body.
+	readBytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return nil, err
+	}
+
+	// Unmarshal the received body bytes
+	var sessions []Session
+	if err = json.Unmarshal(readBytes, &sessions); err != nil {
+		log.Printf("Failed to unmarshal speaker body: %v", err)
+		return nil, err
+	}
+
+	return &sessions, nil
+}
+
+
+func (api *api) GetAllSessions() (*[]Session, error) {
+	req, err := http.NewRequest(http.MethodGet, api.c.Service.Session.Address, nil)
+	if err != nil {
+		log.Printf("Failed to create new request: %v", err)
+		return nil, err
+	}
+
+	// Make the request.
+	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
 	}
@@ -52,14 +95,14 @@ func (api *api) GetAllSessions() (*[]Session, error) {
 }
 
 func (api *api) GetSessionsByEventId(id string) (*[]Session, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/event/%v",BASE_SESSION_API_URL, id), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/event/%v",api.c.Service.Session.Address, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
 	}
 
 	// Make the request.
-	res, err := api.c.Do(req)
+	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
 	}
@@ -83,19 +126,17 @@ func (api *api) GetSessionsByEventId(id string) (*[]Session, error) {
 }
 
 func (api *api) GetSessionById(id string) (*Session, error) {
-
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v", BASE_SESSION_API_URL, id), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v", api.c.Service.Session.Address, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
 	}
 
 	// Make the request.
-	res, err := api.c.Do(req)
+	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
 	}
-	log.Println(res)
 
 	// Read the response body.
 	readBytes, err := ioutil.ReadAll(res.Body)

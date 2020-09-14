@@ -28,7 +28,7 @@ function SessionSchedule(props: Props) {
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Time</TableCell>
-            <TableCell>Speaker</TableCell>
+            <TableCell>Speakers</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

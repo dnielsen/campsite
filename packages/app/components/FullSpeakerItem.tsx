@@ -33,6 +33,7 @@ const useStyles = makeStyles(() =>
 
 function FullSpeakerItem(props: Props) {
   const classes = useStyles();
+  console.log(props.speaker);
   return (
     <Paper style={{ padding: "1em" }} className={classes.root}>
       <div>
@@ -53,6 +54,9 @@ function FullSpeakerItem(props: Props) {
         </Link>
       </div>
       <Typography>{props.speaker.bio}</Typography>
+      {/*{props.speaker.sessions.map((session) => (*/}
+      {/*  <div key={session.id}>hello {session.name}</div>*/}
+      {/*))}*/}
     </Paper>
   );
 }

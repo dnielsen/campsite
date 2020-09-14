@@ -10,7 +10,7 @@ import (
 
 const EVENT_ID = "eventId"
 
-func GetSessionsByEventId(datastore service.SessionDatastore) http.HandlerFunc {
+func GetSessionsByEventId(datastore service.Datastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		eventId := vars[EVENT_ID]

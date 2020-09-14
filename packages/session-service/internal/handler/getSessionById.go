@@ -10,7 +10,7 @@ import (
 
 const ID = "id"
 
-func GetSessionById(datastore service.SessionDatastore) http.HandlerFunc {
+func GetSessionById(datastore service.Datastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		id := vars[ID]

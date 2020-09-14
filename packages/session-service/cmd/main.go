@@ -4,7 +4,6 @@ import (
 	"dave-web-app/packages/session-service/internal/config"
 	"dave-web-app/packages/session-service/internal/handler"
 	"dave-web-app/packages/session-service/internal/service"
-	"github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -37,7 +36,7 @@ func main() {
 	// For dev
 	// ---------
 	session := service.Session{
-		ID:          uuid.New().String(),
+		ID:          "71742331-8f81-40a1-a3a1-b4c2e70160f4",
 		Name:        "Session Name",
 		StartDate:   time.Now(),
 		EndDate:     time.Now().AddDate(1, 1, 1),
@@ -56,7 +55,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/event/{eventId}", handler.GetSessionsByEventId(api)).Methods(http.MethodGet)
 	r.HandleFunc("/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
-	r.HandleFunc("/", handler.GetAllSessions(api)).Methods(http.MethodGet)
+	r.HandleFunc("/", handler.GetSessions(api)).Methods(http.MethodGet)
 
 	// Set up the server.
 	srv := &http.Server{

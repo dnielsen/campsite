@@ -53,7 +53,7 @@ func main() {
 	// We use our custom HttpClient to enable mocking.
 	var client service.HttpClient
 	client = http.DefaultClient
-	api := service.NewAPI(db, client)
+	api := service.NewAPI(db, client, c)
 
 	// Set up handlers.
 	r := mux.NewRouter()

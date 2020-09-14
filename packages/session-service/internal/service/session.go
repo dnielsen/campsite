@@ -15,6 +15,12 @@ type Session struct {
 	EventId string 		   `gorm:"type:uuid"`
 }
 
+func (api *api) GetSessionsByIds(ids []string) (*[]Session, error) {
+	var sessions []Session
+	_ = api.db.Where("id IN ?", ids).Find(&sessions)
+	return &sessions, nil
+}
+
 func (api *api) GetSessionsByEventId(id string) (*[]Session, error) {
 	var sessions []Session
 	_ = api.db.Where("event_id = ?", id).Find(&sessions)

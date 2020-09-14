@@ -2,6 +2,7 @@ import React from "react";
 import { Speaker } from "../common/interfaces";
 import StyledAvatar from "../styled/StyledAvatar";
 import { Typography } from "@material-ui/core";
+import SessionSchedule from "./SessionSchedule";
 
 interface Props {
   speaker: Speaker;

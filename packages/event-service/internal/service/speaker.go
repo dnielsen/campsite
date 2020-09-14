@@ -9,14 +9,14 @@ import (
 	"net/http"
 )
 
-const BASE_SPEAKER_API_URL = "http://localhost:3333"
-
 type Speaker struct {
 	ID        string `gorm:"primaryKey;type:uuid" json:"id"`
 	Name string    `json:"name"`
 	Bio string `json:"bio"`
 	Headline string `json:"headline"`
 	Photo string `json:"photo"`
+	SessionIds []string `json:"sessionIds"`
+	Sessions []Session `json:"sessions,omitempty"`
 }
 
 type getSpeakersBody struct {
@@ -33,14 +33,14 @@ func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodGet, BASE_SPEAKER_API_URL, bytes.NewBuffer(b))
+	req, err := http.NewRequest(http.MethodGet, api.c.Service.Speaker.Address, bytes.NewBuffer(b))
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
 	}
 
 	// Make the request.
-	res, err := api.c.Do(req)
+	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
 	}
@@ -64,14 +64,14 @@ func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
 
 
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v",BASE_SPEAKER_API_URL, id), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v",api.c.Service.Speaker.Address, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
 	}
 
 	// Make the request.
-	res, err := api.c.Do(req)
+	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
 	}
@@ -95,14 +95,14 @@ func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 
 
 func (api *api) GetAllSpeakers() (*[]Speaker, error) {
-	req, err := http.NewRequest(http.MethodGet, BASE_SPEAKER_API_URL, nil)
+	req, err := http.NewRequest(http.MethodGet, api.c.Service.Speaker.Address, nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
 	}
 
 	// Make the request.
-	res, err := api.c.Do(req)
+	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
 	}

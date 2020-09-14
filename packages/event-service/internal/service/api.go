@@ -1,17 +1,19 @@
 package service
 
 import (
+	"dave-web-app/packages/event-service/internal/config"
 	"gorm.io/gorm"
 	"net/http"
 )
 
 type api struct {
-	db *gorm.DB
-	c HttpClient
+	db     *gorm.DB
+	client HttpClient
+	c      *config.Config
 }
 
-func NewAPI(db *gorm.DB, c HttpClient) *api {
-	return &api{db, c}
+func NewAPI(db *gorm.DB, client HttpClient, c *config.Config) *api {
+	return &api{db, client, c}
 }
 
 // We define our own interface so that we can mock it,
@@ -25,6 +27,7 @@ type Datastore interface {
 	GetAllSessions() (*[]Session, error)
 	GetSessionsByEventId(id string) (*[]Session, error)
 	GetSessionById(id string) (*Session, error)
+	GetSessionsByIds(ids []string) (*[]Session, error)
 	GetAllSpeakers() (*[]Speaker, error)
 	GetSpeakersByIds(ids []string) (*[]Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)

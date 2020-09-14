@@ -11,8 +11,9 @@ func NewAPI(db *gorm.DB) *api {
 }
 
 
-type SessionDatastore interface {
+type Datastore interface {
 	GetSessionsByEventId(id string) (*[]Session, error)
 	GetSessionById(id string) (*Session, error)
 	GetAllSessions() (*[]Session, error)
+	GetSessionsByIds(ids []string) (*[]Session, error)
 }

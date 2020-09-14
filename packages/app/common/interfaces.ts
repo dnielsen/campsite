@@ -4,6 +4,7 @@ export interface Speaker {
   photo: string;
   headline: string;
   bio: string;
+  sessions: Session[];
 }
 
 export interface EventDetails {

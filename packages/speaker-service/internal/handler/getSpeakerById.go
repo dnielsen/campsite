@@ -20,6 +20,7 @@ func GetSpeakerById(datastore service.SpeakerDatastore) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		log.Println(speaker.SessionIds)
 		speakerBytes, err := json.Marshal(speaker)
 		if err != nil {
 			log.Printf("Failed to marshal speakers: %v", err)
