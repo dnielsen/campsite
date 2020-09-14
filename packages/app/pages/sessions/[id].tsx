@@ -1,4 +1,4 @@
-import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from "next";
+import { GetStaticProps, GetStaticPaths } from "next";
 import Layout from "../../components/Layout";
 import React from "react";
 import { Session } from "../../common/interfaces";

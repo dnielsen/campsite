@@ -11,8 +11,8 @@ export interface EventDetails {
   id: string;
   name: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   photo: string;
   organizerName: string;
   // We can later define Address interface.
@@ -25,8 +25,8 @@ export interface EventDetails {
 export interface SessionPreview {
   id: string;
   name: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 }
 
 export interface Session extends SessionPreview {

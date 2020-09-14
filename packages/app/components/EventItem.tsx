@@ -3,8 +3,8 @@ import { EventDetails } from "../common/interfaces";
 import SpeakerList from "./SpeakerList";
 import SessionSchedule from "./SessionSchedule";
 import { createStyles, Link, Paper, Typography } from "@material-ui/core";
-import moment from "moment";
 import { makeStyles } from "@material-ui/styles";
+import util from "../common/util";
 
 interface Props {
   eventDetails: EventDetails;
@@ -40,8 +40,7 @@ function EventItem(props: Props) {
       {/*For now we'll just use the startDate info*/}
       <div className={classes.info}>
         <Typography align={"right"}>
-          When:{" "}
-          {moment(props.eventDetails.startDate).format("MM/DD/YYYY HH:MM")}
+          When: {util.getFullDate(props.eventDetails.startDate)}
         </Typography>
         <Typography align={"right"}>
           Where: {props.eventDetails.address}

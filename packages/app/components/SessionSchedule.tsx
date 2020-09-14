@@ -40,7 +40,10 @@ function SessionSchedule(props: Props) {
                 <Link href={`/sessions/${session.id}`}>{session.name}</Link>
               </TableCell>
               <TableCell>
-                {util.getHourRangeString(session.startDate, session.endDate)}
+                {util.getHourRangeString(session.startDate, session.endDate)}{" "}
+                {/*{moment(session.startDate)*/}
+                {/*  .tz("America/Los_Angeles")*/}
+                {/*  .format("ha")}*/}
               </TableCell>
 
               <TableCell>
