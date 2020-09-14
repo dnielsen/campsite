@@ -38,7 +38,7 @@ func main() {
 	speaker := service.Speaker{
 		ID: 		"bf432767-0830-4b84-a9d2-651f2b3e7ac8",
 		Name:     "Warren Josh",
-		Bio:      "I'm a computer geek",
+		Bio:      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga recusandae sequi vel velit veniam? Animi assumenda dicta doloribus excepturi id ipsa natus placeat quidem ratione voluptatibus! A aut tempora veritatis.         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga recusandae sequi vel velit veniam? Animi assumenda dicta doloribus excepturi id ipsa natus placeat quidem ratione voluptatibus! A aut tempora veritatis.         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga recusandae sequi vel velit veniam? Animi assumenda dicta doloribus excepturi id ipsa natus placeat quidem ratione voluptatibus! A aut tempora veritatis.",
 		Headline: "CEO of Hello",
 		Photo:    "https://images.unsplash.com/photo-1546661717-0bf190068ede?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=1525&q=80",
 		SessionIds: []string{"71742331-8f81-40a1-a3a1-b4c2e70160f4"},

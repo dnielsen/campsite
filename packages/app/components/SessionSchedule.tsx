@@ -15,6 +15,8 @@ import util from "../common/util";
 
 interface Props {
   sessions: Session[];
+  // Otherwise it's a speaker schedule and we don't display the speaker name
+  isEventSchedule: boolean;
 }
 
 function SessionSchedule(props: Props) {
@@ -28,7 +30,7 @@ function SessionSchedule(props: Props) {
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Time</TableCell>
-            <TableCell>Speakers</TableCell>
+            {props.isEventSchedule && <TableCell>Speakers</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -41,13 +43,17 @@ function SessionSchedule(props: Props) {
               <TableCell>
                 {util.getHourRangeString(session.startDate, session.endDate)}
               </TableCell>
-              <TableCell>
-                {session.speakers.map((speaker) => (
-                  <div key={speaker.id}>
-                    <Link href={`/speakers/${speaker.id}`}>{speaker.name}</Link>
-                  </div>
-                ))}
-              </TableCell>
+              {props.isEventSchedule && (
+                <TableCell>
+                  {session.speakers.map((speaker) => (
+                    <div key={speaker.id}>
+                      <Link href={`/speakers/${speaker.id}`}>
+                        {speaker.name}
+                      </Link>
+                    </div>
+                  ))}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
