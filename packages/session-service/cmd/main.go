@@ -33,7 +33,7 @@ func main() {
 		StartDate:   time.Now(),
 		EndDate:     time.Now().AddDate(1, 1, 1),
 		Description: "description of the session",
-		SpeakerIds: []string{"e0e8c283-9d75-4c5e-aa0f-5b979e0fa586"},
+		SpeakerIds: []string{"bf432767-0830-4b84-a9d2-651f2b3e7ac8"},
 		EventId: "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 	}
 	res := db.Create(&session)
