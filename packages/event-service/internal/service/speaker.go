@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-const BASE_SPEAKER_API_URL = "http://speaker-service:3333"
+const BASE_SPEAKER_API_URL = "http://localhost:3333"
 
 type Speaker struct {
 	ID        string `gorm:"primaryKey;type:uuid" json:"id"`
@@ -19,10 +19,12 @@ type Speaker struct {
 	Photo string `json:"photo"`
 }
 
+type getSpeakersBody struct {
+	SpeakerIds []string `json:"speakerIds"`
+}
+
 func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
-	var body struct{
-		SpeakerIds []string `json:"speakerIds"`
-	}
+	var body getSpeakersBody
 	body.SpeakerIds = ids
 
 	b, err := json.Marshal(body)
@@ -31,7 +33,7 @@ func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
 		return nil, err
 	}
 
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/byIds",BASE_SPEAKER_API_URL), bytes.NewBuffer(b))
+	req, err := http.NewRequest(http.MethodGet, BASE_SPEAKER_API_URL, bytes.NewBuffer(b))
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err

@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-const BASE_SESSION_API_URL = "http://session-service:5555"
+const BASE_SESSION_API_URL = "http://localhost:5555"
 
 type Session struct {
 	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
@@ -33,7 +33,6 @@ func (api *api) GetAllSessions() (*[]Session, error) {
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
 	}
-	log.Println(res)
 
 	// Read the response body.
 	readBytes, err := ioutil.ReadAll(res.Body)

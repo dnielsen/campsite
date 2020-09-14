@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-type getSessionsByIdsRequestBody struct {
-	SessionIds []string `json:"sessionIds"`
-}
-
 const EVENT_ID = "eventId"
 
 func GetSessionsByEventId(datastore service.SessionDatastore) http.HandlerFunc {
@@ -24,14 +20,12 @@ func GetSessionsByEventId(datastore service.SessionDatastore) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		log.Println(sessions)
 		sessionBytes, err := json.Marshal(sessions)
 		if err != nil {
 			log.Printf("Failed to marshal sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(sessionBytes)

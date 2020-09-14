@@ -68,7 +68,7 @@ func TestGetAllSpeakers(t *testing.T) {
 			// We have to set url vars for unit testing, otherwise gorilla mux won't register
 			// our vars, so the id would be an empty string.
 
-			h := GetAllSpeakers(api)
+			h := GetSpeakers(api)
 			h(res, req)
 
 			gotCode := res.Code

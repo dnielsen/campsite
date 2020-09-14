@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-type getSpeakersByIdsRequestBody struct {
+type getSpeakersBody struct {
 	SpeakerIds []string `json:"speakerIds"`
 }
 
 func GetSpeakersByIds(datastore service.SpeakerDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var body getSpeakersByIdsRequestBody
+		var body getSpeakersBody
 		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 			log.Printf("Failed to decode request body: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

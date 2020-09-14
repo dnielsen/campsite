@@ -1,9 +1,9 @@
 package main
 
 import (
+	"dave-web-app/packages/speaker-service/internal/config"
 	"dave-web-app/packages/speaker-service/internal/handler"
 	"dave-web-app/packages/speaker-service/internal/service"
-	"fmt"
 	"github.com/gorilla/mux"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -12,16 +12,24 @@ import (
 	"time"
 )
 
-const PORT = 3333
-
 func main() {
-	// Temporary solution
-	connStr := "host=host.docker.internal user=postgres password=postgres dbname=postgres port=5432 sslmode=disable"
+	// Initialize the config. If it can't find the file, it will load the variables
+	// from the environment. It would be a good idea to read the file path to the config
+	// from environment, because we might want to have `test.yml` or some other config.
+	c, err := config.GetConfig("development.yml")
+	if err != nil {
+		log.Fatalf("Failed to load config: %v",err)
+	}
+	log.Printf("Config has been loaded: %v", c)
+
+	// Connect to the database.
+	connStr := config.GetDbConnString(&c.Db)
 	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to initialize the database: %v", err)
 	}
 
+	// Migrate the database.
 	if err = db.AutoMigrate(&service.Speaker{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
 	}
@@ -43,20 +51,20 @@ func main() {
 
 	// Set up handlers.
 	r := mux.NewRouter()
-	r.HandleFunc("/byIds", handler.GetSpeakersByIds(api)).Methods(http.MethodGet)
+	//r.HandleFunc("/byIds", handler.GetSpeakersByIds(api)).Methods(http.MethodGet)
 	r.HandleFunc("/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
-	r.HandleFunc("/", handler.GetAllSpeakers(api)).Methods(http.MethodGet)
+	r.HandleFunc("/", handler.GetSpeakers(api)).Methods(http.MethodGet)
 
 	// Set up the server.
-	server := &http.Server{
-		Addr:         fmt.Sprintf(":%v", PORT),
+	srv := &http.Server{
+		Addr:         c.Server.Address,
 		Handler:      r,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  120 * time.Second,
 	}
 	// Start the server.
-	log.Printf("Listening on port %v", PORT)
-	err = server.ListenAndServe()
+	log.Printf("Listening at: %v", srv.Addr)
+	err = srv.ListenAndServe()
 	log.Fatalf("Failed to listen: %v", err)
 }

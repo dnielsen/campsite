@@ -7,11 +7,27 @@ import (
 	"net/http"
 )
 
-func GetAllSpeakers(datastore service.SpeakerDatastore) http.HandlerFunc {
+func GetSpeakers(datastore service.SpeakerDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		speakers, err := datastore.GetAllSpeakers()
+		defer r.Body.Close()
+		var body getSpeakersBody
+		//bodyBytes, err := ioutil.ReadAll(r.Body)
+		//err = json.Unmarshal(bodyBytes, &body)
+		//log.Println(body, err)
+		var speakers *[]service.Speaker
+		err := json.NewDecoder(r.Body).Decode(&body)
+		// if err == nil then the request body has speakerIds field
+		// that is, get speakers by ids
+		if err == nil {
+			speakers, err = datastore.GetSpeakersByIds(body.SpeakerIds)
+		} else {
+			// Reset the err var so that it doesn't trigger `Failed to get speakers` below
+			err = nil
+			speakers, err = datastore.GetAllSpeakers()
+		}
+
 		if err != nil {
-			log.Printf("Failed to get all speakers: %v", err)
+			log.Printf("Failed to get speakers: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

@@ -100,7 +100,7 @@ func TestGetSpeakersByIds(t *testing.T) {
 				api.MockGetSpeakersByIds = tc.getSpeakersByIds
 			}
 			res := httptest.NewRecorder()
-			b, err := json.Marshal(getSpeakersByIdsRequestBody{SpeakerIds: tc.ids})
+			b, err := json.Marshal(getSpeakersBody{SpeakerIds: tc.ids})
 			if err != nil {
 				t.Fatalf("Failed to marshal body: %v", err)
 			}
