@@ -43,6 +43,7 @@ func main() {
 		Description: "description of the session",
 		SpeakerIds: []string{"bf432767-0830-4b84-a9d2-651f2b3e7ac8"},
 		EventId: "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+		Url: "https://www.youtube.com/watch?v=tTHKyJUqP44",
 	}
 	res := db.Create(&session)
 	log.Println(session)

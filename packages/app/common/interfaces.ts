@@ -31,5 +31,6 @@ export interface SessionPreview {
 
 export interface Session extends SessionPreview {
   description: string;
+  url: string;
   speakers: Speaker[];
 }

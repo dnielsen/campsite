@@ -18,6 +18,7 @@ type Session struct {
 	Description string    `json:"description"`
 	Speakers []Speaker `json:"speakers,omitempty"`
 	SpeakerIds []string `json:"speakerIds"`
+	Url string `json:"url"`
 }
 
 type getSessionsBody struct {

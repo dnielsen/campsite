@@ -52,7 +52,6 @@ func main() {
 
 	// Set up handlers.
 	r := mux.NewRouter()
-	//r.HandleFunc("/byIds", handler.GetSpeakersByIds(api)).Methods(http.MethodGet)
 	r.HandleFunc("/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/", handler.GetSpeakers(api)).Methods(http.MethodGet)
 

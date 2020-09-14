@@ -13,6 +13,8 @@ type Session struct {
 	Description string    `json:"description"`
 	SpeakerIds pq.StringArray `json:"speakerIds" gorm:"type:uuid[]"`
 	EventId string 		   `gorm:"type:uuid"`
+	// Either live zoom or recorded video's youtube link.
+	Url string `json:"url"`
 }
 
 func (api *api) GetSessionsByIds(ids []string) (*[]Session, error) {

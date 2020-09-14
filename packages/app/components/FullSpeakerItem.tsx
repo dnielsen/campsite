@@ -1,17 +1,9 @@
 import React from "react";
 import { Speaker } from "../common/interfaces";
-import {
-  createStyles,
-  Link,
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Typography,
-} from "@material-ui/core";
+import { createStyles, Link, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import SpeakerPreviewItem from "./SpeakerPreviewItem";
-import moment from "moment";
+import SpeakerSessionSchedule from "./SpeakerSessionSchedule";
 
 interface Props {
   speaker: Speaker;
@@ -25,59 +17,49 @@ const useStyles = makeStyles(() =>
       "& > *": {
         margin: "2em",
       },
+      padding: "1em",
     },
     link: {
       display: "block",
     },
-    flex: {
+    speakerInfoWrapper: {
       display: "flex",
+      marginBottom: "2em",
+    },
+    sessions: {
+      display: "flex",
+      justifyContent: "spaceBetween",
     },
   }),
 );
 
 function FullSpeakerItem(props: Props) {
   const classes = useStyles();
-  console.log();
   return (
-    <Paper style={{ padding: "1em" }} className={classes.root}>
-      <div className={classes.flex}>
-        <div>
-          <SpeakerPreviewItem speaker={props.speaker} />
-          <Link
-            variant={"subtitle2"}
-            href={"https://twitter.com/elonmusk"}
-            className={classes.link}
-          >
-            Twitter
-          </Link>
-          <Link
-            href={"https://linkedin.com"}
-            className={classes.link}
-            variant={"subtitle2"}
-          >
-            LinkedIn
-          </Link>
+    <Paper className={classes.root}>
+      <div>
+        <div className={classes.speakerInfoWrapper}>
+          <div>
+            <SpeakerPreviewItem speaker={props.speaker} />
+            <Link
+              variant={"subtitle2"}
+              href={"https://twitter.com/elonmusk"}
+              className={classes.link}
+            >
+              Twitter
+            </Link>
+            <Link
+              href={"https://linkedin.com"}
+              className={classes.link}
+              variant={"subtitle2"}
+            >
+              LinkedIn
+            </Link>
+          </div>
+          <Typography align={"center"}>{props.speaker.bio}</Typography>
         </div>
-        <Typography align={"center"}>{props.speaker.bio}</Typography>
+        <SpeakerSessionSchedule sessions={props.speaker.sessions} />
       </div>
-      <List>
-        {props.speaker.sessions.map((session) => (
-          <Paper key={session.id}>
-            <ListItem>
-              <ListItemText
-                primary={
-                  <Link href={`/sessions/${session.id}`}>{session.name}</Link>
-                }
-                secondary={
-                  <Typography variant={"subtitle2"}>
-                    {moment(session.startDate).format("MM/DD/YYYY")}
-                  </Typography>
-                }
-              />
-            </ListItem>
-          </Paper>
-        ))}
-      </List>
     </Paper>
   );
 }

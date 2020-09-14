@@ -12,24 +12,24 @@ import {
   Typography,
 } from "@material-ui/core";
 import util from "../common/util";
+import moment from "moment";
 
 interface Props {
   sessions: Session[];
-  // Otherwise it's a speaker schedule and we don't display the speaker name
 }
 
-function SessionSchedule(props: Props) {
+function SpeakerSessionSchedule(props: Props) {
   return (
     <TableContainer component={Paper}>
       <Typography variant={"h4"} align={"center"}>
-        Session schedule
+        Sessions
       </Typography>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Time</TableCell>
-            <TableCell>Speakers</TableCell>
+            <TableCell>Link</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -40,15 +40,11 @@ function SessionSchedule(props: Props) {
                 <Link href={`/sessions/${session.id}`}>{session.name}</Link>
               </TableCell>
               <TableCell>
-                {util.getHourRangeString(session.startDate, session.endDate)}
+                {util.getHourRangeString(session.startDate, session.endDate)} on{" "}
+                {moment(session.startDate).format("MM/DD/YYYY")}
               </TableCell>
-
               <TableCell>
-                {session.speakers.map((speaker) => (
-                  <div key={speaker.id}>
-                    <Link href={`/speakers/${speaker.id}`}>{speaker.name}</Link>
-                  </div>
-                ))}
+                <Link href={session.url}>{session.url}</Link>
               </TableCell>
             </TableRow>
           ))}
@@ -58,4 +54,4 @@ function SessionSchedule(props: Props) {
   );
 }
 
-export default SessionSchedule;
+export default SpeakerSessionSchedule;

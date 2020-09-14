@@ -64,10 +64,7 @@ function EventItem(props: Props) {
         {props.eventDetails.description}
       </Typography>
       <div className={classes.container}>
-        <SessionSchedule
-          sessions={props.eventDetails.sessions}
-          isEventSchedule={true}
-        />
+        <SessionSchedule sessions={props.eventDetails.sessions} />
       </div>
       <Typography align={"center"} variant={"h4"}>
         Our speakers
