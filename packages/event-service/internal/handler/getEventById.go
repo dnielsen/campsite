@@ -10,7 +10,6 @@ import (
 
 const EVENT_ID = "eventId"
 
-
 func GetEventById(datastore service.Datastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
@@ -38,6 +37,10 @@ func GetEventById(datastore service.Datastore) http.HandlerFunc {
 		}
 		event.Speakers = *speakers
 
+		for i, session := range event.Sessions {
+			event.Sessions[i].Speakers = mapSpeakersToSpeakerIds(event.Speakers, session.SpeakerIds)
+		}
+
 		eventBytes, err := json.Marshal(event)
 		if err != nil {
 			log.Printf("Failed to marshal full event: %v", err)
@@ -49,4 +52,17 @@ func GetEventById(datastore service.Datastore) http.HandlerFunc {
 		w.WriteHeader(http.StatusOK)
 		w.Write(eventBytes)
 	}
+}
+
+func mapSpeakersToSpeakerIds(eventSpeakers []service.Speaker, sessionSpeakerIds []string) []service.Speaker {
+	var sessionSpeakers []service.Speaker
+	for _, sessionSpeakerId := range sessionSpeakerIds {
+		for _, eventSpeaker := range eventSpeakers {
+			if eventSpeaker.ID == sessionSpeakerId {
+				sessionSpeakers = append(sessionSpeakers, eventSpeaker)
+				break
+			}
+		}
+	}
+	return sessionSpeakers
 }

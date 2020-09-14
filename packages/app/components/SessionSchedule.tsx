@@ -28,6 +28,7 @@ function SessionSchedule(props: Props) {
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Time</TableCell>
+            <TableCell>Speaker</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -39,6 +40,13 @@ function SessionSchedule(props: Props) {
               </TableCell>
               <TableCell>
                 {util.getHourRangeString(session.startDate, session.endDate)}
+              </TableCell>
+              <TableCell>
+                {session.speakers.map((speaker) => (
+                  <div key={speaker.id}>
+                    <Link href={`/speakers/${speaker.id}`}>{speaker.name}</Link>
+                  </div>
+                ))}
               </TableCell>
             </TableRow>
           ))}
