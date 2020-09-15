@@ -44,6 +44,7 @@ func main() {
 		OrganizerName: "John Tim",
 		Address:       "San Francisco, California",
 		SpeakerIds: []string{"bf432767-0830-4b84-a9d2-651f2b3e7ac8"},
+		SessionIds: []string{"71742331-8f81-40a1-a3a1-b4c2e70160f4"},
 	}
 	res := db.Create(&event)
 	log.Println(event)
@@ -58,13 +59,13 @@ func main() {
 	// Set up handlers.
 	r := mux.NewRouter()
 
-	r.HandleFunc("/sessions/{sessionId}", handler.GetSessionById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/sessions", handler.GetAllSessions(api)).Methods(http.MethodGet)
 
-	r.HandleFunc("/speakers/{speakerId}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/speakers", handler.GetAllSpeakers(api)).Methods(http.MethodGet)
 
-	r.HandleFunc("/{eventId}", handler.GetEventById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
 	// Set up the server.
 	srv := &http.Server{
 		Addr:         c.Server.Address,

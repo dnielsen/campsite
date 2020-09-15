@@ -1,5 +1,5 @@
 import React from "react";
-import { Session } from "../common/interfaces";
+import { Session, Speaker } from "../common/interfaces";
 import {
   Link,
   Paper,
@@ -15,6 +15,7 @@ import util from "../common/util";
 
 interface Props {
   sessions: Session[];
+  speakers: Speaker[];
   // Otherwise it's a speaker schedule and we don't display the speaker name
 }
 
@@ -34,27 +35,34 @@ function SessionSchedule(props: Props) {
         </TableHead>
         <TableBody>
           {/*temporarily we're passing a full session object */}
-          {props.sessions.map((session) => (
-            <TableRow key={session.id}>
-              <TableCell>
-                <Link href={`/sessions/${session.id}`}>{session.name}</Link>
-              </TableCell>
-              <TableCell>
-                {util.getHourRangeString(session.startDate, session.endDate)}{" "}
-                {/*{moment(session.startDate)*/}
-                {/*  .tz("America/Los_Angeles")*/}
-                {/*  .format("ha")}*/}
-              </TableCell>
+          {props.sessions.map((session) => {
+            session.speakers = props.speakers.filter((speaker) =>
+              session.speakerIds.includes(speaker.id),
+            );
+            return (
+              <TableRow key={session.id}>
+                <TableCell>
+                  <Link href={`/sessions/${session.id}`}>{session.name}</Link>
+                </TableCell>
+                <TableCell>
+                  {util.getHourRangeString(session.startDate, session.endDate)}{" "}
+                  {/*{moment(session.startDate)*/}
+                  {/*  .tz("America/Los_Angeles")*/}
+                  {/*  .format("ha")}*/}
+                </TableCell>
 
-              <TableCell>
-                {session.speakers.map((speaker) => (
-                  <div key={speaker.id}>
-                    <Link href={`/speakers/${speaker.id}`}>{speaker.name}</Link>
-                  </div>
-                ))}
-              </TableCell>
-            </TableRow>
-          ))}
+                <TableCell>
+                  {session.speakers.map((speaker) => (
+                    <div key={speaker.id}>
+                      <Link href={`/speakers/${speaker.id}`}>
+                        {speaker.name}
+                      </Link>
+                    </div>
+                  ))}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableContainer>

@@ -12,7 +12,6 @@ type Session struct {
 	EndDate     time.Time `json:"endDate"`
 	Description string    `json:"description"`
 	SpeakerIds pq.StringArray `json:"speakerIds" gorm:"type:uuid[]"`
-	EventId string 		   `gorm:"type:uuid"`
 	// Either live zoom or recorded video's youtube link.
 	Url string `json:"url"`
 }

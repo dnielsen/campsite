@@ -8,15 +8,13 @@ import (
 	"net/http"
 )
 
-const SPEAKER_ID = "speakerId"
-
 func GetSpeakerById(datastore service.Datastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the request parameters (id).
+		// Get the id paramter.
 		vars := mux.Vars(r)
-		id := vars[SPEAKER_ID]
+		id := vars[ID]
 
-		// Get the speaker from the database
+		// Get the speaker from the speaker service.
 		speaker, err := datastore.GetSpeakerById(id)
 		if err != nil {
 			log.Printf("Failed to get speaker: %v", err)
@@ -24,15 +22,14 @@ func GetSpeakerById(datastore service.Datastore) http.HandlerFunc {
 			return
 		}
 
-		log.Println(speaker.SessionIds)
-		// Get the sessions from the database to attach it to the speaker struct
+		// Get the sessions from the session service to attach it to the speaker
+		// since we're always displaying the session for the full speaker item.
 		sessions, err := datastore.GetSessionsByIds(speaker.SessionIds)
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		log.Println(sessions)
 		speaker.Sessions = *sessions
 
 		// Marshal the speaker.

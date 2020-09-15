@@ -39,10 +39,9 @@ func main() {
 		ID:          "71742331-8f81-40a1-a3a1-b4c2e70160f4",
 		Name:        "Session Name",
 		StartDate:   time.Now(),
-		EndDate:     time.Now().AddDate(1, 1, 1),
+		EndDate:     time.Now().Add(time.Minute * 159),
 		Description: "description of the session",
 		SpeakerIds: []string{"bf432767-0830-4b84-a9d2-651f2b3e7ac8"},
-		EventId: "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 		Url: "https://www.youtube.com/watch?v=tTHKyJUqP44",
 	}
 	res := db.Create(&session)
@@ -52,9 +51,8 @@ func main() {
 
 	api := service.NewAPI(db)
 
-	// Set up handlers.
+	// Set up the handlers.
 	r := mux.NewRouter()
-	r.HandleFunc("/event/{eventId}", handler.GetSessionsByEventId(api)).Methods(http.MethodGet)
 	r.HandleFunc("/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/", handler.GetSessions(api)).Methods(http.MethodGet)
 

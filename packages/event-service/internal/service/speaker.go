@@ -1,39 +1,26 @@
 package service
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type Speaker struct {
-	ID        string `gorm:"primaryKey;type:uuid" json:"id"`
-	Name string    `json:"name"`
-	Bio string `json:"bio"`
-	Headline string `json:"headline"`
-	Photo string `json:"photo"`
-	SessionIds []string `json:"sessionIds"`
-	Sessions []Session `json:"sessions,omitempty"`
-}
-
-type getSpeakersBody struct {
-	SpeakerIds []string `json:"speakerIds"`
+	ID         string    `gorm:"primaryKey;type:uuid" json:"id"`
+	Name       string    `json:"name"`
+	Bio        string    `json:"bio"`
+	Headline   string    `json:"headline"`
+	Photo      string    `json:"photo"`
+	SessionIds []string  `json:"sessionIds"`
+	Sessions   []Session `json:"sessions,omitempty"`
 }
 
 func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
-	var body getSpeakersBody
-	body.SpeakerIds = ids
-
-	b, err := json.Marshal(body)
-	if err != nil {
-		log.Printf("Failed to marshal body: %v", err)
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodGet, api.c.Service.Speaker.Address, bytes.NewBuffer(b))
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v?%v", api.c.Service.Speaker.Address, strings.Join(ids, ",")), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
@@ -62,9 +49,8 @@ func (api *api) GetSpeakersByIds(ids []string) (*[]Speaker, error) {
 	return &speakers, nil
 }
 
-
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v",api.c.Service.Speaker.Address, id), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v", api.c.Service.Speaker.Address, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
@@ -92,7 +78,6 @@ func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 
 	return &speaker, nil
 }
-
 
 func (api *api) GetAllSpeakers() (*[]Speaker, error) {
 	req, err := http.NewRequest(http.MethodGet, api.c.Service.Speaker.Address, nil)

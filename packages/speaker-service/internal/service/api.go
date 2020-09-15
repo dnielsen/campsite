@@ -12,7 +12,7 @@ func NewAPI(db *gorm.DB) *api {
 	return &api{db}
 }
 
-type SpeakerDatastore interface {
+type Datastore interface {
 	GetSpeakersByIds(ids []string) (*[]Speaker, error)
 	GetAllSpeakers() (*[]Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)

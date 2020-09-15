@@ -8,12 +8,14 @@ import (
 	"net/http"
 )
 
-const EVENT_ID = "eventId"
-
 func GetEventById(datastore service.Datastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("hlelo world")
+		// Get the id parameter.
 		vars := mux.Vars(r)
-		id := vars[EVENT_ID]
+		id := vars[ID]
+
+		// Get the event from the database.
 		event, err := datastore.GetEventById(id)
 		if err != nil {
 			log.Printf("Failed to get event: %v", err)
@@ -21,7 +23,8 @@ func GetEventById(datastore service.Datastore) http.HandlerFunc {
 			return
 		}
 
-		sessions, err := datastore.GetSessionsByEventId(id)
+		// Get the sessions from the session service and add them to the event.
+		sessions, err := datastore.GetSessionsByIds(event.SessionIds)
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -29,6 +32,7 @@ func GetEventById(datastore service.Datastore) http.HandlerFunc {
 		}
 		event.Sessions = *sessions
 
+		// Get the speakers from the speaker service and add them to the event.
 		speakers, err := datastore.GetSpeakersByIds(event.SpeakerIds)
 		if err != nil {
 			log.Printf("Failed to get speakers: %v", err)
@@ -37,10 +41,7 @@ func GetEventById(datastore service.Datastore) http.HandlerFunc {
 		}
 		event.Speakers = *speakers
 
-		for i, session := range event.Sessions {
-			event.Sessions[i].Speakers = mapSpeakersToSpeakerIds(event.Speakers, session.SpeakerIds)
-		}
-
+		// Marshal the event.
 		eventBytes, err := json.Marshal(event)
 		if err != nil {
 			log.Printf("Failed to marshal full event: %v", err)
@@ -52,17 +53,4 @@ func GetEventById(datastore service.Datastore) http.HandlerFunc {
 		w.WriteHeader(http.StatusOK)
 		w.Write(eventBytes)
 	}
-}
-
-func mapSpeakersToSpeakerIds(eventSpeakers []service.Speaker, sessionSpeakerIds []string) []service.Speaker {
-	var sessionSpeakers []service.Speaker
-	for _, sessionSpeakerId := range sessionSpeakerIds {
-		for _, eventSpeaker := range eventSpeakers {
-			if eventSpeaker.ID == sessionSpeakerId {
-				sessionSpeakers = append(sessionSpeakers, eventSpeaker)
-				break
-			}
-		}
-	}
-	return sessionSpeakers
 }

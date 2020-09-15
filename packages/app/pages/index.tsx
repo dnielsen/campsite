@@ -19,11 +19,13 @@ function IndexPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
 export const getStaticProps: GetStaticProps = async ({
   params,
 }): Promise<{ props: { eventDetails: EventDetails } }> => {
+  console.log(`${BASE_EVENT_API_URL}/ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f`);
   const res = await fetch(
-    // Temporarily until there's multi event support
-    `${BASE_EVENT_API_URL}/ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f`,
+    "http://localhost:4444/ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
   );
+  console.log(res);
   const eventDetails = await res.json();
+  console.log("lololo", eventDetails);
 
   return {
     props: {

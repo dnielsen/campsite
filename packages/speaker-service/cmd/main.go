@@ -50,9 +50,11 @@ func main() {
 
 	api := service.NewAPI(db)
 
-	// Set up handlers.
+	// Set up the handlers.
 	r := mux.NewRouter()
 	r.HandleFunc("/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
+	// You could specify id parameter like so: `/?id=453,123,435` which would fetch the
+	// speakers with the ids of 453, 123, and 435.
 	r.HandleFunc("/", handler.GetSpeakers(api)).Methods(http.MethodGet)
 
 	// Set up the server.

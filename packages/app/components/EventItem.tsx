@@ -31,6 +31,7 @@ const useStyles = makeStyles(() =>
 );
 
 function EventItem(props: Props) {
+  console.log(props.eventDetails);
   const classes = useStyles();
   return (
     <Paper className={classes.paper}>
@@ -63,7 +64,10 @@ function EventItem(props: Props) {
         {props.eventDetails.description}
       </Typography>
       <div className={classes.container}>
-        <SessionSchedule sessions={props.eventDetails.sessions} />
+        <SessionSchedule
+          sessions={props.eventDetails.sessions}
+          speakers={props.eventDetails.speakers}
+        />
       </div>
       <Typography align={"center"} variant={"h4"}>
         Our speakers
