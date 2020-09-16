@@ -1,0 +1,39 @@
+{
+  "events": [
+    {
+      "id": "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+      "name": "BigDataCamp LA 2014",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aperiam commodi consectetur eligendi eveniet illum modi neque nesciunt possimus praesentium provident quasi quibusdam sapiente similique sit, sunt tempora vitae voluptate.",
+      "startDate": "2020-09-14T00:08:58.73062+02:00",
+      "endDate": "2021-10-15T00:08:58.730641+02:00",
+      "photo":"https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+      "organizerName": "John Doe",
+      "address": "Los Angeles, California",
+      "speakerIds": ["bf432767-0830-4b84-a9d2-651f2b3e7ac8"],
+      "sessionIds": ["71742331-8f81-40a1-a3a1-b4c2e70160f4"]
+    }
+  ],
+  "speakers": [
+    {
+      "id": "bf432767-0830-4b84-a9d2-651f2b3e7ac8",
+      "name": "Warren Smith",
+      "bio": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aperiam commodi consectetur eligendi eveniet illum modi neque nesciunt possimus praesentium provident quasi quibusdam sapiente similique sit, sunt tempora vitae voluptate.",
+      "headline": "CEO of Tesla",
+      "photo": "https://images.unsplash.com/photo-1546661717-0bf190068ede?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=1525&q=80",
+      "sessionIds": ["71742331-8f81-40a1-a3a1-b4c2e70160f4"]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "71742331-8f81-40a1-a3a1-b4c2e70160f4",
+      "name": "Intro to Python",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. A adipisci at consectetur doloremque eaque earum explicabo facere ipsum labore nihil, nostrum odio perspiciatis possimus quae quisquam sunt tenetur ut voluptatibus.",
+      "startDate": "2020-09-14T00:08:58.73062+02:00",
+      "endDate": "2021-10-15T00:08:58.730641+02:00",
+      "speakerIds": ["bf432767-0830-4b84-a9d2-651f2b3e7ac8"],
+      "eventId": "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+      "url": "https://www.youtube.com"
+    }
+  ]
+}
+

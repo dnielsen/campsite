@@ -35,7 +35,6 @@ const useStyles = makeStyles(() =>
 
 function SpeakerItem(props: Props) {
   const classes = useStyles();
-  console.log(props);
   return (
     <Paper className={classes.root}>
       <div>

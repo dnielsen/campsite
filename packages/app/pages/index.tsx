@@ -1,12 +1,13 @@
 import Layout from "../components/Layout";
 import React from "react";
 import EventItem from "../components/event/EventItem";
-import { EventDetails } from "../common/interfaces";
+import { EventDetails, EventResponse } from "../common/interfaces";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
-import { BASE_API_URL } from "../common/constants";
-
-// Temporarily it's the root path, later we might change it to `${BASE_API_URL}/events`
-const BASE_EVENT_API_URL = `${BASE_API_URL}`;
+import {
+  BASE_EVENT_API_URL,
+  BASE_SESSION_API_URL,
+  BASE_SPEAKER_API_URL,
+} from "../common/constants";
 
 function IndexPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
@@ -22,7 +23,26 @@ export const getStaticProps: GetStaticProps = async ({
   const res = await fetch(
     `${BASE_EVENT_API_URL}/ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f`,
   );
-  const eventDetails = (await res.json()) as EventDetails;
+  const event = (await res.json()) as EventResponse;
+
+  const sessionsPromise = Promise.all(
+    event.sessionIds.map((sessionId) =>
+      fetch(`${BASE_SESSION_API_URL}/${sessionId}`).then((res) => res.json()),
+    ),
+  );
+  const speakersPromise = Promise.all(
+    event.speakerIds.map((speakerId) =>
+      fetch(`${BASE_SPEAKER_API_URL}/${speakerId}`).then((res) => res.json()),
+    ),
+  );
+
+  const [sessions, speakers] = await Promise.all([
+    sessionsPromise,
+    speakersPromise,
+  ]);
+
+  const eventDetails = { ...event, sessions, speakers };
+
   return {
     props: {
       eventDetails,

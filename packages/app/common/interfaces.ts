@@ -3,6 +3,7 @@
 
 export interface EventDetails extends EventResponse {
   sessions: Session[];
+  speakers: SpeakerPreview[];
 }
 
 export interface EventResponse {
@@ -16,8 +17,8 @@ export interface EventResponse {
   // We can later define Address interface.
   // When address is null then the event is online (remote).
   address: string | null;
-  speakers: SpeakerPreview[];
-  sessions: SessionPreview[];
+  speakerIds: string[];
+  sessionIds: string[];
 }
 
 export interface Speaker extends SpeakerPreview {
@@ -30,7 +31,7 @@ export interface SpeakerPreview {
   photo: string;
   headline: string;
   bio: string;
-  sessionIds: string;
+  sessionIds: string[];
 }
 
 export interface Session extends SessionPreview {
