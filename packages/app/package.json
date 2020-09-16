@@ -13,8 +13,6 @@
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
     "@opencensus/exporter-zipkin": "^0.0.22",
     "@opencensus/nodejs": "^0.0.22",
     "@types/json-server": "^0.14.2",

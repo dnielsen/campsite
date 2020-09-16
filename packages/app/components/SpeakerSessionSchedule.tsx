@@ -1,16 +1,5 @@
 import React from "react";
 import { Session } from "../common/interfaces";
-import {
-  Link,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
 import util from "../common/util";
 import moment from "moment";
 
@@ -20,37 +9,35 @@ interface Props {
 
 function SpeakerSessionSchedule(props: Props) {
   return (
-    <TableContainer component={Paper}>
-      <Typography variant={"h4"} align={"center"}>
-        Sessions
-      </Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Time</TableCell>
-            <TableCell>Link</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
+    <div>
+      <p>Sessions</p>
+      <table>
+        <th>
+          <tr>
+            <td>Name</td>
+            <td>Time</td>
+            <td>Link</td>
+          </tr>
+        </th>
+        <tbody>
           {/*temporarily we're passing a full session object */}
           {props.sessions.map((session) => (
-            <TableRow key={session.id}>
-              <TableCell>
-                <Link href={`/sessions/${session.id}`}>{session.name}</Link>
-              </TableCell>
-              <TableCell>
+            <tr key={session.id}>
+              <td>
+                <a href={`/sessions/${session.id}`}>{session.name}</a>
+              </td>
+              <td>
                 {util.getHourRangeString(session.startDate, session.endDate)} on{" "}
                 {moment(session.startDate).format("MM/DD/YYYY")}
-              </TableCell>
-              <TableCell>
-                <Link href={session.url}>{session.url}</Link>
-              </TableCell>
-            </TableRow>
+              </td>
+              <td>
+                <a href={session.url}>{session.url}</a>
+              </td>
+            </tr>
           ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+        </tbody>
+      </table>
+    </div>
   );
 }
 

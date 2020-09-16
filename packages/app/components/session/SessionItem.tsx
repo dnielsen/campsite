@@ -1,6 +1,5 @@
 import React from "react";
 import { Session } from "../../common/interfaces";
-import { Grid, Link, Paper, Typography } from "@material-ui/core";
 import SpeakerList from "../speaker/SpeakerList";
 import moment from "moment";
 import util from "../../common/util";
@@ -11,33 +10,27 @@ interface Props {
 
 function SessionItem(props: Props) {
   return (
-    <Paper style={{ padding: "1em" }}>
-      <Grid container spacing={1}>
-        <Grid item xs={4}>
+    <div>
+      <div>
+        <div>
           <SpeakerList speakers={props.session.speakers} />
-        </Grid>
-        <Grid item xs={8}>
+        </div>
+        <div>
           <div>
-            <Typography variant={"h2"}>{props.session.name}</Typography>
-            <Typography variant={"subtitle2"}>
+            <p>{props.session.name}</p>
+            <p>
               {util.getHourRangeString(
                 props.session.startDate,
                 props.session.endDate,
               )}{" "}
               on {moment(props.session.startDate).format("MM/DD/YYYY")}
-            </Typography>
-            <Typography
-              component={Link}
-              href={props.session.url}
-              variant={"subtitle1"}
-            >
-              {props.session.url}
-            </Typography>
-            <Typography gutterBottom>{props.session.description}</Typography>
+            </p>
+            <a href={props.session.url}>{props.session.url}</a>
+            <p>{props.session.description}</p>
           </div>
-        </Grid>
-      </Grid>
-    </Paper>
+        </div>
+      </div>
+    </div>
   );
 }
 
