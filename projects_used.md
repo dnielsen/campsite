@@ -9,7 +9,7 @@ Frontend
 Backend
 - Postgres
 - 
-How the DB.JSON version works:
+How the JSON Server version works:
 Browser requests localhost:3000 which is served by NextJS
 - which routes the request to index.tsx 
 - index.tsx needs some data so NextJS makes 3 requests to the rest api provided by json server:
