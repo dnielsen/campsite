@@ -4,6 +4,7 @@ import React from "react";
 import { Session, SessionPreview } from "../../common/interfaces";
 import SessionItem from "../../components/session/SessionItem";
 import { BASE_API_URL, BASE_SPEAKER_API_URL } from "../../common/constants";
+import { zipkinFetch as fetch } from "../../common/fetch";
 
 interface Props {
   data: Session;
@@ -29,7 +30,9 @@ export const getStaticProps: GetStaticProps = async ({
   // Fetch and join speakers on speakerIds (many to many relationship).
   const speakers = await Promise.all(
     sessionPreview.speakerIds.map((speakerId) =>
-      fetch(`${BASE_SPEAKER_API_URL}/${speakerId}`).then((res) => res.json()),
+      fetch(`${BASE_SPEAKER_API_URL}/${speakerId}`).then((res: any) =>
+        res.json(),
+      ),
     ),
   );
   const session = { ...sessionPreview, speakers };
