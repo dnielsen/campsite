@@ -24,7 +24,7 @@
    
 2. Go to the client directory (go back to the root directory)
    ```
-   cd packages/server
+   cd packages/app
    ```
 
 3. Run the client (in another terminal window)
