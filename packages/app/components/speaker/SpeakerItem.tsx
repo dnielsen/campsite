@@ -1,9 +1,9 @@
 import React from "react";
-import { Speaker } from "../common/interfaces";
+import { Speaker } from "../../common/interfaces";
 import { createStyles, Link, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import SpeakerPreviewItem from "./SpeakerPreviewItem";
-import SpeakerSessionSchedule from "./SpeakerSessionSchedule";
+import SpeakerSessionSchedule from "../SpeakerSessionSchedule";
 
 interface Props {
   speaker: Speaker;
@@ -33,8 +33,9 @@ const useStyles = makeStyles(() =>
   }),
 );
 
-function FullSpeakerItem(props: Props) {
+function SpeakerItem(props: Props) {
   const classes = useStyles();
+  console.log(props);
   return (
     <Paper className={classes.root}>
       <div>
@@ -64,4 +65,4 @@ function FullSpeakerItem(props: Props) {
   );
 }
 
-export default FullSpeakerItem;
+export default SpeakerItem;

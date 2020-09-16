@@ -1,20 +1,20 @@
 import { GetStaticProps, GetStaticPaths } from "next";
 import Layout from "../../components/Layout";
 import React from "react";
-import { Speaker } from "../../common/interfaces";
-import FullSpeakerItem from "../../components/FullSpeakerItem";
+import { Speaker, SpeakerPreview } from "../../common/interfaces";
 import { BASE_API_URL } from "../../common/constants";
+import SpeakerItem from "../../components/speaker/SpeakerItem";
 
 const BASE_SPEAKER_API_URL = `${BASE_API_URL}/speakers`;
 
 interface Props {
-  data: Speaker;
+  data: any;
 }
 
 const StaticPropsDetail = (props: Props) => {
   return (
     <Layout title={`${props.data.name}`}>
-      <FullSpeakerItem speaker={props.data} />
+      <SpeakerItem speaker={props.data} />
     </Layout>
   );
 };

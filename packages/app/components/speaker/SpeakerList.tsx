@@ -1,10 +1,10 @@
 import React from "react";
-import SpeakerItem from "./SpeakerItem";
-import { Speaker } from "../common/interfaces";
+import { SpeakerPreview } from "../../common/interfaces";
 import { Grid } from "@material-ui/core";
+import SpeakerPreviewItem from "./SpeakerPreviewItem";
 
 interface Props {
-  speakers: Speaker[];
+  speakers: SpeakerPreview[];
 }
 
 function SpeakerList(props: Props) {
@@ -12,7 +12,7 @@ function SpeakerList(props: Props) {
     <Grid container justify={"center"} spacing={8}>
       {props.speakers.map((speaker) => (
         <Grid item key={speaker.id}>
-          <SpeakerItem key={speaker.id} speaker={speaker} />
+          <SpeakerPreviewItem key={speaker.id} speaker={speaker} />
         </Grid>
       ))}
     </Grid>

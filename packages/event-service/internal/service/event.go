@@ -14,9 +14,9 @@ type Event struct {
 	Photo         string         `json:"photo"`
 	OrganizerName string         `json:"organizerName"`
 	Address       string         `json:"address"`
-	SessionIds    pq.StringArray `json:"sessionIds" gorm:"type:uuid[]"`
+	SessionIds    pq.StringArray `json:"-" gorm:"type:uuid[]"`
 	Sessions      []Session      `json:"sessions,omitempty" gorm:"-"`
-	SpeakerIds    pq.StringArray `json:"speakerIds" gorm:"type:uuid[]" `
+	SpeakerIds    pq.StringArray `json:"-" gorm:"type:uuid[]" `
 	Speakers      []Speaker      `json:"speakers,omitempty" gorm:"-"`
 }
 

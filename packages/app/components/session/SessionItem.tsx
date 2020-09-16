@@ -1,9 +1,9 @@
 import React from "react";
-import { Session } from "../common/interfaces";
+import { Session } from "../../common/interfaces";
 import { Grid, Link, Paper, Typography } from "@material-ui/core";
-import SpeakerList from "./SpeakerList";
+import SpeakerList from "../speaker/SpeakerList";
 import moment from "moment";
-import util from "../common/util";
+import util from "../../common/util";
 
 interface Props {
   session: Session;

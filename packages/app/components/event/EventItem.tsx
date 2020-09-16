@@ -1,10 +1,11 @@
 import React from "react";
-import { EventDetails } from "../common/interfaces";
-import SpeakerList from "./SpeakerList";
-import SessionSchedule from "./SessionSchedule";
+import { EventDetails } from "../../common/interfaces";
+import SpeakerList from "../speaker/SpeakerList";
+import SessionSchedule from "../session/SessionSchedule";
 import { createStyles, Link, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import util from "../common/util";
+import util from "../../common/util";
+import { log } from "util";
 
 interface Props {
   eventDetails: EventDetails;
@@ -31,7 +32,6 @@ const useStyles = makeStyles(() =>
 );
 
 function EventItem(props: Props) {
-  console.log(props.eventDetails);
   const classes = useStyles();
   return (
     <Paper className={classes.paper}>

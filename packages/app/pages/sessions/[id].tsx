@@ -2,7 +2,7 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import Layout from "../../components/Layout";
 import React from "react";
 import { Session } from "../../common/interfaces";
-import SessionItem from "../../components/SessionItem";
+import SessionItem from "../../components/session/SessionItem";
 import { BASE_API_URL } from "../../common/constants";
 
 interface Props {
@@ -26,7 +26,6 @@ export const getStaticProps: GetStaticProps = async ({
 }): Promise<{ props: Props }> => {
   const res = await fetch(`${BASE_SESSION_API_URL}/${params?.id}`);
   const session: Session = await res.json();
-  console.log(session);
   return { props: { data: session } };
 };
 

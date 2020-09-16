@@ -11,18 +11,8 @@ function getHourRangeString(startDate: string, endDate: string) {
   return `${startTime} - ${endTime}`;
 }
 
-function getFullDate(date: string) {
+function getFullDateString(date: string) {
   return moment(date).tz(TIMEZONE).format("MM/DD/YYYY h:mma z");
 }
 
-function replacer(key: string, value: any) {
-  if (value instanceof Date) return value.toString();
-  return value;
-}
-
-// Converts Date values in an object into strings, otherwise our app would crash.
-function serialize(obj: any) {
-  return JSON.stringify(obj, replacer);
-}
-
-export default { getHourRangeString, serialize, getFullDate };
+export default { getHourRangeString, getFullDate: getFullDateString };

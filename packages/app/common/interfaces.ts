@@ -1,13 +1,11 @@
-export interface Speaker {
-  id: string;
-  name: string;
-  photo: string;
-  headline: string;
-  bio: string;
+// It's called EventDetails instead of Event because there would
+// be a compatibility issue with the JavaScript APIs
+
+export interface EventDetails extends EventResponse {
   sessions: Session[];
 }
 
-export interface EventDetails {
+export interface EventResponse {
   id: string;
   name: string;
   description: string;
@@ -18,8 +16,25 @@ export interface EventDetails {
   // We can later define Address interface.
   // When address is null then the event is online (remote).
   address: string | null;
-  speakers: Speaker[];
+  speakers: SpeakerPreview[];
+  sessions: SessionPreview[];
+}
+
+export interface Speaker extends SpeakerPreview {
   sessions: Session[];
+}
+
+export interface SpeakerPreview {
+  id: string;
+  name: string;
+  photo: string;
+  headline: string;
+  bio: string;
+  sessionIds: string;
+}
+
+export interface Session extends SessionPreview {
+  speakers: SpeakerPreview[];
 }
 
 export interface SessionPreview {
@@ -27,11 +42,7 @@ export interface SessionPreview {
   name: string;
   startDate: string;
   endDate: string;
-}
-
-export interface Session extends SessionPreview {
+  speakerIds: string[];
   description: string;
   url: string;
-  speakers: Speaker[];
-  speakerIds: string[];
 }

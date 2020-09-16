@@ -1,6 +1,6 @@
 import React from "react";
-import { SessionPreview } from "../common/interfaces";
-import util from "../common/util";
+import { SessionPreview } from "../../common/interfaces";
+import util from "../../common/util";
 import { TableCell, TableRow } from "@material-ui/core";
 
 interface Props {
