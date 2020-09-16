@@ -41,12 +41,24 @@ export const getStaticProps: GetStaticProps = async ({
     ),
   );
 
-  const [sessions, speakers] = await Promise.all([
+  const [sessionPreviews, speakerPreviews] = await Promise.all([
     sessionsPromise,
     speakersPromise,
   ]);
 
-  const eventDetails = { ...event, sessions, speakers };
+  // Add speakers to the sessions
+  const sessions = sessionPreviews.map((session) => ({
+    ...session,
+    speakers: speakerPreviews.filter((speaker) =>
+      speaker.sessionIds.includes(session.id),
+    ),
+  }));
+
+  const eventDetails = {
+    ...event,
+    sessions: sessions,
+    speakers: speakerPreviews,
+  };
 
   return {
     props: {
