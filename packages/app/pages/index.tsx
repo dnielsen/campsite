@@ -8,6 +8,7 @@ import {
   BASE_SESSION_API_URL,
   BASE_SPEAKER_API_URL,
 } from "../common/constants";
+import { zipkinFetch as fetch } from "../common/fetch";
 
 function IndexPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
@@ -27,12 +28,16 @@ export const getStaticProps: GetStaticProps = async ({
 
   const sessionsPromise = Promise.all(
     event.sessionIds.map((sessionId) =>
-      fetch(`${BASE_SESSION_API_URL}/${sessionId}`).then((res) => res.json()),
+      fetch(`${BASE_SESSION_API_URL}/${sessionId}`).then((res: any) =>
+        res.json(),
+      ),
     ),
   );
   const speakersPromise = Promise.all(
     event.speakerIds.map((speakerId) =>
-      fetch(`${BASE_SPEAKER_API_URL}/${speakerId}`).then((res) => res.json()),
+      fetch(`${BASE_SPEAKER_API_URL}/${speakerId}`).then((res: any) =>
+        res.json(),
+      ),
     ),
   );
 
