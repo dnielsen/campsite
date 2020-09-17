@@ -2,6 +2,12 @@ import React, { ReactNode } from "react";
 import Link from "next/link";
 import Head from "next/head";
 
+// import styled component
+import * as g from "../styles/globalStyles";
+
+// import components
+import Header from "./header";
+
 type Props = {
   children?: any;
   title?: string;
@@ -13,16 +19,13 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
       <title>{title}</title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      />
     </Head>
-    <header style={{ marginBottom: "2em" }}>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <Header />
     {children}
     <footer>
       <p>
