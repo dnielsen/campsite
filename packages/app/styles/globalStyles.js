@@ -1,6 +1,10 @@
 // import styled component
 import styled from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
-export const test = styled.div`
-  background: #000000;
+export const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+  }
 `;
