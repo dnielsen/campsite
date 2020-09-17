@@ -17,7 +17,7 @@ func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 
 func (api *api) GetAllSpeakers() (*[]Speaker, error) {
 	var speakers []Speaker
-	_ = api.db.Find(speakers)
+	_ = api.db.Find(&speakers)
 	return &speakers, nil
 }
 

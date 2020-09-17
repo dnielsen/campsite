@@ -26,16 +26,8 @@ export const getStaticProps: GetStaticProps = async ({
   params,
 }): Promise<{ props: Props }> => {
   const res = await fetch(`${BASE_SPEAKER_API_URL}/${params?.id}`);
-  const speakerPreview: SpeakerPreview = await res.json();
+  const speaker: Speaker = await res.json();
   // Fetch and join sessions on sessionIds (many to many relationship).
-  const sessions: Session[] = await Promise.all(
-    speakerPreview.sessionIds.map((sessionId) =>
-      fetch(`${BASE_SESSION_API_URL}/${sessionId}`).then((res: any) =>
-        res.json(),
-      ),
-    ),
-  );
-  const speaker: Speaker = { ...speakerPreview, sessions };
 
   return { props: { speaker } };
 };

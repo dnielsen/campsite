@@ -20,7 +20,7 @@ type Event struct {
 
 func (api *api) GetEventById(id string) (*Event, error) {
 	var event Event
-	_ = api.db.Preload("Sessions").Preload("Speakers").Where("id = ?", id).First(&event)
+	_ = api.db.Preload("Speakers").Preload("Sessions.Speakers").Where("id = ?", id).First(&event)
 	log.Println(event)
 	return &event, nil
 }

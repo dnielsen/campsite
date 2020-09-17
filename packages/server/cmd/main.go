@@ -63,6 +63,7 @@ func main() {
 		Speakers: []service.Speaker{speaker},
 	}
 	session.Speakers = []service.Speaker{speaker}
+	session.Event = &event
 	event.Sessions = []service.Session{session}
 	event.Speakers = []service.Speaker{speaker}
 
