@@ -42,7 +42,7 @@ func (s *Session) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
-type CreateSessionInput struct {
+type SessionInput struct {
 	Name string `json:"name,omitempty"`
 	StartDate *time.Time `json:"startDate,omitempty"`
 	EndDate *time.Time `json:"endDate,omitempty"`
@@ -51,7 +51,7 @@ type CreateSessionInput struct {
 	EventID string `json:"eventId,omitempty"`
 }
 
-func (api *api) CreateSession(i CreateSessionInput) (*Session, error) {
+func (api *api) CreateSession(i SessionInput) (*Session, error) {
 	// The ID will be added on insert.
 	s := Session{
 		Name:        i.Name,
@@ -63,6 +63,28 @@ func (api *api) CreateSession(i CreateSessionInput) (*Session, error) {
 	}
 	res := api.db.Create(&s)
 	if err := res.Error; err != nil {
+		return nil, err
+	}
+	return &s, nil
+}
+
+func (api *api) EditSession(id string, i SessionInput) (*Session, error) {
+	sessionUpdates := &Session{
+		Name:        i.Name,
+		StartDate:   i.StartDate,
+		EndDate:     i.EndDate,
+		Description: i.Description,
+		Url:         i.Url,
+		EventID:     i.EventID,
+	}
+	// Update the session in the database.
+	if err := api.db.Model(&Session{}).Where("id = ?", id).Updates(&sessionUpdates).Error; err != nil {
+		return nil, err
+	}
+
+	// Grab the updated session from the database.
+	var s Session
+	if err := api.db.Where("id = ?", id).First(&s).Error; err != nil {
 		return nil, err
 	}
 	return &s, nil

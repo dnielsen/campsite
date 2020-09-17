@@ -10,7 +10,7 @@ import (
 
 func CreateSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var i service.CreateSpeakerInput
+		var i service.SpeakerInput
 
 		// Decode the body
 		err := json.NewDecoder(r.Body).Decode(&i)

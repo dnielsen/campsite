@@ -10,7 +10,7 @@ import (
 
 func CreateEvent(datastore service.EventDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var i service.CreateEventInput
+		var i service.EventInput
 
 		// Decode the body
 		err := json.NewDecoder(r.Body).Decode(&i)

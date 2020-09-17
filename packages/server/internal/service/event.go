@@ -44,7 +44,7 @@ func (e *Event) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
-type CreateEventInput struct {
+type EventInput struct {
 	Name string `json:"name,omitempty"`
 	StartDate *time.Time `json:"startDate,omitempty"`
 	EndDate *time.Time `json:"endDate,omitempty"`
@@ -54,7 +54,7 @@ type CreateEventInput struct {
 	Address string `json:"address,omitempty"`
 }
 
-func (api *api) CreateEvent(i CreateEventInput) (*Event, error) {
+func (api *api) CreateEvent(i EventInput) (*Event, error) {
 	// The ID will be added on insert.
 	e := Event{
 		Name:          i.Name,
@@ -71,3 +71,30 @@ func (api *api) CreateEvent(i CreateEventInput) (*Event, error) {
 	}
 	return &e, nil
 }
+
+func (api *api) EditEvent(id string, i EventInput) (*Event, error) {
+	eventUpdates := &Event{
+		Name:          i.Name,
+		Description:   i.Description,
+		StartDate:     i.StartDate,
+		EndDate:       i.EndDate,
+		Photo:         i.Photo,
+		OrganizerName: i.OrganizerName,
+		Address:       i.Address,
+	}
+	// Update the event in the database.
+	if err := api.db.Model(&Event{}).Where("id = ?", id).Updates(&eventUpdates).Error; err != nil {
+		return nil, err
+	}
+
+	// Grab the updated event from the database.
+	var e Event
+	if err := api.db.Where("id = ?", id).First(&e).Error; err != nil {
+		return nil, err
+	}
+	return &e, nil
+}
+
+
+
+
