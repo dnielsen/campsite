@@ -3,14 +3,14 @@
 packages/*/node_modules
 
 # next.js
-packages/app/.next/
-packages/app/out/
+packages/ui/.next/
+packages/ui/out/
 
 # vercel
-packages/app/.vercel
+packages/ui/.vercel
 
 # production
-packages/app/build
+packages/ui/build
 
 # debug
 yarn-debug.log*

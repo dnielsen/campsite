@@ -9,37 +9,12 @@ services:
 #    networks:
 #      - app
 #    depends_on:
-#      - event-service
-#  event-service:
-#    container_name: campsite-event-service
-#    build: ./packages/event-service
+#      - server
+#  server:
+#    container_name: campsite-server
+#    build: ./packages/server
 #    ports:
 #      - "4444:4444"
-#    restart: always
-#    networks:
-#      - app
-#    depends_on:
-#      - postgres
-#      - "speaker-service"
-#      - "session-service"
-#    links:
-#      - "speaker-service"
-#      - "session-service"
-#  speaker-service:
-#    container_name: campsite-speaker-service
-#    build: ./packages/speaker-service
-#    ports:
-#      - "3333:3333"
-#    restart: always
-#    networks:
-#      - app
-#    depends_on:
-#      - postgres
-#  session-service:
-#    container_name: campsite-session-service
-#    build: ./packages/session-service
-#    ports:
-#      - "5555:5555"
 #    restart: always
 #    networks:
 #      - app
