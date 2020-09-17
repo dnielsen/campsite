@@ -3,29 +3,28 @@ package handler
 import (
 	"dave-web-app/packages/server/internal/service"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func GetEventById(datastore service.EventDatastore) http.HandlerFunc {
+func GetEvents(datastore service.EventDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the id parameter.
-		vars := mux.Vars(r)
-		id := vars[ID]
+		// We can later add url parameters to
+		// specify the ids of the events we want
+		// if needed.
 
-		// Get the event from the database.
-		event, err := datastore.GetEventById(id)
+		// Get the events from the database.
+		events, err := datastore.GetAllEvents()
 		if err != nil {
-			log.Printf("Failed to get event: %v", err)
+			log.Printf("Failed to get events: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		// Marshal the event.
-		eventBytes, err := json.Marshal(event)
+		eventBytes, err := json.Marshal(events)
 		if err != nil {
-			log.Printf("Failed to marshal full event: %v", err)
+			log.Printf("Failed to marshal events: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

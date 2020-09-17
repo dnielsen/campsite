@@ -8,31 +8,30 @@ import (
 	"net/http"
 )
 
-func GetEventById(datastore service.EventDatastore) http.HandlerFunc {
+func GetSpeakerById(datastore service.SpeakerDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
-		// Get the event from the database.
-		event, err := datastore.GetEventById(id)
+		// Get the speaker from the database.
+		speaker, err := datastore.GetSpeakerById(id)
 		if err != nil {
-			log.Printf("Failed to get event: %v", err)
+			log.Printf("Failed to get speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		// Marshal the event.
-		eventBytes, err := json.Marshal(event)
+		speakerBytes, err := json.Marshal(speaker)
 		if err != nil {
-			log.Printf("Failed to marshal full event: %v", err)
+			log.Printf("Failed to marshal speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Respond JSON with the events.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(eventBytes)
+		w.Write(speakerBytes)
 	}
 }

@@ -34,12 +34,13 @@ func main() {
 	}
 	// For dev
 	// ---------
+	now := time.Now()
 	event := service.Event{
 		ID:            "e3a27b7d-b37d-4cd2-b8bd-e5bd5551077c",
 		Name:          "New Event",
 		Description:   "Description",
-		StartDate:     time.Now(),
-		EndDate:       time.Now(),
+		StartDate:     &now,
+		EndDate:       &now,
 		Photo:         "https://google.com",
 		OrganizerName: "David Musk",
 		Address:       "San Jose, CA",
@@ -54,8 +55,8 @@ func main() {
 	session := service.Session{
 		ID:          "391700d5-08dc-4173-9193-80ea1a32b7f9",
 		Name:        "session name",
-		StartDate:   time.Now(),
-		EndDate:     time.Now(),
+		StartDate:   &now,
+		EndDate:     &now,
 		Description: "desc",
 		Url:         "https://google.com",
 		EventID:     event.ID,
@@ -70,10 +71,19 @@ func main() {
 
 	api := service.NewAPI(db)
 
-	// Set up handlers.
+	// Set up the router.
 	r := mux.NewRouter()
 
+	// Set up handlers.
+	r.HandleFunc("/events", handler.GetEvents(api)).Methods(http.MethodGet)
 	r.HandleFunc("/events/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
+
+	r.HandleFunc("/speakers", handler.GetSpeakers(api)).Methods(http.MethodGet)
+	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
+
+	r.HandleFunc("/sessions", handler.GetSessions(api)).Methods(http.MethodGet)
+	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
+
 	// Set up the server.
 	srv := &http.Server{
 		Addr:         c.Server.Address,
