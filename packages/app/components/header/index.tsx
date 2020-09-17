@@ -1,26 +1,37 @@
 import React from "react";
 
-// import bootstrap container
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import Container from "react-bootstrap/Container";
+// import styled component
+import * as g from "../../styles/globalStyles";
 
 const Header = () => {
   return (
-    <Container>
-      <Navbar expand="md">
-        <Navbar.Brand href="/">LOGO HERE </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/">Events</Nav.Link>
-            <Nav.Link href="/">Sessions</Nav.Link>
-            <Nav.Link href="/">Speakers</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
-    </Container>
+    <g.Container>
+      <g.HeaderWrapper>
+        <g.Logo>
+          <img
+            src="http://www.campsite.org/bundles/spoutlet/images/logo-campsite.png?v=dev"
+            className="img-fluid"
+            width="150"
+          />
+        </g.Logo>
+        <g.NavBar>
+          <ul>
+            <li>
+              <a href="#">Home</a>
+            </li>
+            <li>
+              <a href="#">Events</a>
+            </li>
+            <li>
+              <a href="#">Sessions</a>
+            </li>
+            <li>
+              <a href="#">Speaker</a>
+            </li>
+          </ul>
+        </g.NavBar>
+      </g.HeaderWrapper>
+    </g.Container>
   );
 };
 

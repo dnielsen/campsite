@@ -12,15 +12,10 @@ function SpeakerItem(props: Props) {
     <div>
       <div>
         <div>
-          <div>
-            <SpeakerPreviewItem speaker={props.speaker} />
-            <a href={"https://twitter.com/elonmusk"}>Twitter</a>
-            <a href={"https://linkedin.com"}>LinkedIn</a>
-          </div>
-          <p>{props.speaker.bio}</p>
+          <SpeakerPreviewItem speaker={props.speaker} />
         </div>
-        <SpeakerSessionSchedule sessions={props.speaker.sessions} />
       </div>
+      <SpeakerSessionSchedule sessions={props.speaker.sessions} />
     </div>
   );
 }

@@ -54,13 +54,9 @@ function EventItem(props: Props) {
                 </s.EventRegister>{" "}
               </s.EventContent>
             </s.Event>
-            {/* <div>
-                <SessionSchedule sessions={props.eventDetails.sessions} />
-              </div> */}
-            {/* <p>Our speakers</p>
-              <div>
-                <SpeakerList speakers={props.eventDetails.speakers} />
-              </div> */}
+            <SessionSchedule sessions={props.eventDetails.sessions} />
+            <p>Our speakers</p>
+            <SpeakerList speakers={props.eventDetails.speakers} />
           </Col>
         </Row>
       </s.EventWrapper>
