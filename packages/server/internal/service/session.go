@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -18,12 +20,50 @@ type Session struct {
 
 func (api *api) GetSessionById(id string) (*Session, error) {
 	var session Session
-	_ = api.db.Preload("Speakers").Where("id = ?", id).First(&session)
+	res := api.db.Preload("Speakers").Where("id = ?", id).First(&session)
+	if err := res.Error; err != nil {
+		return nil, err
+	}
 	return &session, nil
 }
 
 func (api *api) GetAllSessions() (*[]Session, error) {
 	var sessions []Session
-	_ = api.db.Find(&sessions)
+	res := api.db.Find(&sessions)
+	if err := res.Error; err != nil {
+		return nil, err
+	}
 	return &sessions, nil
+}
+
+// Add UUID automatically on creation so that we can skip it in our methods
+func (s *Session) BeforeCreate(tx *gorm.DB) (err error) {
+	s.ID = uuid.New().String()
+	return
+}
+
+type CreateSessionInput struct {
+	Name string `json:"name,omitempty"`
+	StartDate *time.Time `json:"startDate,omitempty"`
+	EndDate *time.Time `json:"endDate,omitempty"`
+	Description string `json:"description,omitempty"`
+	Url string `json:"url,omitempty"`
+	EventID string `json:"eventId,omitempty"`
+}
+
+func (api *api) CreateSession(i CreateSessionInput) (*Session, error) {
+	// The ID will be added on insert.
+	s := Session{
+		Name:        i.Name,
+		StartDate:   i.StartDate,
+		EndDate:     i.EndDate,
+		Description: i.Description,
+		Url:         i.Url,
+		EventID:     i.EventID,
+	}
+	res := api.db.Create(&s)
+	if err := res.Error; err != nil {
+		return nil, err
+	}
+	return &s, nil
 }

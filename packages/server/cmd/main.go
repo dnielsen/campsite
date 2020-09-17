@@ -26,12 +26,14 @@ func main() {
 	connStr := config.GetDbConnString(&c.Db)
 	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("Failed to initialize the database: %v", err)
+		log.Fatalf("Failed to initialize database: %v", err)
 	}
+	log.Println("Connected to database")
 	// Migrate the database.
 	if err = db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
 	}
+	log.Println("Auto migrated database")
 	// For dev
 	// ---------
 	now := time.Now()
@@ -67,22 +69,27 @@ func main() {
 	event.Sessions = []service.Session{session}
 	event.Speakers = []service.Speaker{speaker}
 
-	_ = db.Create(&event)
+	//res := db.Create(&event)
+	//log.Printf("Result: %v", res.Error)
+	//log.Println("Created mock data in database")
 	// ----------
 
 	api := service.NewAPI(db)
 
 	// Set up the router.
 	r := mux.NewRouter()
-
+log.Println("hi")
 	// Set up handlers.
 	r.HandleFunc("/events", handler.GetEvents(api)).Methods(http.MethodGet)
+	r.HandleFunc("/events", handler.CreateEvent(api)).Methods(http.MethodPost)
 	r.HandleFunc("/events/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
 
 	r.HandleFunc("/speakers", handler.GetSpeakers(api)).Methods(http.MethodGet)
+	r.HandleFunc("/speakers", handler.CreateSpeaker(api)).Methods(http.MethodPost)
 	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
 
 	r.HandleFunc("/sessions", handler.GetSessions(api)).Methods(http.MethodGet)
+	r.HandleFunc("/sessions", handler.CreateSession(api)).Methods(http.MethodPost)
 	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
 
 	// Set up the server.
