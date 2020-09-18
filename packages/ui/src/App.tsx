@@ -5,6 +5,7 @@ import FullSpeaker from "./pages/FullSpeaker";
 import FullSession from "./pages/FullSession";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import CreateSpeaker from "./pages/CreateSpeaker";
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
         <Switch>
           <Route path="/speakers/:id">
             <FullSpeaker />
+          </Route>
+          <Route path="/speakers/create">
+            <CreateSpeaker />
           </Route>
           <Route path="/sessions/:id">
             <FullSession />

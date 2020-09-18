@@ -15,4 +15,12 @@ function getFullDateString(date: string) {
   return moment(date).tz(TIMEZONE).format("MM/DD/YYYY h:mma z");
 }
 
-export default { getHourRangeString, getFullDate: getFullDateString };
+function getUniqueElementsFromMultidimensionalArray(arr: any[]) {
+  return [...new Set(arr.flat())];
+}
+
+export default {
+  getHourRangeString,
+  getFullDate: getFullDateString,
+  getUniqueElementsFromMultidimensionalArray,
+};

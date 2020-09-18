@@ -19,7 +19,7 @@ func main() {
 	// from environment, because we might want to have `test.yml` or some other config.
 	c, err := config.GetConfig("development.yml")
 	if err != nil {
-		log.Fatalf("Failed to load config: %v",err)
+		log.Fatalf("Failed to load config: %v", err)
 	}
 	log.Printf("Config has been loaded: %v", c)
 
@@ -63,16 +63,17 @@ func main() {
 		Description: "desc",
 		Url:         "https://google.com",
 		EventID:     event.ID,
-		Speakers: []service.Speaker{speaker},
+		Speakers:    []service.Speaker{speaker},
 	}
 	session.Speakers = []service.Speaker{speaker}
-	session.Event = &event
 	event.Sessions = []service.Session{session}
-	event.Speakers = []service.Speaker{speaker}
 
-	//res := db.Create(&event)
-	//log.Printf("Result: %v", res.Error)
-	//log.Println("Created mock data in database")
+	res := db.Create(&event)
+	if err := res.Error; err != nil {
+		log.Println("Created mock data in database")
+	} else {
+		log.Printf("Failed to create mock data in database: %v", err)
+	}
 	// ----------
 
 	api := service.NewAPI(db)

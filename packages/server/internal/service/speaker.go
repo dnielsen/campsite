@@ -6,12 +6,12 @@ import (
 )
 
 type Speaker struct {
-	ID         string    `json:"id,omitempty" gorm:"primaryKey;type:uuid"`
-	Name       string    `json:"name,omitempty"`
-	Bio        string    `json:"bio,omitempty"`
-	Headline   string    `json:"headline,omitempty"`
-	Photo      string    `json:"photo,omitempty"`
-	Sessions   []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;"`
+	ID       string    `json:"id,omitempty" gorm:"primaryKey;type:uuid"`
+	Name     string    `json:"name,omitempty"`
+	Bio      string    `json:"bio,omitempty"`
+	Headline string    `json:"headline,omitempty"`
+	Photo    string    `json:"photo,omitempty"`
+	Sessions []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;"`
 }
 
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {
@@ -39,10 +39,10 @@ func (s *Speaker) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 type SpeakerInput struct {
-	Name       string    `json:"name,omitempty"`
-	Bio        string    `json:"bio,omitempty"`
-	Headline   string    `json:"headline,omitempty"`
-	Photo      string    `json:"photo,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Bio      string `json:"bio,omitempty"`
+	Headline string `json:"headline,omitempty"`
+	Photo    string `json:"photo,omitempty"`
 }
 
 func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
@@ -59,7 +59,6 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	}
 	return &speaker, nil
 }
-
 
 func (api *api) EditSpeaker(id string, i SpeakerInput) (*Speaker, error) {
 	speakerUpdates := &Speaker{

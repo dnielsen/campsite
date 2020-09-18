@@ -1,5 +1,5 @@
 import React from "react";
-import { EventDetails } from "../common/interfaces";
+import { EventDetails, SpeakerPreview } from "../common/interfaces";
 import useAPI from "../hooks/useAPI";
 import util from "../common/util";
 import SessionSchedule from "./home/SessionSchedule";
@@ -15,6 +15,11 @@ function Home() {
 
   if (loading) return <div>loading...</div>;
   if (error) return <div>something went wrong: {error.message}</div>;
+
+  const eventSpeakers = util.getUniqueElementsFromMultidimensionalArray(
+    // All of the sessions' speakers (with possible duplicates between sessions).
+    eventDetails.sessions.map((session) => session.speakers),
+  ) as SpeakerPreview[];
 
   return (
     <div>
@@ -39,7 +44,7 @@ function Home() {
       <div>
         <SessionSchedule sessions={eventDetails.sessions} />
       </div>
-      <Speakers speakers={eventDetails.speakers} />
+      <Speakers speakers={eventSpeakers} />
     </div>
   );
 }

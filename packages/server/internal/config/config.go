@@ -9,16 +9,16 @@ import (
 )
 
 type DbConfig struct {
-	Name string `yaml:"name" env:"DB_NAME" env-default:"postgres"`
-	User string `yaml:"user" env:"DB_USER" env-default:"postgres"`
+	Name     string `yaml:"name" env:"DB_NAME" env-default:"postgres"`
+	User     string `yaml:"user" env:"DB_USER" env-default:"postgres"`
 	Password string `yaml:"password" env:"DB_PASSWORD" env-default:"postgres"`
 	Host     string `yaml:"host" env:"DB_HOST" env-default:"localhost"`
 	Port     string `yaml:"port" env:"DB_PORT" env-default:"5432"`
-	SSLMode     string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
+	SSLMode  string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
 }
 
 type Config struct {
-	Db DbConfig `yaml:"db"`
+	Db     DbConfig `yaml:"db"`
 	Server struct {
 		Address string `yaml:"address" env:"SERVER_ADDRESS" env-default:"0.0.0.0:4444"`
 	} `yaml:"server"`
@@ -46,7 +46,7 @@ func getConfigPath(configFilename string) string {
 	return filepath.Join(filepath.Dir(currentFilename), "../../configs/", configFilename)
 }
 
-func GetDbConnString(c *DbConfig) string  {
+func GetDbConnString(c *DbConfig) string {
 	vals := getDbValues(c)
 	var p []string
 	for k, v := range vals {

@@ -5,7 +5,7 @@ import (
 )
 
 type api struct {
-	db     *gorm.DB
+	db *gorm.DB
 }
 
 func NewAPI(db *gorm.DB) *api {

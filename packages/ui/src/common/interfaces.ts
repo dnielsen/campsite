@@ -3,7 +3,6 @@
 
 export interface EventDetails extends EventResponse {
   sessions: Session[];
-  speakers: SpeakerPreview[];
 }
 
 export interface EventResponse {
