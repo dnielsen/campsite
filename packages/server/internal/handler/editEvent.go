@@ -41,7 +41,7 @@ func EditEvent(datastore service.EventDatastore) http.HandlerFunc {
 
 		// Respond JSON with the updated event.
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
+		w.WriteHeader(http.StatusOK)
 		w.Write(eventBytes)
 	}
 }

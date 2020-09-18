@@ -8,6 +8,8 @@ function Header() {
         <ul>
           <li>
             <Link to={"/"}>Home</Link>
+            <Link to={"/speakers"}>All Speakers</Link>
+            <Link to={"/speakers/create"}>Create Speaker</Link>
           </li>
         </ul>
       </nav>

@@ -4,7 +4,7 @@ import { Session } from "../common/interfaces";
 import { useParams } from "react-router-dom";
 import util from "../common/util";
 import moment from "moment";
-import Speakers from "../components/Speakers";
+import SpeakerList from "../components/SpeakerList";
 
 function FullSession() {
   const { id } = useParams<{ id: string }>();
@@ -16,7 +16,7 @@ function FullSession() {
 
   return (
     <div>
-      <Speakers speakers={session.speakers} />
+      <SpeakerList speakers={session.speakers} />
       <div>
         <div>
           <h3>{session.name}</h3>

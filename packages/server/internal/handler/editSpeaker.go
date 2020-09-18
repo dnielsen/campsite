@@ -41,7 +41,7 @@ func EditSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 
 		// Respond JSON with the updated speaker.
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
+		w.WriteHeader(http.StatusOK)
 		w.Write(speakerBytes)
 	}
 }

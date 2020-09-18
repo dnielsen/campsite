@@ -4,7 +4,7 @@ import useAPI from "../hooks/useAPI";
 import util from "../common/util";
 import SessionSchedule from "./home/SessionSchedule";
 import { Link } from "react-router-dom";
-import Speakers from "../components/Speakers";
+import SpeakerList from "../components/SpeakerList";
 
 const EVENT_ID = "e3a27b7d-b37d-4cd2-b8bd-e5bd5551077c";
 
@@ -44,7 +44,7 @@ function Home() {
       <div>
         <SessionSchedule sessions={eventDetails.sessions} />
       </div>
-      <Speakers speakers={eventSpeakers} />
+      <SpeakerList speakers={eventSpeakers} />
     </div>
   );
 }

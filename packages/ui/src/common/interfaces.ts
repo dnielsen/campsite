@@ -46,3 +46,10 @@ export interface SessionPreview {
   description: string;
   url: string;
 }
+
+export interface CreateSpeakerInput {
+  name: string;
+  bio: string;
+  headline: string;
+  photo: string;
+}
