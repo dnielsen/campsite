@@ -6,11 +6,10 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ["@typescript-eslint", "jest", "react-hooks", "react"],
+  plugins: ["@typescript-eslint", "react-hooks", "react"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:jest/recommended",
     "prettier/@typescript-eslint",
     "plugin:eslint-comments/recommended",
     "plugin:react-hooks/recommended",
@@ -18,7 +17,6 @@ module.exports = {
   ],
   env: {
     node: true,
-    jest: true,
   },
   rules: {
     "eslint-comments/no-unused-disable": "error",

@@ -1,20 +1,12 @@
+# IDE
 .idea
 .vscode
-packages/*/node_modules
 
-# next.js
-packages/ui/.next/
-packages/ui/out/
-
-# vercel
-packages/ui/.vercel
-
-# production
+# UI
+packages/ui/node_modules
 packages/ui/build
-
-# debug
-yarn-debug.log*
-yarn-error.log*
+packages/ui/yarn-debug.log*
+packages/ui/yarn-error.log*
 
 # Docker
 #docker.env

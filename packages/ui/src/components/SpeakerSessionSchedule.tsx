@@ -2,6 +2,7 @@ import React from "react";
 import { Session } from "../common/interfaces";
 import util from "../common/util";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 interface Props {
   sessions: Session[];
@@ -12,26 +13,26 @@ function SpeakerSessionSchedule(props: Props) {
     <div>
       <p>Sessions</p>
       <table>
-        <th>
+        <thead>
           <tr>
-            <td>Name</td>
-            <td>Time</td>
-            <td>Link</td>
+            <th>Name</th>
+            <th>Time</th>
+            <th>Link</th>
           </tr>
-        </th>
+        </thead>
         <tbody>
           {/*temporarily we're passing a full session object */}
           {props.sessions.map((session) => (
             <tr key={session.id}>
               <td>
-                <a href={`/sessions/${session.id}`}>{session.name}</a>
+                <Link to={`/sessions/${session.id}`}>{session.name}</Link>
               </td>
               <td>
                 {util.getHourRangeString(session.startDate, session.endDate)} on{" "}
                 {moment(session.startDate).format("MM/DD/YYYY")}
               </td>
               <td>
-                <a href={session.url}>{session.url}</a>
+                <Link to={session.url}>{session.url}</Link>
               </td>
             </tr>
           ))}

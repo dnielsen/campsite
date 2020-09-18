@@ -5,6 +5,7 @@ import (
 	"dave-web-app/packages/server/internal/handler"
 	"dave-web-app/packages/server/internal/service"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -95,10 +96,16 @@ func main() {
 	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/sessions/{id}", handler.EditSession(api)).Methods(http.MethodPut)
 
+	// For dev only - Set up CORS so our client can consume the api
+	corsWrapper := cors.New(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "PATCH", "PUT"},
+		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*"},
+	})
+
 	// Set up the server.
 	srv := &http.Server{
 		Addr:         c.Server.Address,
-		Handler:      r,
+		Handler:      corsWrapper.Handler(r),
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  120 * time.Second,
