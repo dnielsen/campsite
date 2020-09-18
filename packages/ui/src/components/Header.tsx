@@ -10,6 +10,7 @@ function Header() {
             <Link to={"/"}>Home</Link>
             <Link to={"/speakers"}>All Speakers</Link>
             <Link to={"/speakers/create"}>Create Speaker</Link>
+            <Link to={"/create"}>Create Event</Link>
           </li>
         </ul>
       </nav>

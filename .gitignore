@@ -8,6 +8,12 @@ packages/ui/build
 packages/ui/yarn-debug.log*
 packages/ui/yarn-error.log*
 
+# In case node_modules are mistakenly downloaded into the project root directory
+node_modules
+yarn-error.log*
+yarn-debug.log*
+yarn.lock
+
 # Docker
 #docker.env
 data

@@ -9,19 +9,17 @@ export interface EventResponse {
   id: string;
   name: string;
   description: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   photo: string;
   organizerName: string;
   // We can later define Address interface.
   // When address is null then the event is online (remote).
   address: string | null;
-  speakerIds: string[];
-  sessionIds: string[];
 }
 
 export interface Speaker extends SpeakerPreview {
-  sessions: Session[];
+  sessions?: Session[];
 }
 
 export interface SpeakerPreview {
@@ -30,7 +28,6 @@ export interface SpeakerPreview {
   photo: string;
   headline: string;
   bio: string;
-  sessionIds: string[];
 }
 
 export interface Session extends SessionPreview {
@@ -40,16 +37,35 @@ export interface Session extends SessionPreview {
 export interface SessionPreview {
   id: string;
   name: string;
-  startDate: string;
-  endDate: string;
-  speakerIds: string[];
+  startDate: Date;
+  endDate: Date;
   description: string;
   url: string;
+}
+
+export interface CreateEventInput {
+  name: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  photo: string;
+  organizerName: string;
+  address: string;
+  sessions: CreateSessionInput[];
+}
+
+export interface CreateSessionInput {
+  name: string;
+  description: string;
+  url: string;
+  startDate: Date;
+  endDate: Date;
+  speakers: CreateSpeakerInput[];
 }
 
 export interface CreateSpeakerInput {
   name: string;
   bio: string;
-  headline: string;
   photo: string;
+  headline: string;
 }

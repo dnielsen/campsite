@@ -5,8 +5,9 @@ import FullSpeaker from "./pages/FullSpeaker";
 import FullSession from "./pages/FullSession";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import CreateSpeaker from "./pages/CreateSpeaker";
 import Speakers from "./pages/Speakers";
+import CreateEvent from "./pages/CreateEvent";
+import CreateSpeaker from "./pages/CreateSpeaker";
 
 function App() {
   return (
@@ -26,6 +27,9 @@ function App() {
           <Route path="/sessions/:id">
             <FullSession />
           </Route>
+          {/*<Route exact path="/create">*/}
+          {/*  <CreateEvent />*/}
+          {/*</Route>*/}
           <Route exact path="/">
             <Home />
           </Route>

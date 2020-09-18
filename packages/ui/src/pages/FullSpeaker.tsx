@@ -2,7 +2,7 @@ import React from "react";
 import useAPI from "../hooks/useAPI";
 import { Speaker } from "../common/interfaces";
 import SpeakerSessionSchedule from "../components/SpeakerSessionSchedule";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SpeakerItem from "../components/SpeakerItem";
 
 function FullSpeaker() {
@@ -23,7 +23,9 @@ function FullSpeaker() {
         </div>
         <p>{speaker.bio}</p>
       </div>
-      <SpeakerSessionSchedule sessions={speaker.sessions} />
+      {speaker.sessions && (
+        <SpeakerSessionSchedule sessions={speaker.sessions} />
+      )}
     </div>
   );
 }
