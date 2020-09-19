@@ -1,8 +1,3 @@
-// import {
-//   CreateEventInput,
-//   EventDetails,
-//   SpeakerPreview,
-// } from "../common/interfaces";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import { CreateSpeakerInput, SpeakerPreview } from "../common/interfaces";

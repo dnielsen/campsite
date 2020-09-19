@@ -6,8 +6,8 @@ import FullSession from "./pages/FullSession";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Speakers from "./pages/Speakers";
-import CreateEvent from "./pages/CreateEvent";
 import CreateSpeaker from "./pages/CreateSpeaker";
+import CreateSession from "./pages/CreateSession";
 
 function App() {
   return (
@@ -23,6 +23,9 @@ function App() {
           </Route>
           <Route path="/speakers/:id">
             <FullSpeaker />
+          </Route>
+          <Route exact path="/sessions/create">
+            <CreateSession />
           </Route>
           <Route path="/sessions/:id">
             <FullSession />

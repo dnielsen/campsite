@@ -62,7 +62,7 @@ func main() {
 		EndDate:     &now,
 		Description: "desc",
 		Url:         "https://google.com",
-		EventID:     event.ID,
+		EventID:     &event.ID,
 		Speakers:    []service.Speaker{speaker},
 	}
 	session.Speakers = []service.Speaker{speaker}
@@ -70,9 +70,9 @@ func main() {
 
 	res := db.Create(&event)
 	if err := res.Error; err != nil {
-		log.Println("Created mock data in database")
-	} else {
 		log.Printf("Failed to create mock data in database: %v", err)
+	} else {
+		log.Println("Created mock data in database")
 	}
 	// ----------
 

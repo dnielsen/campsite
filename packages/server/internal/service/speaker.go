@@ -53,8 +53,7 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 		Headline: i.Headline,
 		Photo:    i.Photo,
 	}
-	res := api.db.Create(&speaker)
-	if err := res.Error; err != nil {
+	if err := api.db.Create(&speaker).Error; err != nil {
 		return nil, err
 	}
 	return &speaker, nil

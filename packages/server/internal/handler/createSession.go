@@ -21,7 +21,7 @@ func CreateSession(datastore service.SessionDatastore) http.HandlerFunc {
 		// Create the session in the database.
 		session, err := datastore.CreateSession(i)
 		if err != nil {
-			log.Printf("Failed to create event: %v", err)
+			log.Printf("Failed to create session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -29,7 +29,7 @@ func CreateSession(datastore service.SessionDatastore) http.HandlerFunc {
 		// Marshal the created session.
 		sessionBytes, err := json.Marshal(session)
 		if err != nil {
-			log.Printf("Failed to marshal event: %v", err)
+			log.Printf("Failed to marshal session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

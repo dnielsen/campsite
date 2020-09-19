@@ -60,7 +60,7 @@ export interface CreateSessionInput {
   url: string;
   startDate: Date;
   endDate: Date;
-  speakers: CreateSpeakerInput[];
+  speakerOptions: Option[];
 }
 
 export interface CreateSpeakerInput {
@@ -68,4 +68,9 @@ export interface CreateSpeakerInput {
   bio: string;
   photo: string;
   headline: string;
+}
+
+export interface Option {
+  label: string;
+  value: string;
 }

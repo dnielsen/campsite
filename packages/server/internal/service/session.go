@@ -14,7 +14,7 @@ type Session struct {
 	Description string     `json:"description,omitempty"`
 	Url         string     `json:"url,omitempty"`
 	Event       *Event     `json:"event,omitempty"`
-	EventID     string     `json:"-"`
+	EventID     *string     `json:"-"`
 	Speakers    []Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;"`
 }
 
@@ -48,24 +48,28 @@ type SessionInput struct {
 	EndDate     *time.Time `json:"endDate,omitempty"`
 	Description string     `json:"description,omitempty"`
 	Url         string     `json:"url,omitempty"`
-	EventID     string     `json:"eventId,omitempty"`
+	SpeakerIds []string `json:"speakerIds,omitempty"`
 }
 
 func (api *api) CreateSession(i SessionInput) (*Session, error) {
-	// The ID will be added on insert.
-	s := Session{
+	// Get the speakers from the database to attach them to the session.
+	var speakers []Speaker
+	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
+		return nil, err
+	}
+	// Create the session with the speakers attached.
+	session := Session{
 		Name:        i.Name,
 		StartDate:   i.StartDate,
 		EndDate:     i.EndDate,
 		Description: i.Description,
 		Url:         i.Url,
-		EventID:     i.EventID,
+		Speakers: speakers,
 	}
-	res := api.db.Create(&s)
-	if err := res.Error; err != nil {
+	if err := api.db.Create(&session).Error; err != nil {
 		return nil, err
 	}
-	return &s, nil
+	return &session, nil
 }
 
 func (api *api) EditSession(id string, i SessionInput) (*Session, error) {
@@ -75,7 +79,6 @@ func (api *api) EditSession(id string, i SessionInput) (*Session, error) {
 		EndDate:     i.EndDate,
 		Description: i.Description,
 		Url:         i.Url,
-		EventID:     i.EventID,
 	}
 	// Update the session in the database.
 	if err := api.db.Model(&Session{}).Where("id = ?", id).Updates(&sessionUpdates).Error; err != nil {
