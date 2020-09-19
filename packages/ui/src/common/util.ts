@@ -1,4 +1,5 @@
 import moment from "moment-timezone";
+import { Option } from "./interfaces";
 
 const TIMEZONE = "America/Los_Angeles";
 
@@ -21,6 +22,6 @@ function getUniqueElementsFromMultidimensionalArray(arr: any[]) {
 
 export default {
   getHourRangeString,
-  getFullDate: getFullDateString,
+  getFullDateString,
   getUniqueElementsFromMultidimensionalArray,
 };

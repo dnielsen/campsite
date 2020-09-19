@@ -6,7 +6,7 @@ import SessionSchedule from "./home/SessionSchedule";
 import { Link } from "react-router-dom";
 import SpeakerList from "../components/SpeakerList";
 
-const EVENT_ID = "e3a27b7d-b37d-4cd2-b8bd-e5bd5551077c";
+const EVENT_ID = "80e211fd-d33a-4149-8d8b-47ff5e4c8f0f";
 
 function Home() {
   const { data: eventDetails, loading, error } = useAPI<EventDetails>(
@@ -26,12 +26,9 @@ function Home() {
       <p>{eventDetails.name}</p>
       <div>
         <p>
-          When:{" "}
-          {
-            // For now we'll just use the start date but we might add
-            // support for events that last a few days.
-            util.getFullDate(eventDetails.startDate)
-          }
+          {/*// For now we'll just use the start date but we might add*/}
+          {/*// support for events that last a few days.*/}
+          When: {util.getFullDateString(eventDetails.startDate)}
         </p>
         <p>Where: {eventDetails.address}</p>
         <p>Organizer: {eventDetails.organizerName}</p>

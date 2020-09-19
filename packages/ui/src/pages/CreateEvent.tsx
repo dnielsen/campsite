@@ -1,125 +1,79 @@
-import React, { useState } from "react";
-// import {
-//   CreateEventInput,
-//   CreateSessionInput,
-//   EventDetails,
-// } from "../common/interfaces";
-// import { BASE_EVENT_API_URL } from "../common/constants";
-// import SessionForm from "./createEvent/SessionForm";
-// import DatePicker from "react-datepicker";
-// import SessionInput from "./createEvent/SessionInput";
-//
-function CreateEvent() {
-  //   const [name, setName] = useState("");
-  //   const [description, setDescription] = useState("");
-  //   const [startDate, setStartDate] = useState(new Date());
-  //   const [endDate, setEndDate] = useState(new Date());
-  //   const [address, setAddress] = useState("");
-  //   const [organizerName, setOrganizerName] = useState("");
-  //   const [photo, setPhoto] = useState("");
-  //   const [sessions, setSessions] = useState<CreateSessionInput[]>([]);
-  //
-  //   async function handleSubmit(e: React.FormEvent) {
-  //     e.preventDefault();
-  //     console.log(e);
-  //     const input: CreateEventInput = {
-  //       name,
-  //       description,
-  //       startDate,
-  //       endDate,
-  //       organizerName,
-  //       address,
-  //       photo,
-  //       sessions,
-  //     };
-  //
-  //     const createdEvent = (await fetch(BASE_EVENT_API_URL, {
-  //       method: "POST",
-  //       body: JSON.stringify(input),
-  //     }).then((res) => res.json())) as EventDetails;
-  //     console.log(createdEvent);
-  //   }
+import React from "react";
+import { Field, Form, Formik, FormikState, FormikValues } from "formik";
+import useAPI from "../hooks/useAPI";
+import { Option, SessionPreview } from "../common/interfaces";
+import SelectField from "../components/SelectField";
+import useCreateEventForm from "../hooks/useCreateEventForm";
 
-  return <div></div>;
-  //   return (
-  //     <div>
-  //       <h2>Create event</h2>
-  //       <form onSubmit={handleSubmit}>
-  //         <section>
-  //           <label htmlFor="eventName">Name</label>
-  //           <input
-  //             type="text"
-  //             name="eventName"
-  //             id="eventName"
-  //             value={name}
-  //             onChange={(event) => setName(event.target.value)}
-  //           />
-  //         </section>
-  //         <section>
-  //           <label htmlFor="eventDescription">Description</label>
-  //           <input
-  //             type="text"
-  //             name="eventDescription"
-  //             id="eventDescription"
-  //             value={description}
-  //             onChange={(event) => setDescription(event.target.value)}
-  //           />
-  //         </section>
-  //         <section>
-  //           <label htmlFor="eventAddress">Address</label>
-  //           <input
-  //             type="text"
-  //             name="eventAddress"
-  //             id="eventAddress"
-  //             value={address}
-  //             onChange={(event) => setAddress(event.target.value)}
-  //           />
-  //         </section>
-  //         <section>
-  //           <label htmlFor="eventOrganizerName">Organizer name</label>
-  //           <input
-  //             type="text"
-  //             name="eventOrganizerName"
-  //             id="eventOrganizerName"
-  //             value={organizerName}
-  //             onChange={(event) => setOrganizerName(event.target.value)}
-  //           />
-  //         </section>
-  //         <section>
-  //           <label htmlFor="eventPhoto">Photo</label>
-  //           <input
-  //             type="text"
-  //             name="eventPhoto"
-  //             id="eventPhoto"
-  //             value={photo}
-  //             onChange={(event) => setPhoto(event.target.value)}
-  //           />
-  //         </section>
-  //         <section>
-  //           <label htmlFor="eventStartDate">Start date</label>
-  //           <DatePicker
-  //             id={"eventStartDate"}
-  //             selected={startDate}
-  //             onChange={(date: Date) => setStartDate(date)}
-  //           />
-  //         </section>
-  //         <section>
-  //           <label htmlFor="eventEndDate">End date</label>
-  //           <DatePicker
-  //             id={"eventEndDate"}
-  //             selected={endDate}
-  //             onChange={(date: Date) => setEndDate(date)}
-  //           />
-  //         </section>
-  //         <div>
-  //           <h3>Add sessions</h3>
-  //           {/*<SessionInput />*/}
-  //           {/*<SessionForm sessions={sessions} setSessions={setSessions} />*/}
-  //         </div>
-  //         <button type={"submit"}>Create</button>
-  //       </form>
-  //     </div>
-  //   );
+function CreateEvent() {
+  const {
+    initialValues,
+    handleSubmit,
+    validationSchema,
+  } = useCreateEventForm();
+
+  const { data: sessions, loading, error } = useAPI<SessionPreview[]>(
+    "/sessions",
+  );
+
+  if (loading) return <div>loading...</div>;
+  if (error) return <div>error: {error.message}</div>;
+
+  const options: Option[] = sessions.map((session) => ({
+    label: session.name,
+    value: session.id,
+  }));
+
+  return (
+    <div>
+      <h3>Create an event</h3>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={validationSchema}
+      >
+        {({ isSubmitting }: FormikState<FormikValues>) => (
+          <Form noValidate>
+            <section>
+              <label htmlFor={"name"}>Name</label>
+              <Field type={"text"} name={"name"} />
+            </section>
+            <section>
+              <label htmlFor={"description"}>Description</label>
+              <Field type={"text"} name={"description"} />
+            </section>
+            <section>
+              <label htmlFor={"photo"}>Photo</label>
+              <Field type={"text"} name={"photo"} />
+            </section>
+            <section>
+              <label htmlFor={"organizerName"}>Organizer name</label>
+              <Field type={"text"} name={"organizerName"} />
+            </section>
+            <section>
+              <label htmlFor={"address"}>Address</label>
+              <Field type={"text"} name={"address"} />
+            </section>
+            <section>
+              <label htmlFor={"startDate"}>Start date</label>
+              <Field type={"date"} name={"startDate"} />
+            </section>
+            <section>
+              <label htmlFor={"endDate"}>End date</label>
+              <Field type={"date"} name={"endDate"} />
+            </section>
+            <section>
+              <label htmlFor={"sessionOptions"}>Sessions</label>
+              <SelectField options={options} name={"sessionOptions"} />
+            </section>
+            <button type={"submit"} disabled={isSubmitting}>
+              Create
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  );
 }
 
 export default CreateEvent;

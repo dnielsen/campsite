@@ -1,34 +1,39 @@
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
-import { CreateSessionInput, SessionPreview } from "../common/interfaces";
+import {
+  CreateSessionFetchInput,
+  CreateSessionFormInput,
+  Option,
+  SessionPreview,
+} from "../common/interfaces";
 import { BASE_SESSION_API_URL } from "../common/constants";
+import util from "../common/util";
 
 export default function useCreateSessionForm() {
   const history = useHistory();
 
-  async function handleSubmit(input: CreateSessionInput) {
-    console.log(input);
-    const properInput = {
+  async function handleSubmit(input: CreateSessionFormInput) {
+    // Replace speakerOptions property with speakerIds.
+    const fetchInput: CreateSessionFetchInput = {
       ...input,
-      speakerIds: input.speakerOptions.map((option) => option.value),
+      speakerIds: input.speakerOptions.map((option: Option) => option.value),
+      startDate: new Date(input.startDate),
+      endDate: new Date(input.endDate),
     };
-    Reflect.deleteProperty(properInput, "speakerOptions");
-    console.log(properInput);
-    // Send a request to create the session.
     const createdSession = (await fetch(BASE_SESSION_API_URL, {
       method: "POST",
-      body: JSON.stringify(properInput),
+      body: JSON.stringify(fetchInput),
     }).then((res) => res.json())) as SessionPreview;
     // Redirect to the created session page.
     history.push(`/sessions/${createdSession.id}`);
   }
 
-  const initialValues: CreateSessionInput = {
-    name: "new session",
-    description: "the description",
-    url: "https://apple.com",
-    startDate: new Date(),
-    endDate: new Date(),
+  const initialValues: CreateSessionFormInput = {
+    name: "",
+    description: "",
+    url: "",
+    startDate: "",
+    endDate: "",
     speakerOptions: [],
   };
 

@@ -15,7 +15,7 @@ type Session struct {
 	Url         string     `json:"url,omitempty"`
 	Event       *Event     `json:"event,omitempty"`
 	EventID     *string     `json:"-"`
-	Speakers    []Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;"`
+	Speakers    []Speaker  `json:"speakers" gorm:"many2many:session_speakers;"`
 }
 
 func (api *api) GetSessionById(id string) (*Session, error) {

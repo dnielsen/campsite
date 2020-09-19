@@ -4,7 +4,6 @@ import useCreateSessionForm from "../hooks/useCreateSessionForm";
 import useAPI from "../hooks/useAPI";
 import { Option, SpeakerPreview } from "../common/interfaces";
 import SelectField from "../components/SelectField";
-import { OptionsType } from "react-select";
 
 function CreateSession() {
   const {

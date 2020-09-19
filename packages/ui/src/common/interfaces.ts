@@ -1,11 +1,6 @@
 // It's called EventDetails instead of Event because there would
-// be a compatibility issue with the JavaScript APIs
-
-export interface EventDetails extends EventResponse {
-  sessions: Session[];
-}
-
-export interface EventResponse {
+// be a compatibility issue with the JavaScript APIs.
+export interface EventDetails {
   id: string;
   name: string;
   description: string;
@@ -13,13 +8,14 @@ export interface EventResponse {
   endDate: Date;
   photo: string;
   organizerName: string;
-  // We can later define Address interface.
-  // When address is null then the event is online (remote).
-  address: string | null;
+  // We might add null address support later - that is, when an event takes place online
+  // instead of in-person.
+  address: string;
+  sessions: Session[];
 }
 
 export interface Speaker extends SpeakerPreview {
-  sessions?: Session[];
+  sessions: Session[];
 }
 
 export interface SpeakerPreview {
@@ -43,24 +39,42 @@ export interface SessionPreview {
   url: string;
 }
 
-export interface CreateEventInput {
+export interface BaseCreateEventInput {
   name: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
   photo: string;
   organizerName: string;
   address: string;
-  sessions: CreateSessionInput[];
 }
 
-export interface CreateSessionInput {
+export interface CreateEventFormInput extends BaseCreateEventInput {
+  sessionOptions: Option[];
+  startDate: string;
+  endDate: string;
+}
+
+export interface CreateEventFetchInput extends BaseCreateEventInput {
+  sessionIds: string[];
+  startDate: Date;
+  endDate: Date;
+}
+
+export interface BaseCreateSessionInput {
   name: string;
   description: string;
   url: string;
+}
+
+export interface CreateSessionFetchInput extends BaseCreateSessionInput {
+  speakerIds: string[];
   startDate: Date;
   endDate: Date;
+}
+
+export interface CreateSessionFormInput extends BaseCreateSessionInput {
   speakerOptions: Option[];
+  startDate: string;
+  endDate: string;
 }
 
 export interface CreateSpeakerInput {
