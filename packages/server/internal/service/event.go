@@ -39,8 +39,7 @@ func (e *Event) BeforeCreate(tx *gorm.DB) (err error) {
 
 func (api *api) GetEventById(id string) (*Event, error) {
 	var event Event
-	res := api.db.Preload("Sessions.Speakers").Where("id = ?", id).First(&event)
-	if err := res.Error; err != nil {
+	if err := api.db.Preload("Sessions.Speakers").Where("id = ?", id).First(&event).Error; err != nil {
 		return nil, err
 	}
 	return &event, nil
@@ -48,8 +47,7 @@ func (api *api) GetEventById(id string) (*Event, error) {
 
 func (api *api) GetAllEvents() (*[]Event, error) {
 	var events []Event
-	res := api.db.Find(&events)
-	if err := res.Error; err != nil {
+	if err := api.db.Find(&events).Error; err != nil {
 		return nil, err
 	}
 	return &events, nil

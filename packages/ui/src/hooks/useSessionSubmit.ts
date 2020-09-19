@@ -17,16 +17,6 @@ export default function useSessionSubmit(
 ): (input: FormSessionInput) => void {
   const history = useHistory();
 
-  const fetchOptions: FetchOptions = {
-    url: BASE_SESSION_API_URL,
-    method: "POST",
-  };
-  // If `id` is specified then we're updating a session instead of creating one.
-  if (id) {
-    fetchOptions.method = "PUT";
-    fetchOptions.url = `${BASE_SESSION_API_URL}/${id}`;
-  }
-
   async function onSubmit(input: FormSessionInput) {
     // Replace speakerOptions property with speakerIds.
     const fetchInput: FetchSessionInput = {
@@ -35,14 +25,33 @@ export default function useSessionSubmit(
       startDate: new Date(input.startDate),
       endDate: new Date(input.endDate),
     };
-    // Send a request to create/update the session.
-    const newSession = (await fetch(fetchOptions.url, {
-      method: fetchOptions.method,
-      body: JSON.stringify(fetchInput),
-    }).then((res) => res.json())) as SessionPreview;
-    // Redirect to the created session page.
-    history.push(`/sessions/${newSession.id}`);
+    Reflect.deleteProperty(fetchInput, "speakerOptions");
+
+    if (id) {
+      await edit(fetchInput);
+    } else {
+      await create(fetchInput);
+    }
   }
 
+  async function create(input: FetchSessionInput) {
+    // Send a request to create the session.
+    const createdSession = (await fetch(`${BASE_SESSION_API_URL}`, {
+      method: "POST",
+      body: JSON.stringify(input),
+    }).then((res) => res.json())) as SessionPreview;
+    // Redirect to the created session page.
+    history.push(`/sessions/${createdSession.id}`);
+  }
+
+  async function edit(input: FetchSessionInput) {
+    // Send a request to edit the session.
+    await fetch(`${BASE_SESSION_API_URL}/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(input),
+    });
+    // Redirect to the edited session page.
+    history.push(`/sessions/${id}`);
+  }
   return onSubmit;
 }

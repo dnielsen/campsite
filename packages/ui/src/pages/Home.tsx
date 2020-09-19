@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 
-const EVENT_ID = "80e211fd-d33a-4149-8d8b-47ff5e4c8f0f";
+const EVENT_ID = "e3a27b7d-b37d-4cd2-b8bd-e5bd5551077c";
 
 // Temporarily the `/` route will redirect to the event which of id is hardcoded above.
 function Home() {

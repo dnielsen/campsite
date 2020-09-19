@@ -16,8 +16,7 @@ type Speaker struct {
 
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 	var speaker Speaker
-	res := api.db.Preload("Sessions").Where("id = ?", id).First(&speaker)
-	if err := res.Error; err != nil {
+	if err := api.db.Preload("Sessions").Where("id = ?", id).First(&speaker).Error; err != nil {
 		return nil, err
 	}
 	return &speaker, nil
@@ -25,8 +24,7 @@ func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 
 func (api *api) GetAllSpeakers() (*[]Speaker, error) {
 	var speakers []Speaker
-	res := api.db.Find(&speakers)
-	if err := res.Error; err != nil {
+	if err := api.db.Find(&speakers).Error; err != nil {
 		return nil, err
 	}
 	return &speakers, nil

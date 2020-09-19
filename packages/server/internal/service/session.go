@@ -47,8 +47,7 @@ func (api *api) GetSessionById(id string) (*Session, error) {
 
 func (api *api) GetAllSessions() (*[]Session, error) {
 	var sessions []Session
-	res := api.db.Find(&sessions)
-	if err := res.Error; err != nil {
+	if err := api.db.Find(&sessions).Error; err != nil {
 		return nil, err
 	}
 	return &sessions, nil
@@ -76,6 +75,14 @@ func (api *api) CreateSession(i SessionInput) (*Session, error) {
 }
 
 func (api *api) EditSession(id string, i SessionInput) error {
+	if err := api.db.Exec("DELETE FROM session_speakers WHERE session_id = ?", id).Error; err != nil {
+		return err
+	}
+
+	// Clear session's speakers to avoid duplicating speakers in the database
+	//if err := api.db.Model(&session).Association("Speakers").Clear(); err != nil {
+	//	return err
+	//}
 	// Get the speakers from the database to attach them to the session.
 	var speakers []Speaker
 	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
@@ -83,19 +90,18 @@ func (api *api) EditSession(id string, i SessionInput) error {
 	}
 	// Update the session in the database.
 	session := Session{
-		ID:          id,
+		ID: id,
 		Name:        i.Name,
 		StartDate:   i.StartDate,
 		EndDate:     i.EndDate,
 		Description: i.Description,
 		Url:         i.Url,
 	}
-	if err := api.db.Where("id = ?", id).Updates(&session).Error; err != nil {
+	if err := api.db.Model(&session).Updates(&session).Error; err != nil {
 		return err
 	}
-
-	// Update the session speakers
-	if err := api.db.Model(&session).Association("Speakers").Replace(&speakers); err != nil {
+	//Update the session speakers
+	if err := api.db.Model(&speakers).Where("id IN ?", i.SpeakerIds).Association("Sessions").Replace(&session); err != nil {
 		return err
 	}
 

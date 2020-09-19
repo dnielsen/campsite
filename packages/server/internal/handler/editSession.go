@@ -17,14 +17,14 @@ func EditSession(datastore service.SessionDatastore) http.HandlerFunc {
 
 		// Decode the body.
 		var i service.SessionInput
-		err := json.NewDecoder(r.Body).Decode(&i)
-		if err != nil {
+		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			log.Printf("Failed to unmarshal speaker input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		// Validate the input.
+		log.Println(i)
 		if err := validator.New().Struct(i); err != nil {
 			log.Printf("Failed to validate session input")
 			http.Error(w, err.Error(), http.StatusBadRequest)

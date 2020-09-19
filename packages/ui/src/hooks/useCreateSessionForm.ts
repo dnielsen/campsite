@@ -1,10 +1,5 @@
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
-import {
-  FetchSessionInput,
-  FormSessionInput,
-  UseForm,
-} from "../common/interfaces";
+import { FormSessionInput, UseForm } from "../common/interfaces";
 import useSessionSubmit from "./useSessionSubmit";
 
 export default function useCreateSessionForm(): UseForm<FormSessionInput> {
