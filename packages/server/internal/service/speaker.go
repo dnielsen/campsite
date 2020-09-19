@@ -11,7 +11,7 @@ type Speaker struct {
 	Bio      string    `json:"bio,omitempty"`
 	Headline string    `json:"headline,omitempty"`
 	Photo    string    `json:"photo,omitempty"`
-	Sessions []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;"`
+	Sessions []Session `json:"sessions" gorm:"many2many:session_speakers;"`
 }
 
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {

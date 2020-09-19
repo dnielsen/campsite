@@ -26,7 +26,7 @@ func EditSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 
 		// Validate the input.
 		if err := validator.New().Struct(i); err != nil {
-			log.Printf("Failed to validate session input")
+			log.Printf("Failed to validate speaker input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}

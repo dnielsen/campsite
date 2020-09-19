@@ -1,3 +1,5 @@
+import * as Yup from "yup";
+
 // It's called EventDetails instead of Event because there would
 // be a compatibility issue with the JavaScript APIs.
 export interface EventDetails {
@@ -77,7 +79,7 @@ export interface CreateSessionFormInput extends BaseCreateSessionInput {
   endDate: string;
 }
 
-export interface CreateSpeakerInput {
+export interface SpeakerInput {
   name: string;
   bio: string;
   photo: string;
@@ -87,4 +89,11 @@ export interface CreateSpeakerInput {
 export interface Option {
   label: string;
   value: string;
+}
+
+export interface FormConfig<T> {
+  onSubmit: (input: T) => void;
+  initialValues: T;
+  validationSchema: Yup.ObjectSchema;
+  enableReinitialize?: boolean;
 }

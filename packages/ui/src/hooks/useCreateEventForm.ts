@@ -7,7 +7,6 @@ import {
   Option,
 } from "../common/interfaces";
 import { BASE_EVENT_API_URL } from "../common/constants";
-import util from "../common/util";
 
 export default function useCreateEventForm() {
   const history = useHistory();
