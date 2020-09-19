@@ -18,6 +18,24 @@ type Session struct {
 	Speakers    []Speaker  `json:"speakers" gorm:"many2many:session_speakers;"`
 }
 
+type SessionInput struct {
+	// Name is a required field with a minimum and maximum length of 2 and 50 respectively.
+	Name        string     `json:"name,omitempty" validate:"required,min=2,max=100"`
+	// `validate:"gte"` checks if the date is >= `time.Now.UTC()`
+	StartDate   *time.Time `json:"startDate,omitempty" validate:"required,gte"`
+	EndDate     *time.Time `json:"endDate,omitempty" validate:"required,gte"`
+	Description string     `json:"description,omitempty" validate:"required,min=10,max=1000"`
+	Url         string     `json:"url,omitempty" validate:"required,min=10,max=200"`
+	// `validate:"min=1"` here means the length of the array must be >= 1.
+	SpeakerIds []string `json:"speakerIds,omitempty" validate:"required,min=1,max=10"`
+}
+
+// Add UUID automatically on creation so that we can skip it in our methods.
+func (s *Session) BeforeCreate(tx *gorm.DB) (err error) {
+	s.ID = uuid.New().String()
+	return
+}
+
 func (api *api) GetSessionById(id string) (*Session, error) {
 	var session Session
 	res := api.db.Preload("Speakers").Where("id = ?", id).First(&session)
@@ -34,21 +52,6 @@ func (api *api) GetAllSessions() (*[]Session, error) {
 		return nil, err
 	}
 	return &sessions, nil
-}
-
-// Add UUID automatically on creation so that we can skip it in our methods
-func (s *Session) BeforeCreate(tx *gorm.DB) (err error) {
-	s.ID = uuid.New().String()
-	return
-}
-
-type SessionInput struct {
-	Name        string     `json:"name,omitempty"`
-	StartDate   *time.Time `json:"startDate,omitempty"`
-	EndDate     *time.Time `json:"endDate,omitempty"`
-	Description string     `json:"description,omitempty"`
-	Url         string     `json:"url,omitempty"`
-	SpeakerIds []string `json:"speakerIds,omitempty"`
 }
 
 func (api *api) CreateSession(i SessionInput) (*Session, error) {

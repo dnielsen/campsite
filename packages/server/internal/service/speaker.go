@@ -39,10 +39,11 @@ func (s *Speaker) BeforeCreate(tx *gorm.DB) (err error) {
 }
 
 type SpeakerInput struct {
-	Name     string `json:"name,omitempty"`
-	Bio      string `json:"bio,omitempty"`
-	Headline string `json:"headline,omitempty"`
-	Photo    string `json:"photo,omitempty"`
+	// Name is a required field with a minimum and maximum length of 2 and 50 respectively.
+	Name     string `json:"name,omitempty" validate:"required,min=2,max=50"`
+	Bio      string `json:"bio,omitempty" validate:"required,min=20,max=2000"`
+	Headline string `json:"headline,omitempty" validate:"required,min=2,max=30"`
+	Photo    string `json:"photo,omitempty" validate:"required,min=10,max=150"`
 }
 
 func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {

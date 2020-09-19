@@ -19,14 +19,16 @@ type Event struct {
 }
 
 type EventInput struct {
-	Name          string     `json:"name,omitempty"`
-	StartDate     *time.Time `json:"startDate,omitempty"`
-	EndDate       *time.Time `json:"endDate,omitempty"`
-	Description   string     `json:"description,omitempty"`
-	Photo         string     `json:"photo,omitempty"`
-	OrganizerName string     `json:"organizerName,omitempty"`
-	Address       string     `json:"address,omitempty"`
-	SessionIds []string `json:"sessionIds,omitempty"`
+	Name          string     `json:"name,omitempty" validate:"required,min=2,max=100"`
+	// `gte` stands for >= time.Now.UTC()
+	StartDate     *time.Time `json:"startDate,omitempty" validate:"required,gte"`
+	EndDate       *time.Time `json:"endDate,omitempty" validate:"required,gte"`
+	Description   string     `json:"description,omitempty" validate:"required,min=20,max=2000"`
+	Photo         string     `json:"photo,omitempty" validate:"required,min=10,max=200"`
+	OrganizerName string     `json:"organizerName,omitempty" validate:"required,min=2,max=50"`
+	Address       string     `json:"address,omitempty" validate:"required,min=5,max=100"`
+	// `min=1,max=100` == `1 <= len(SessionIds) >= 100`
+	SessionIds []string `json:"sessionIds,omitempty" validate:"required,min=1,max=100"`
 }
 
 // Add a UUID automatically on creation so that we can skip it in our methods.

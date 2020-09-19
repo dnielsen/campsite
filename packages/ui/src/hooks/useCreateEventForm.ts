@@ -28,7 +28,7 @@ export default function useCreateEventForm() {
       body: JSON.stringify(fetchInput),
     }).then((res) => res.json())) as EventDetails;
     // Redirect to the created session page.
-    history.push(`/${createdEvent.id}`);
+    history.push(`/events/${createdEvent.id}`);
   }
 
   const initialValues: CreateEventFormInput = {

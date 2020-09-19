@@ -3,6 +3,7 @@ package handler
 import (
 	"dave-web-app/packages/server/internal/service"
 	"encoding/json"
+	"github.com/go-playground/validator"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -23,6 +24,13 @@ func EditSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 			return
 		}
 
+		// Validate the input.
+		if err := validator.New().Struct(i); err != nil {
+			log.Printf("Failed to validate session input")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
 		// Update the speaker in the database.
 		speaker, err := datastore.EditSpeaker(id, i)
 		if err != nil {
@@ -31,7 +39,7 @@ func EditSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 			return
 		}
 
-		// Marshal the updated speaker.
+		// Marshal the speaker.
 		speakerBytes, err := json.Marshal(speaker)
 		if err != nil {
 			log.Printf("Failed to marshal speaker: %v", err)

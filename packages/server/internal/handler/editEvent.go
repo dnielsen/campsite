@@ -3,6 +3,7 @@ package handler
 import (
 	"dave-web-app/packages/server/internal/service"
 	"encoding/json"
+	"github.com/go-playground/validator"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -23,6 +24,13 @@ func EditEvent(datastore service.EventDatastore) http.HandlerFunc {
 			return
 		}
 
+		// Validate the input.
+		if err := validator.New().Struct(i); err != nil {
+			log.Printf("Failed to validate event input")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
 		// Update the event in the database.
 		event, err := datastore.EditEvent(id, i)
 		if err != nil {
@@ -31,7 +39,7 @@ func EditEvent(datastore service.EventDatastore) http.HandlerFunc {
 			return
 		}
 
-		// Marshal the bytes.
+		// Marshal the event.
 		eventBytes, err := json.Marshal(event)
 		if err != nil {
 			log.Printf("Failed to marshal event: %v", err)

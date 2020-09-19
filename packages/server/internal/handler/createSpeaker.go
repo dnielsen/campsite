@@ -3,18 +3,25 @@ package handler
 import (
 	"dave-web-app/packages/server/internal/service"
 	"encoding/json"
+	"github.com/go-playground/validator"
 	"log"
 	"net/http"
 )
 
 func CreateSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Decode the body.
 		var i service.SpeakerInput
-
-		// Decode the body
 		err := json.NewDecoder(r.Body).Decode(&i)
 		if err != nil {
 			log.Printf("Failed to unmarshal speaker input")
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// Validate the input.
+		if err := validator.New().Struct(i); err != nil {
+			log.Printf("Failed to validate speaker input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -34,6 +41,7 @@ func CreateSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 			return
 		}
 
+		// Respond JSON with the created speaker.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		w.Write(speakerBytes)
