@@ -1,19 +1,20 @@
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import {
-  CreateEventFetchInput,
-  CreateEventFormInput,
   EventDetails,
+  FetchEventInput,
+  FormEventInput,
   Option,
+  UseForm,
 } from "../common/interfaces";
 import { BASE_EVENT_API_URL } from "../common/constants";
 
-export default function useCreateEventForm() {
+export default function useCreateEventForm(): UseForm<FormEventInput> {
   const history = useHistory();
 
-  async function handleSubmit(input: CreateEventFormInput) {
+  async function onSubmit(input: FormEventInput) {
     // Process the input.
-    const fetchInput: CreateEventFetchInput = {
+    const fetchInput: FetchEventInput = {
       ...input,
       sessionIds: input.sessionOptions.map((option: Option) => option.value),
       startDate: new Date(input.startDate),
@@ -30,7 +31,7 @@ export default function useCreateEventForm() {
     history.push(`/events/${createdEvent.id}`);
   }
 
-  const initialValues: CreateEventFormInput = {
+  const initialValues: FormEventInput = {
     name: "",
     description: "",
     address: "",
@@ -43,5 +44,6 @@ export default function useCreateEventForm() {
 
   const validationSchema = Yup.object().shape({});
 
-  return { handleSubmit, validationSchema, initialValues };
+  const formConfig = { onSubmit, validationSchema, initialValues };
+  return { formConfig };
 }

@@ -32,24 +32,13 @@ func EditSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 		}
 
 		// Update the speaker in the database.
-		speaker, err := datastore.EditSpeaker(id, i)
-		if err != nil {
+		if err := datastore.EditSpeaker(id, i); err != nil {
 			log.Printf("Failed to edit speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Marshal the speaker.
-		speakerBytes, err := json.Marshal(speaker)
-		if err != nil {
-			log.Printf("Failed to marshal speaker: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		// Respond JSON with the updated speaker.
-		w.Header().Set("Content-Type", "application/json")
+		// Respond the speaker edit has been successful.
 		w.WriteHeader(http.StatusOK)
-		w.Write(speakerBytes)
 	}
 }

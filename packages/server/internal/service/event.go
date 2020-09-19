@@ -79,8 +79,15 @@ func (api *api) CreateEvent(i EventInput) (*Event, error) {
 	return &event, nil
 }
 
-func (api *api) EditEvent(id string, i EventInput) (*Event, error) {
-	eventUpdates := &Event{
+func (api *api) EditEvent(id string, i EventInput) error {
+	// Get the sessions from the database to attach them to the event.
+	var sessions []Session
+	if err := api.db.Where("id IN ?", i.SessionIds).Find(&sessions).Error; err != nil {
+		return err
+	}
+	// Update the event in the database.
+	event := &Event{
+		ID: id,
 		Name:          i.Name,
 		Description:   i.Description,
 		StartDate:     i.StartDate,
@@ -88,16 +95,10 @@ func (api *api) EditEvent(id string, i EventInput) (*Event, error) {
 		Photo:         i.Photo,
 		OrganizerName: i.OrganizerName,
 		Address:       i.Address,
+		Sessions: sessions,
 	}
-	// Update the event in the database.
-	if err := api.db.Model(&Event{}).Where("id = ?", id).Updates(&eventUpdates).Error; err != nil {
-		return nil, err
+	if err := api.db.Model(&event).Updates(&event).Error; err != nil {
+		return err
 	}
-
-	// Grab the updated event from the database.
-	var e Event
-	if err := api.db.Where("id = ?", id).First(&e).Error; err != nil {
-		return nil, err
-	}
-	return &e, nil
+	return nil
 }

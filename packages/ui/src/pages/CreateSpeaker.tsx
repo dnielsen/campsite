@@ -3,7 +3,7 @@ import useCreateSpeakerForm from "../hooks/useCreateSpeakerForm";
 import SpeakerForm from "../components/SpeakerForm";
 
 function CreateSpeaker() {
-  const formConfig = useCreateSpeakerForm();
+  const { formConfig } = useCreateSpeakerForm();
 
   return (
     <div>

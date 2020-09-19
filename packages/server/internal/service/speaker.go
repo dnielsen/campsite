@@ -60,7 +60,7 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	return &speaker, nil
 }
 
-func (api *api) EditSpeaker(id string, i SpeakerInput) (*Speaker, error) {
+func (api *api) EditSpeaker(id string, i SpeakerInput) error {
 	speakerUpdates := &Speaker{
 		Name:     i.Name,
 		Bio:      i.Bio,
@@ -69,13 +69,8 @@ func (api *api) EditSpeaker(id string, i SpeakerInput) (*Speaker, error) {
 	}
 	// Update the speaker in the database.
 	if err := api.db.Model(&Speaker{}).Where("id = ?", id).Updates(&speakerUpdates).Error; err != nil {
-		return nil, err
+		return err
 	}
 
-	// Grab the updated speaker from the database.
-	var s Speaker
-	if err := api.db.Where("id = ?", id).First(&s).Error; err != nil {
-		return nil, err
-	}
-	return &s, nil
+	return nil
 }

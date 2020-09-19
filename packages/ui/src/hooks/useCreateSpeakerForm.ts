@@ -1,12 +1,17 @@
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
-import { FormConfig, SpeakerInput, SpeakerPreview } from "../common/interfaces";
+import {
+  FormConfig,
+  FormSpeakerInput,
+  SpeakerPreview,
+  UseForm,
+} from "../common/interfaces";
 import { BASE_SPEAKER_API_URL } from "../common/constants";
 
-export default function useCreateSpeakerForm(): FormConfig<SpeakerInput> {
+export default function useCreateSpeakerForm(): UseForm<FormSpeakerInput> {
   const history = useHistory();
 
-  async function onSubmit(input: SpeakerInput) {
+  async function onSubmit(input: FormSpeakerInput) {
     // Send a request to create the speaker.
     const createdSpeaker = (await fetch(BASE_SPEAKER_API_URL, {
       method: "POST",
@@ -16,7 +21,7 @@ export default function useCreateSpeakerForm(): FormConfig<SpeakerInput> {
     history.push(`/speakers/${createdSpeaker.id}`);
   }
 
-  const initialValues: SpeakerInput = {
+  const initialValues: FormSpeakerInput = {
     name: "",
     photo: "",
     headline: "",
@@ -25,9 +30,11 @@ export default function useCreateSpeakerForm(): FormConfig<SpeakerInput> {
 
   const validationSchema = Yup.object().shape({});
 
-  return {
+  const formConfig = {
     onSubmit,
     initialValues,
     validationSchema,
   };
+
+  return { formConfig };
 }

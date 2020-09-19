@@ -6,6 +6,7 @@ import { useField } from "formik";
 interface Props {
   options: Option[];
   name: string;
+  defaultValue?: Option[];
 }
 
 function SelectField(props: Props) {
@@ -21,7 +22,14 @@ function SelectField(props: Props) {
     helpers.setValue(options);
   }
 
-  return <Select isMulti options={props.options} onChange={handleChange} />;
+  return (
+    <Select
+      isMulti
+      options={props.options}
+      onChange={handleChange}
+      defaultValue={props.defaultValue}
+    />
+  );
 }
 
 export default SelectField;

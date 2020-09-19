@@ -19,7 +19,7 @@ type Session struct {
 }
 
 type SessionInput struct {
-	// Name is a required field with a minimum and maximum length of 2 and 50 respectively.
+	// Name is a required field with a minimum and maximum length of 2 and 100 respectively.
 	Name        string     `json:"name,omitempty" validate:"required,min=2,max=100"`
 	// `validate:"gte"` checks if the date is >= `time.Now.UTC()`
 	StartDate   *time.Time `json:"startDate,omitempty" validate:"required,gte"`
@@ -75,23 +75,29 @@ func (api *api) CreateSession(i SessionInput) (*Session, error) {
 	return &session, nil
 }
 
-func (api *api) EditSession(id string, i SessionInput) (*Session, error) {
-	sessionUpdates := &Session{
+func (api *api) EditSession(id string, i SessionInput) error {
+	// Get the speakers from the database to attach them to the session.
+	var speakers []Speaker
+	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
+		return err
+	}
+	// Update the session in the database.
+	session := Session{
+		ID:          id,
 		Name:        i.Name,
 		StartDate:   i.StartDate,
 		EndDate:     i.EndDate,
 		Description: i.Description,
 		Url:         i.Url,
 	}
-	// Update the session in the database.
-	if err := api.db.Model(&Session{}).Where("id = ?", id).Updates(&sessionUpdates).Error; err != nil {
-		return nil, err
+	if err := api.db.Where("id = ?", id).Updates(&session).Error; err != nil {
+		return err
 	}
 
-	// Grab the updated session from the database.
-	var s Session
-	if err := api.db.Where("id = ?", id).First(&s).Error; err != nil {
-		return nil, err
+	// Update the session speakers
+	if err := api.db.Model(&session).Association("Speakers").Replace(&speakers); err != nil {
+		return err
 	}
-	return &s, nil
+
+	return nil
 }

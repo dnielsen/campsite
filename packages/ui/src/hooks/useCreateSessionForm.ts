@@ -1,34 +1,16 @@
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import {
-  CreateSessionFetchInput,
-  CreateSessionFormInput,
-  Option,
-  SessionPreview,
+  FetchSessionInput,
+  FormSessionInput,
+  UseForm,
 } from "../common/interfaces";
-import { BASE_SESSION_API_URL } from "../common/constants";
-import util from "../common/util";
+import useSessionSubmit from "./useSessionSubmit";
 
-export default function useCreateSessionForm() {
-  const history = useHistory();
+export default function useCreateSessionForm(): UseForm<FormSessionInput> {
+  const onSubmit = useSessionSubmit();
 
-  async function handleSubmit(input: CreateSessionFormInput) {
-    // Replace speakerOptions property with speakerIds.
-    const fetchInput: CreateSessionFetchInput = {
-      ...input,
-      speakerIds: input.speakerOptions.map((option: Option) => option.value),
-      startDate: new Date(input.startDate),
-      endDate: new Date(input.endDate),
-    };
-    const createdSession = (await fetch(BASE_SESSION_API_URL, {
-      method: "POST",
-      body: JSON.stringify(fetchInput),
-    }).then((res) => res.json())) as SessionPreview;
-    // Redirect to the created session page.
-    history.push(`/sessions/${createdSession.id}`);
-  }
-
-  const initialValues: CreateSessionFormInput = {
+  const initialValues: FormSessionInput = {
     name: "",
     description: "",
     url: "",
@@ -39,5 +21,6 @@ export default function useCreateSessionForm() {
 
   const validationSchema = Yup.object().shape({});
 
-  return { handleSubmit, validationSchema, initialValues };
+  const formConfig = { onSubmit, validationSchema, initialValues };
+  return { formConfig };
 }

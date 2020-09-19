@@ -1,24 +1,20 @@
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import {
-  FormConfig,
   Speaker,
-  SpeakerInput,
+  FormSpeakerInput,
   SpeakerPreview,
+  UseEditForm,
 } from "../common/interfaces";
 import { BASE_SPEAKER_API_URL } from "../common/constants";
 import useAPI from "./useAPI";
 import { useEffect, useState } from "react";
 
-interface UseEditSpeakerForm {
-  formConfig: FormConfig<SpeakerInput>;
-  loading: boolean;
-  error: Error | null;
-}
-
-export default function useEditSpeakerForm(id: string): UseEditSpeakerForm {
+export default function useEditSpeakerForm(
+  id: string,
+): UseEditForm<FormSpeakerInput> {
   const history = useHistory();
-  const [initialValues, setInitialValues] = useState<SpeakerInput>({
+  const [initialValues, setInitialValues] = useState<FormSpeakerInput>({
     name: "",
     photo: "",
     headline: "",
@@ -29,8 +25,7 @@ export default function useEditSpeakerForm(id: string): UseEditSpeakerForm {
   );
 
   useEffect(() => {
-    // Load the speaker values so that we don't have to start writing
-    // speaker fields from zero.
+    // Load the speaker values so that the speaker fields aren't empty.
     if (uneditedSpeaker) {
       setInitialValues({
         bio: uneditedSpeaker.bio,
@@ -41,7 +36,7 @@ export default function useEditSpeakerForm(id: string): UseEditSpeakerForm {
     }
   }, [uneditedSpeaker]);
 
-  async function onSubmit(input: SpeakerInput) {
+  async function onSubmit(input: FormSpeakerInput) {
     // Send a request to create the speaker.
     const editedSpeaker = (await fetch(`${BASE_SPEAKER_API_URL}/${id}`, {
       method: "PUT",

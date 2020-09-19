@@ -1,7 +1,7 @@
 import React from "react";
 import useAPI from "../hooks/useAPI";
 import { Session } from "../common/interfaces";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import util from "../common/util";
 import moment from "moment";
 import SpeakerList from "../components/SpeakerList";
@@ -28,6 +28,7 @@ function FullSession() {
           <p>{session.description}</p>
         </div>
       </div>
+      <Link to={`/sessions/${session.id}/edit`}>Edit</Link>
     </div>
   );
 }

@@ -32,24 +32,13 @@ func EditEvent(datastore service.EventDatastore) http.HandlerFunc {
 		}
 
 		// Update the event in the database.
-		event, err := datastore.EditEvent(id, i)
-		if err != nil {
+		if err := datastore.EditEvent(id, i); err != nil {
 			log.Printf("Failed to edit event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Marshal the event.
-		eventBytes, err := json.Marshal(event)
-		if err != nil {
-			log.Printf("Failed to marshal event: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		// Respond JSON with the updated event.
-		w.Header().Set("Content-Type", "application/json")
+		// Respond that the event edit has been successful.
 		w.WriteHeader(http.StatusOK)
-		w.Write(eventBytes)
 	}
 }

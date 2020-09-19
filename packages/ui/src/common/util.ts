@@ -3,7 +3,7 @@ import { Option } from "./interfaces";
 
 const TIMEZONE = "America/Los_Angeles";
 
-function getHourRangeString(startDate: Date, endDate: Date) {
+function getHourRangeString(startDate: string, endDate: string) {
   // for example: 12:55pm
   const startTime = moment(startDate).tz(TIMEZONE).format("h:mma");
   // For example: 12:55pm PDT
@@ -20,8 +20,13 @@ function getUniqueElementsFromMultidimensionalArray(arr: any[]) {
   return [...new Set(arr.flat())];
 }
 
+function getValueForDateField(date: string) {
+  return moment(date).format("YYYY-MM-DD");
+}
+
 export default {
   getHourRangeString,
   getFullDateString,
   getUniqueElementsFromMultidimensionalArray,
+  getValueForDateField,
 };

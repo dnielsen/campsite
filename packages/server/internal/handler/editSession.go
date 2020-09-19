@@ -32,24 +32,13 @@ func EditSession(datastore service.SessionDatastore) http.HandlerFunc {
 		}
 
 		// Update the session in the database.
-		session, err := datastore.EditSession(id, i)
-		if err != nil {
+		if err := datastore.EditSession(id, i); err != nil {
 			log.Printf("Failed to edit session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Marshal the bytes.
-		sessionBytes, err := json.Marshal(session)
-		if err != nil {
-			log.Printf("Failed to marshal session: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		// Respond JSON with the updated speaker.
-		w.Header().Set("Content-Type", "application/json")
+		// Respond that the session edit has been successful.
 		w.WriteHeader(http.StatusOK)
-		w.Write(sessionBytes)
 	}
 }

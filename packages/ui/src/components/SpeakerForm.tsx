@@ -1,9 +1,9 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import { FormConfig, SpeakerInput } from "../common/interfaces";
+import { FormConfig, FormSpeakerInput } from "../common/interfaces";
 
 interface Props {
-  formConfig: FormConfig<SpeakerInput>;
+  formConfig: FormConfig<FormSpeakerInput>;
 }
 
 function SpeakerForm(props: Props) {

@@ -35,13 +35,13 @@ export interface Session extends SessionPreview {
 export interface SessionPreview {
   id: string;
   name: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   description: string;
   url: string;
 }
 
-export interface BaseCreateEventInput {
+export interface BaseEventInput {
   name: string;
   description: string;
   photo: string;
@@ -49,37 +49,37 @@ export interface BaseCreateEventInput {
   address: string;
 }
 
-export interface CreateEventFormInput extends BaseCreateEventInput {
+export interface FormEventInput extends BaseEventInput {
   sessionOptions: Option[];
   startDate: string;
   endDate: string;
 }
 
-export interface CreateEventFetchInput extends BaseCreateEventInput {
+export interface FetchEventInput extends BaseEventInput {
   sessionIds: string[];
   startDate: Date;
   endDate: Date;
 }
 
-export interface BaseCreateSessionInput {
+export interface BaseSessionInput {
   name: string;
   description: string;
   url: string;
 }
 
-export interface CreateSessionFetchInput extends BaseCreateSessionInput {
+export interface FetchSessionInput extends BaseSessionInput {
   speakerIds: string[];
   startDate: Date;
   endDate: Date;
 }
 
-export interface CreateSessionFormInput extends BaseCreateSessionInput {
+export interface FormSessionInput extends BaseSessionInput {
   speakerOptions: Option[];
   startDate: string;
   endDate: string;
 }
 
-export interface SpeakerInput {
+export interface FormSpeakerInput {
   name: string;
   bio: string;
   photo: string;
@@ -96,4 +96,13 @@ export interface FormConfig<T> {
   initialValues: T;
   validationSchema: Yup.ObjectSchema;
   enableReinitialize?: boolean;
+}
+
+export interface UseForm<T> {
+  formConfig: FormConfig<T>;
+}
+
+export interface UseEditForm<T> extends UseForm<T> {
+  loading: boolean;
+  error: Error | null;
 }
