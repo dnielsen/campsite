@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Home from "./pages/Home";
 import FullSpeaker from "./pages/FullSpeaker";
 import FullSession from "./pages/FullSession";
 import Footer from "./components/Footer";
@@ -9,6 +8,8 @@ import Speakers from "./pages/Speakers";
 import CreateSpeaker from "./pages/CreateSpeaker";
 import CreateSession from "./pages/CreateSession";
 import CreateEvent from "./pages/CreateEvent";
+import Home from "./pages/Home";
+import FullEvent from "./pages/FullEvent";
 
 function App() {
   return (
@@ -31,8 +32,11 @@ function App() {
           <Route path="/sessions/:id">
             <FullSession />
           </Route>
-          <Route exact path="/create">
+          <Route exact path="/events/create">
             <CreateEvent />
+          </Route>
+          <Route path="/events/:id">
+            <FullEvent />
           </Route>
           <Route exact path="/">
             <Home />
