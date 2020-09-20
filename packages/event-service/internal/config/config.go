@@ -12,9 +12,6 @@ type DbConfig struct {
 	Name string `yaml:"name" env:"DB_NAME" env-default:"postgres"`
 	User string `yaml:"user" env:"DB_USER" env-default:"postgres"`
 	Password string `yaml:"password" env:"DB_PASSWORD" env-default:"postgres"`
-	// When you run the program locally, you need the host to be `localhost`
-	// When it's run with docker-compose, it needs to be `cassandra`, so we're
-	// passing it in the `docker.env` file.
 	Host     string `yaml:"host" env:"DB_HOST" env-default:"localhost"`
 	Port     string `yaml:"port" env:"DB_PORT" env-default:"5432"`
 	SSLMode     string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
