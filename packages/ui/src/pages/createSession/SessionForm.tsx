@@ -4,6 +4,8 @@ import { EventDetails, SpeakerPreview } from "../../common/interfaces";
 import Checkbox from "../../components/Checkbox";
 import useCreateSessionForm from "../../hooks/useCreateSessionForm";
 
+// A temporary solution, later we might load speakers and events asynchronously,
+// and fetch less data.
 interface Props {
   speakers: SpeakerPreview[];
   events: EventDetails[];

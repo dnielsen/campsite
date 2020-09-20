@@ -1,5 +1,5 @@
 import React from "react";
-import { EventDetails, SpeakerPreview } from "../common/interfaces";
+import { EventDetails, Speaker, SpeakerPreview } from "../common/interfaces";
 import useAPI from "../hooks/useAPI";
 import util from "../common/util";
 import SessionSchedule from "./fullEvent/SessionSchedule";
@@ -25,10 +25,14 @@ function FullEvent() {
     history.push("/");
   }
 
-  const eventSpeakers = util.getUniqueElementsFromMultidimensionalArray(
-    // All of the sessions' speakers (with possible duplicates between sessions).
-    eventDetails.sessions.map((session) => session.speakers),
-  ) as SpeakerPreview[];
+  let eventSpeakers: SpeakerPreview[] = [];
+  eventDetails.sessions.forEach((session) => {
+    session.speakers.forEach((speaker) => {
+      if (!eventSpeakers.map((speaker) => speaker.id).includes(speaker.id)) {
+        eventSpeakers = eventSpeakers.concat(speaker);
+      }
+    });
+  });
 
   return (
     <Container>
