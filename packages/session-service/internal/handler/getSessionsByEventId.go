@@ -9,29 +9,30 @@ import (
 )
 
 
-func GetSessionById(datastore service.Datastore) http.HandlerFunc {
+func GetSessionByEventId(datastore service.Datastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
-		// Get the session from the database.
-		session, err := datastore.GetSessionById(id)
+		// Get the sessions from the database.
+		sessions, err := datastore.GetSessionsByEventId(id)
 		if err != nil {
-			log.Printf("Failed to get session: %v", err)
+			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+		log.Println(id)
 
-		// Marshal the session.
-		sessionBytes, err := json.Marshal(session)
+		// Marshal the sessions.
+		sessionBytes, err := json.Marshal(sessions)
 		if err != nil {
-			log.Printf("Failed to marshal session: %v", err)
+			log.Printf("Failed to marshal sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Respond JSON with the session.
+		// Respond JSON with the sessions.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(sessionBytes)

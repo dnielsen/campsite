@@ -33,28 +33,38 @@ func main() {
 	if err = db.AutoMigrate(&service.Session{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
 	}
-	// For dev
+	// For dev - create mock data in the database.
 	// ---------
+	now := time.Now()
+	later := now.Add(time.Hour * 1)
 	session := service.Session{
 		ID:          "71742331-8f81-40a1-a3a1-b4c2e70160f4",
 		Name:        "Session Name",
-		StartDate:   time.Now(),
-		EndDate:     time.Now().Add(time.Minute * 159),
+		StartDate:   &now,
+		EndDate:     &later,
 		Description: "description of the session",
 		SpeakerIds: []string{"bf432767-0830-4b84-a9d2-651f2b3e7ac8"},
+		EventId: "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 		Url: "https://www.youtube.com/watch?v=tTHKyJUqP44",
 	}
-	res := db.Create(&session)
-	log.Println(session)
-	log.Println(res.RowsAffected)
+	if err := db.Create(&session).Error; err != nil {
+		log.Printf("Failed to create mock session: %v", err)
+	} else {
+		log.Println("Created mock session in database")
+	}
 	// ----------
 
+	// Set up the API.
 	api := service.NewAPI(db)
 
-	// Set up the handlers.
+	// Set up the router.
 	r := mux.NewRouter()
-	r.HandleFunc("/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
+
+	// Set up the handlers.
 	r.HandleFunc("/", handler.GetSessions(api)).Methods(http.MethodGet)
+	r.HandleFunc("/events/{id}", handler.GetSessionByEventId(api)).Methods(http.MethodGet)
+	r.HandleFunc("/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/{id}", handler.DeleteSessionById(api)).Methods(http.MethodDelete)
 
 	// Set up the server.
 	srv := &http.Server{
@@ -66,6 +76,7 @@ func main() {
 	}
 	// Start the server.
 	log.Printf("Listening at: %v", srv.Addr)
-	err = srv.ListenAndServe()
-	log.Fatalf("Failed to listen: %v", err)
+	if err = srv.ListenAndServe(); err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
 }

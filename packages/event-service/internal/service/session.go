@@ -13,11 +13,12 @@ import (
 type Session struct {
 	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
 	Name        string    `json:"name"`
-	StartDate   time.Time `json:"startDate"`
-	EndDate     time.Time `json:"endDate"`
+	StartDate   *time.Time `json:"startDate"`
+	EndDate     *time.Time `json:"endDate"`
 	Description string    `json:"description"`
 	Speakers    []Speaker `json:"speakers,omitempty"`
-	SpeakerIds  []string  `json:"speakerIds"`
+	SpeakerIds  []string  `json:"speakerIds" gorm:"type:uuid[]"`
+	EventId string `json:"eventId" gorm:"type:uuid"`
 	Url         string    `json:"url"`
 }
 
@@ -37,16 +38,48 @@ func (api *api) GetSessionsByIds(ids []string) (*[]Session, error) {
 	}
 
 	// Read the response body.
-	readBytes, err := ioutil.ReadAll(res.Body)
+	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		log.Printf("Failed to read response body: %v", err)
 		return nil, err
 	}
 
-	// Unmarshal the received body bytes
+	// Unmarshal the received bytes.
 	var sessions []Session
-	if err = json.Unmarshal(readBytes, &sessions); err != nil {
+	if err = json.Unmarshal(bytes, &sessions); err != nil {
 		log.Printf("Failed to unmarshal speaker body: %v", err)
+		return nil, err
+	}
+
+	return &sessions, nil
+}
+
+
+func (api *api) GetSessionsByEventId(id string) (*[]Session, error) {
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/events/%v", api.c.Service.Session.Address, id), nil)
+	if err != nil {
+		log.Printf("Failed to create new request: %v", err)
+		return nil, err
+	}
+
+	// Make the request.
+	res, err := api.client.Do(req)
+	if err != nil {
+		log.Printf("Failed to do request: %v", err)
+		return nil, err
+	}
+
+	// Read the response body.
+	bytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return nil, err
+	}
+
+	// Unmarshal the received bytes.
+	var sessions []Session
+	if err = json.Unmarshal(bytes, &sessions); err != nil {
+		log.Printf("Failed to unmarshal session body: %v", err)
 		return nil, err
 	}
 

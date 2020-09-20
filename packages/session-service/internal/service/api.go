@@ -16,4 +16,6 @@ type Datastore interface {
 	GetSessionById(id string) (*Session, error)
 	GetAllSessions() (*[]Session, error)
 	GetSessionsByIds(ids []string) (*[]Session, error)
+	DeleteSessionById(id string) error
+	CreateSession(i SessionInput) (*Session, error)
 }

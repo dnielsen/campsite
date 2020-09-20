@@ -43,16 +43,22 @@ func main() {
 		Photo:    "https://images.unsplash.com/photo-1546661717-0bf190068ede?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=1525&q=80",
 		SessionIds: []string{"71742331-8f81-40a1-a3a1-b4c2e70160f4"},
 	}
-	result := db.Create(&speaker)
-	log.Println(speaker)
-	log.Println(result.RowsAffected)
+	if err := db.Create(&speaker).Error; err != nil {
+		log.Printf("Failed to create mock speaker in database: %v", err)
+	} else {
+		log.Println("Created mock speaker in database")
+	}
 	// ----------
 
+	// Set up the API.
 	api := service.NewAPI(db)
 
-	// Set up the handlers.
+	// Set up the router.
 	r := mux.NewRouter()
+
+	// Set up the handlers.
 	r.HandleFunc("/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/{id}", handler.DeleteSpeakerById(api)).Methods(http.MethodPut)
 	// You could specify id parameter like so: `/?id=453,123,435` which would fetch the
 	// speakers with the ids of 453, 123, and 435.
 	r.HandleFunc("/", handler.GetSpeakers(api)).Methods(http.MethodGet)
@@ -67,6 +73,7 @@ func main() {
 	}
 	// Start the server.
 	log.Printf("Listening at: %v", srv.Addr)
-	err = srv.ListenAndServe()
-	log.Fatalf("Failed to listen: %v", err)
+	if err = srv.ListenAndServe(); err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
 }

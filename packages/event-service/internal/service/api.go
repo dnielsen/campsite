@@ -30,4 +30,6 @@ type Datastore interface {
 	GetAllSpeakers() (*[]Speaker, error)
 	GetSpeakersByIds(ids []string) (*[]Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)
+	GetSessionsByEventId(id string) (*[]Session, error)
+	GetAllEvents() (*[]Event, error)
 }

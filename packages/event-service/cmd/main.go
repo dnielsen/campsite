@@ -5,6 +5,7 @@ import (
 	"dave-web-app/packages/event-service/internal/handler"
 	"dave-web-app/packages/event-service/internal/service"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -34,21 +35,23 @@ func main() {
 	}
 	// For dev
 	// ---------
+	now := time.Now()
+	later := time.Now().Add(time.Hour * 8)
 	event := service.Event{
 		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 		Name:          "Great Event",
 		Description: "Very interesting",
-		StartDate:     time.Now(),
-		EndDate:       time.Date(2022, time.November, 10, 23, 0, 0, 0, time.UTC),
+		StartDate:     &now,
+		EndDate:       &later,
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
 		OrganizerName: "John Tim",
 		Address:       "San Francisco, California",
-		SpeakerIds: []string{"bf432767-0830-4b84-a9d2-651f2b3e7ac8"},
-		SessionIds: []string{"71742331-8f81-40a1-a3a1-b4c2e70160f4"},
 	}
-	res := db.Create(&event)
-	log.Println(event)
-	log.Println(res.RowsAffected)
+	if err := db.Create(&event).Error; err != nil {
+		log.Printf("Failed to create mock event in database: %v", err)
+	} else {
+		log.Println("Created mock event in database")
+	}
 	// ----------
 
 	// We use our custom HttpClient to enable mocking.
@@ -65,17 +68,26 @@ func main() {
 	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/speakers", handler.GetAllSpeakers(api)).Methods(http.MethodGet)
 
-	r.HandleFunc("/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/events/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/events", handler.GetEvents(api)).Methods(http.MethodGet)
+
+	// For dev only - Set up CORS so our client can consume the api
+	corsWrapper := cors.New(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "PATCH", "PUT", "DELETE"},
+		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*"},
+	})
+
 	// Set up the server.
 	srv := &http.Server{
 		Addr:         c.Server.Address,
-		Handler:      r,
+		Handler:      corsWrapper.Handler(r),
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 		IdleTimeout:  120 * time.Second,
 	}
 	// Start the server.
 	log.Printf("Listening at: %v", srv.Addr)
-	err = srv.ListenAndServe()
-	log.Fatalf("Failed to listen: %v", err)
+	if err = srv.ListenAndServe(); err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
 }
