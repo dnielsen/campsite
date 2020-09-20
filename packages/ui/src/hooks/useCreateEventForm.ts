@@ -4,7 +4,6 @@ import {
   EventDetails,
   FetchEventInput,
   FormEventInput,
-  Option,
   UseForm,
 } from "../common/interfaces";
 import { BASE_EVENT_API_URL } from "../common/constants";
@@ -16,11 +15,9 @@ export default function useCreateEventForm(): UseForm<FormEventInput> {
     // Process the input.
     const fetchInput: FetchEventInput = {
       ...input,
-      sessionIds: input.sessionOptions.map((option: Option) => option.value),
       startDate: new Date(input.startDate),
       endDate: new Date(input.endDate),
     };
-    Reflect.deleteProperty(fetchInput, "sessionOptions");
 
     // Send a request to create the event.
     const createdEvent = (await fetch(BASE_EVENT_API_URL, {
@@ -39,7 +36,6 @@ export default function useCreateEventForm(): UseForm<FormEventInput> {
     photo: "",
     startDate: "",
     endDate: "",
-    sessionOptions: [],
   };
 
   const validationSchema = Yup.object().shape({});

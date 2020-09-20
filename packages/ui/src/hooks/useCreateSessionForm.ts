@@ -9,23 +9,28 @@ import {
 import { BASE_SESSION_API_URL } from "../common/constants";
 import { useHistory } from "react-router-dom";
 
-export default function useCreateSessionForm(): UseForm<FormSessionInput> {
+interface Props {
+  defaultEventIdValue: string;
+}
+
+export default function useCreateSessionForm(
+  props: Props,
+): UseForm<FormSessionInput> {
   const history = useHistory();
 
   async function onSubmit(input: FormSessionInput) {
     // Replace speakerOptions property with speakerIds.
     const fetchInput: FetchSessionInput = {
       ...input,
-      speakerIds: input.speakerOptions.map((option: Option) => option.value),
       startDate: new Date(input.startDate),
       endDate: new Date(input.endDate),
     };
-    Reflect.deleteProperty(fetchInput, "speakerOptions");
 
+    console.log(fetchInput);
     // Send a request to create the session.
     const createdSession = (await fetch(`${BASE_SESSION_API_URL}`, {
       method: "POST",
-      body: JSON.stringify(input),
+      body: JSON.stringify(fetchInput),
     }).then((res) => res.json())) as SessionPreview;
     // Redirect to the created session page.
     history.push(`/sessions/${createdSession.id}`);
@@ -37,7 +42,8 @@ export default function useCreateSessionForm(): UseForm<FormSessionInput> {
     url: "",
     startDate: "",
     endDate: "",
-    speakerOptions: [],
+    eventId: props.defaultEventIdValue,
+    speakerIds: [],
   };
 
   const validationSchema = Yup.object().shape({});

@@ -1,33 +1,21 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import SelectField from "../../components/SelectField";
-import {
-  FormConfig,
-  FormSessionInput,
-  Option,
-  SpeakerPreview,
-} from "../../common/interfaces";
-import useAPI from "../../hooks/useAPI";
+import { EventDetails, SpeakerPreview } from "../../common/interfaces";
+import Checkbox from "../../components/Checkbox";
+import useCreateSessionForm from "../../hooks/useCreateSessionForm";
 
 interface Props {
-  formConfig: FormConfig<FormSessionInput>;
+  speakers: SpeakerPreview[];
+  events: EventDetails[];
 }
 
 function SessionForm(props: Props) {
-  const { data: speakers, loading, error } = useAPI<SpeakerPreview[]>(
-    "/speakers",
-  );
-
-  if (loading) return <div>loading...</div>;
-  if (error) return <div>error: {error.message}</div>;
-
-  const options: Option[] = speakers.map((speaker) => ({
-    label: speaker.name,
-    value: speaker.id,
-  }));
+  const { formConfig } = useCreateSessionForm({
+    defaultEventIdValue: props.events[0].id,
+  });
 
   return (
-    <Formik {...props.formConfig}>
+    <Formik {...formConfig}>
       {({ isSubmitting }: FormikState<FormikValues>) => (
         <Form noValidate>
           <section>
@@ -51,12 +39,29 @@ function SessionForm(props: Props) {
             <Field type={"date"} name={"endDate"} />
           </section>
           <section>
-            <label htmlFor={"speakerOptions"}>Speakers</label>
-            <SelectField
-              options={options}
-              name={"speakerOptions"}
-              defaultValue={props.formConfig.initialValues.speakerOptions}
-            />
+            <label htmlFor="eventId">Event</label>
+            <Field name={"eventId"} as={"select"}>
+              {props.events.map((event) => (
+                <option key={event.id} value={event.id}>
+                  {event.name}
+                </option>
+              ))}
+            </Field>
+          </section>
+          <section>
+            {props.speakers.map((speaker) => (
+              <Checkbox
+                key={speaker.id}
+                name={"speakerIds"}
+                value={speaker.id}
+                label={speaker.name}
+              />
+            ))}
+            {/*<SelectField*/}
+            {/*  options={options}*/}
+            {/*  name={"speakerOptions"}*/}
+            {/*  defaultValue={props.formConfig.initialValues.speakerOptions}*/}
+            {/*/>*/}
           </section>
           <button type={"submit"} disabled={isSubmitting}>
             Submit

@@ -50,13 +50,11 @@ export interface BaseEventInput {
 }
 
 export interface FormEventInput extends BaseEventInput {
-  sessionOptions: Option[];
   startDate: string;
   endDate: string;
 }
 
 export interface FetchEventInput extends BaseEventInput {
-  sessionIds: string[];
   startDate: Date;
   endDate: Date;
 }
@@ -65,16 +63,16 @@ export interface BaseSessionInput {
   name: string;
   description: string;
   url: string;
+  speakerIds: string[];
+  eventId: string;
 }
 
 export interface FetchSessionInput extends BaseSessionInput {
-  speakerIds: string[];
   startDate: Date;
   endDate: Date;
 }
 
 export interface FormSessionInput extends BaseSessionInput {
-  speakerOptions: Option[];
   startDate: string;
   endDate: string;
 }

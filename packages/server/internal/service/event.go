@@ -27,8 +27,6 @@ type EventInput struct {
 	Photo         string     `json:"photo,omitempty" validate:"required,min=10,max=200"`
 	OrganizerName string     `json:"organizerName,omitempty" validate:"required,min=2,max=50"`
 	Address       string     `json:"address,omitempty" validate:"required,min=5,max=100"`
-	// `min=1,max=100` == `1 <= len(SessionIds) >= 100`
-	SessionIds []string `json:"sessionIds,omitempty" validate:"required,min=1,max=100"`
 }
 
 // Add a UUID automatically on creation so that we can skip it in our methods.
@@ -55,12 +53,7 @@ func (api *api) GetAllEvents() (*[]Event, error) {
 
 
 func (api *api) CreateEvent(i EventInput) (*Event, error) {
-	// Get the sessions from the database to attach them to the event.
-	var sessions []Session
-	if err := api.db.Where("id IN ?", i.SessionIds).Find(&sessions).Error; err != nil {
-		return nil, err
-	}
-	// Create the event with the sessions attached.
+	// Create the event with the bare event.
 	event := Event{
 		Name:          i.Name,
 		Description:   i.Description,
@@ -69,7 +62,6 @@ func (api *api) CreateEvent(i EventInput) (*Event, error) {
 		Photo:         i.Photo,
 		OrganizerName: i.OrganizerName,
 		Address:       i.Address,
-		Sessions:      sessions,
 	}
 	if err := api.db.Create(&event).Error; err != nil {
 		return nil, err

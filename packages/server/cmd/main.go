@@ -30,6 +30,7 @@ func main() {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
 	log.Println("Connected to database")
+
 	// Migrate the database.
 	if err = db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
@@ -37,6 +38,7 @@ func main() {
 	log.Println("Auto migrated database")
 	// For dev
 	// ---------
+
 	now := time.Now()
 	event := service.Event{
 		ID:            "aef5329b-b934-4d60-bf33-ff2ec368c119",
@@ -62,7 +64,6 @@ func main() {
 		EndDate:     &now,
 		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, excepturi magnam nisi numquam quam quidem soluta voluptatem. Aspernatur aut, consequuntur dolore et laudantium libero magnam officia quod repellendus ullam, voluptatibus.",
 		Url:         "https://google.com",
-		EventID:     &event.ID,
 		Speakers:    []service.Speaker{speaker},
 	}
 	session.Speakers = []service.Speaker{speaker}

@@ -1,31 +1,12 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import SelectField from "../../components/SelectField";
-import {
-  FormConfig,
-  FormEventInput,
-  Option,
-  SessionPreview,
-} from "../../common/interfaces";
-import useAPI from "../../hooks/useAPI";
+import { FormConfig, FormEventInput } from "../../common/interfaces";
 
 interface Props {
   formConfig: FormConfig<FormEventInput>;
 }
 
 function EventForm(props: Props) {
-  const { data: sessions, loading, error } = useAPI<SessionPreview[]>(
-    "/sessions",
-  );
-
-  if (loading) return <div>loading...</div>;
-  if (error) return <div>error: {error.message}</div>;
-
-  const options: Option[] = sessions.map((session) => ({
-    label: session.name,
-    value: session.id,
-  }));
-
   return (
     <Formik {...props.formConfig}>
       {({ isSubmitting }: FormikState<FormikValues>) => (
@@ -57,10 +38,6 @@ function EventForm(props: Props) {
           <section>
             <label htmlFor={"endDate"}>End date</label>
             <Field type={"date"} name={"endDate"} />
-          </section>
-          <section>
-            <label htmlFor={"sessionOptions"}>Sessions</label>
-            <SelectField options={options} name={"sessionOptions"} />
           </section>
           <button type={"submit"} disabled={isSubmitting}>
             Submit
