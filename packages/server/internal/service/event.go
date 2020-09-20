@@ -7,7 +7,7 @@ import (
 )
 
 type Event struct {
-	ID            string     `json:"id,omitempty" gorm:"primaryKey;type:uuid"`
+	ID            string     `json:"id,omitempty" gorm:"type:uuid"`
 	Name          string     `json:"name,omitempty"`
 	Description   string     `json:"description,omitempty"`
 	StartDate     *time.Time `json:"startDate,omitempty"`
@@ -15,7 +15,7 @@ type Event struct {
 	Photo         string     `json:"photo,omitempty"`
 	OrganizerName string     `json:"organizerName,omitempty"`
 	Address       string     `json:"address,omitempty"`
-	Sessions      []Session  `json:"sessions"`
+	Sessions      []Session  `json:"sessions" gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 type EventInput struct {
@@ -77,25 +77,8 @@ func (api *api) CreateEvent(i EventInput) (*Event, error) {
 	return &event, nil
 }
 
-func (api *api) EditEvent(id string, i EventInput) error {
-	// Get the sessions from the database to attach them to the event.
-	var sessions []Session
-	if err := api.db.Where("id IN ?", i.SessionIds).Find(&sessions).Error; err != nil {
-		return err
-	}
-	// Update the event in the database.
-	event := &Event{
-		ID: id,
-		Name:          i.Name,
-		Description:   i.Description,
-		StartDate:     i.StartDate,
-		EndDate:       i.EndDate,
-		Photo:         i.Photo,
-		OrganizerName: i.OrganizerName,
-		Address:       i.Address,
-		Sessions: sessions,
-	}
-	if err := api.db.Model(&event).Updates(&event).Error; err != nil {
+func (api *api) DeleteEvent(id string) error {
+	if err := api.db.Where("id = ?", id).Delete(&Event{}).Error; err != nil {
 		return err
 	}
 	return nil

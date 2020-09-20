@@ -13,9 +13,9 @@ type Session struct {
 	EndDate     *time.Time `json:"endDate,omitempty"`
 	Description string     `json:"description,omitempty"`
 	Url         string     `json:"url,omitempty"`
-	Event       *Event     `json:"event,omitempty"`
+	Event       *Event     `json:"event,omitempty" gorm:"constraint:OnDelete:CASCADE;"`
 	EventID     *string     `json:"-"`
-	Speakers    []Speaker  `json:"speakers" gorm:"many2many:session_speakers;"`
+	Speakers    []Speaker  `json:"speakers" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 type SessionInput struct {
@@ -74,36 +74,9 @@ func (api *api) CreateSession(i SessionInput) (*Session, error) {
 	return &session, nil
 }
 
-func (api *api) EditSession(id string, i SessionInput) error {
-	if err := api.db.Exec("DELETE FROM session_speakers WHERE session_id = ?", id).Error; err != nil {
+func (api *api) DeleteSession(id string) error {
+	if err := api.db.Where("id = ?", id).Delete(&Session{}).Error; err != nil {
 		return err
 	}
-
-	// Clear session's speakers to avoid duplicating speakers in the database
-	//if err := api.db.Model(&session).Association("Speakers").Clear(); err != nil {
-	//	return err
-	//}
-	// Get the speakers from the database to attach them to the session.
-	var speakers []Speaker
-	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
-		return err
-	}
-	// Update the session in the database.
-	session := Session{
-		ID: id,
-		Name:        i.Name,
-		StartDate:   i.StartDate,
-		EndDate:     i.EndDate,
-		Description: i.Description,
-		Url:         i.Url,
-	}
-	if err := api.db.Model(&session).Updates(&session).Error; err != nil {
-		return err
-	}
-	//Update the session speakers
-	if err := api.db.Model(&speakers).Where("id IN ?", i.SpeakerIds).Association("Sessions").Replace(&session); err != nil {
-		return err
-	}
-
 	return nil
 }

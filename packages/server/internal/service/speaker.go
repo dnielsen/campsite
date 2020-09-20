@@ -11,7 +11,22 @@ type Speaker struct {
 	Bio      string    `json:"bio,omitempty"`
 	Headline string    `json:"headline,omitempty"`
 	Photo    string    `json:"photo,omitempty"`
-	Sessions []Session `json:"sessions" gorm:"many2many:session_speakers;"`
+	Sessions []Session `json:"sessions" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
+}
+
+
+type SpeakerInput struct {
+	// Name is a required field with a minimum and maximum length of 2 and 50 respectively.
+	Name     string `json:"name,omitempty" validate:"required,min=2,max=50"`
+	Bio      string `json:"bio,omitempty" validate:"required,min=20,max=2000"`
+	Headline string `json:"headline,omitempty" validate:"required,min=2,max=30"`
+	Photo    string `json:"photo,omitempty" validate:"required,min=10,max=150"`
+}
+
+// Add UUID automatically on creation so that we can skip it in our methods
+func (s *Speaker) BeforeCreate(tx *gorm.DB) (err error) {
+	s.ID = uuid.New().String()
+	return
 }
 
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {
@@ -30,19 +45,7 @@ func (api *api) GetAllSpeakers() (*[]Speaker, error) {
 	return &speakers, nil
 }
 
-// Add UUID automatically on creation so that we can skip it in our methods
-func (s *Speaker) BeforeCreate(tx *gorm.DB) (err error) {
-	s.ID = uuid.New().String()
-	return
-}
 
-type SpeakerInput struct {
-	// Name is a required field with a minimum and maximum length of 2 and 50 respectively.
-	Name     string `json:"name,omitempty" validate:"required,min=2,max=50"`
-	Bio      string `json:"bio,omitempty" validate:"required,min=20,max=2000"`
-	Headline string `json:"headline,omitempty" validate:"required,min=2,max=30"`
-	Photo    string `json:"photo,omitempty" validate:"required,min=10,max=150"`
-}
 
 func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	// The ID will be added on insert.
@@ -58,17 +61,9 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	return &speaker, nil
 }
 
-func (api *api) EditSpeaker(id string, i SpeakerInput) error {
-	speakerUpdates := &Speaker{
-		Name:     i.Name,
-		Bio:      i.Bio,
-		Headline: i.Headline,
-		Photo:    i.Photo,
-	}
-	// Update the speaker in the database.
-	if err := api.db.Model(&Speaker{}).Where("id = ?", id).Updates(&speakerUpdates).Error; err != nil {
+func (api *api) DeleteSpeaker(id string) error {
+	if err := api.db.Where("id = ?", id).Delete(&Speaker{}).Error; err != nil {
 		return err
 	}
-
 	return nil
 }
