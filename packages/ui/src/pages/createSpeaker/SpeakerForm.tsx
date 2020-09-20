@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import { FormConfig, FormSpeakerInput } from "../common/interfaces";
+import { FormConfig, FormSpeakerInput } from "../../common/interfaces";
 
 interface Props {
   formConfig: FormConfig<FormSpeakerInput>;

@@ -1,13 +1,13 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import SelectField from "./SelectField";
+import SelectField from "../../components/SelectField";
 import {
   FormConfig,
   FormSessionInput,
   Option,
   SpeakerPreview,
-} from "../common/interfaces";
-import useAPI from "../hooks/useAPI";
+} from "../../common/interfaces";
+import useAPI from "../../hooks/useAPI";
 
 interface Props {
   formConfig: FormConfig<FormSessionInput>;

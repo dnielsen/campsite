@@ -1,6 +1,6 @@
 import React from "react";
 import useCreateSessionForm from "../hooks/useCreateSessionForm";
-import SessionForm from "../components/SessionForm";
+import SessionForm from "./createSession/SessionForm";
 
 function CreateSession() {
   const { formConfig } = useCreateSessionForm();

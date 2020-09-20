@@ -95,14 +95,8 @@ export interface FormConfig<T> {
   onSubmit: (input: T) => void;
   initialValues: T;
   validationSchema: Yup.ObjectSchema;
-  enableReinitialize?: boolean;
 }
 
 export interface UseForm<T> {
   formConfig: FormConfig<T>;
-}
-
-export interface UseEditForm<T> extends UseForm<T> {
-  loading: boolean;
-  error: Error | null;
 }

@@ -1,18 +1,29 @@
 import React from "react";
 import useAPI from "../hooks/useAPI";
 import { Session } from "../common/interfaces";
-import { Link, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import util from "../common/util";
 import moment from "moment";
 import SpeakerList from "../components/SpeakerList";
+import {
+  BASE_SESSION_API_URL,
+  BASE_SPEAKER_API_URL,
+} from "../common/constants";
 
 function FullSession() {
   const { id } = useParams<{ id: string }>();
+  const history = useHistory();
 
   const { data: session, loading, error } = useAPI<Session>(`/sessions/${id}`);
 
   if (loading) return <div>loading...</div>;
   if (error) return <div>something went wrong: {error.message}</div>;
+
+  async function handleClick() {
+    await fetch(`${BASE_SESSION_API_URL}/${id}`, { method: "DELETE" });
+    // Redirect to the home page after deleting the speaker.
+    history.push("/");
+  }
 
   return (
     <div>
@@ -28,7 +39,9 @@ function FullSession() {
           <p>{session.description}</p>
         </div>
       </div>
-      <Link to={`/sessions/${session.id}/edit`}>Edit</Link>
+      <button type={"button"} onClick={handleClick}>
+        Delete
+      </button>
     </div>
   );
 }
