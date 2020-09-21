@@ -13,9 +13,9 @@ func NewAPI(db *gorm.DB) *api {
 }
 
 type Datastore interface {
-	GetSpeakersByIds(ids []string) (*[]Speaker, error)
 	GetAllSpeakers() (*[]Speaker, error)
+	CreateSpeaker(i SpeakerInput) (*Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)
 	DeleteSpeakerById(id string) error
-	CreateSpeaker(i SpeakerInput) (*Speaker, error)
+	GetSpeakersByIds(ids []string) (*[]Speaker, error)
 }

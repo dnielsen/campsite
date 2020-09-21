@@ -19,29 +19,40 @@ type DbConfig struct {
 
 type Config struct {
 	Db DbConfig `yaml:"db"`
-	Server struct {
-		Address string `yaml:"address" env:"SERVER_ADDRESS" env-default:"0.0.0.0:4444"`
-	} `yaml:"server"`
 	Service struct {
 		Speaker struct{
-			Address string `yaml:"address" env:"SERVICE_SPEAKER_ADDRESS" env-default:"localhost:5555"`
+			Host string `yaml:"host" env:"SERVICE_SPEAKER_HOST" env-default:"localhost"`
+			Port string `yaml:"port" env:"SERVICE_SPEAKER_PORT" env-default:"4444"`
 		} `yaml:"speaker"`
 		Session struct{
-			Address string `yaml:"address" env:"SERVICE_SESSION_ADDRESS" env-default:"localhost:3333"`
+			Host string `yaml:"host" env:"SERVICE_SESSION_HOST" env-default:"localhost"`
+			Port string `yaml:"port" env:"SERVICE_SESSION_PORT" env-default:"4444"`
 		} `yaml:"session"`
+		Event struct{
+			Host string `yaml:"host" env:"SERVICE_EVENT_HOST" env-default:"localhost"`
+			Port string `yaml:"port" env:"SERVICE_EVENT_PORT" env-default:"4444"`
+		} `yaml:"event"`
 	} `yaml:"service"`
 }
 
-// Try to read variables from the config file.
-// If it fails, read them from environment.
+// If the filename isn't an empty string read the config from configs directory
+// which is located in the project's root directory.
+// Else, read the variables from the environment.
 func GetConfig(filename string) (*Config, error) {
 	var c Config
-	path := getConfigPath(filename)
-	if err := cleanenv.ReadConfig(path, &c); err != nil {
+	if filename != "" {
+		// Read the config from the configs/{filename} file.
+		// For example: configs/development.yml
+		path := getConfigPath(filename)
+		if err := cleanenv.ReadConfig(path, &c); err != nil {
+			return nil, err
+		}
+	} else {
 		if err := cleanenv.ReadEnv(&c); err != nil {
 			return nil, err
 		}
 	}
+
 	return &c, nil
 }
 

@@ -27,7 +27,7 @@ type SpeakerInput struct {
 }
 
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v", api.c.Service.Speaker.Address, id), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
@@ -57,7 +57,7 @@ func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 }
 
 func (api *api) GetAllSpeakers() (*[]Speaker, error) {
-	req, err := http.NewRequest(http.MethodGet, api.c.Service.Speaker.Address, nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
@@ -93,7 +93,7 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 		log.Printf("Failed to marshal speaker input: %v", err)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, api.c.Service.Speaker.Address, bytes.NewBuffer(b))
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%v:%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port), bytes.NewBuffer(b))
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
@@ -125,7 +125,7 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 
 
 func (api *api) DeleteSpeakerById(id string) error {
-	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%v/%v", api.c.Service.Speaker.Address, id), nil)
+	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return err

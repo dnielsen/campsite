@@ -36,7 +36,7 @@ type SessionInput struct {
 }
 
 func (api *api) GetAllSessions() (*[]Session, error) {
-	req, err := http.NewRequest(http.MethodGet, api.c.Service.Session.Address, nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Session.Host, api.c.Service.Session.Port), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
@@ -66,7 +66,7 @@ func (api *api) GetAllSessions() (*[]Session, error) {
 }
 
 func (api *api) GetSessionById(id string) (*Session, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v", api.c.Service.Session.Address, id), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err
@@ -96,7 +96,7 @@ func (api *api) GetSessionById(id string) (*Session, error) {
 }
 
 func (api *api) DeleteSessionById(id string) error {
-	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%v/%v", api.c.Service.Session.Address, id), nil)
+	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return err
@@ -119,7 +119,7 @@ func (api *api) CreateSession(i SessionInput) (*Session, error) {
 		log.Printf("Failed to marshal session input: %v", err)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, api.c.Service.Session.Address, bytes.NewBuffer(b))
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%v:%v", api.c.Service.Session.Host, api.c.Service.Session.Port), bytes.NewBuffer(b))
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err

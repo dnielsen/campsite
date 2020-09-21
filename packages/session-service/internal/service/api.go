@@ -23,8 +23,8 @@ type HttpClient interface {
 }
 
 type SessionDatastore interface {
-	GetSessionById(id string) (*Session, error)
 	GetAllSessions() (*[]Session, error)
-	DeleteSessionById(id string) error
 	CreateSession(i SessionInput) (*Session, error)
+	GetSessionById(id string) (*Session, error)
+	DeleteSessionById(id string) error
 }

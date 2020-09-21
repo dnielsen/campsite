@@ -12,9 +12,6 @@ type DbConfig struct {
 	Name string `yaml:"name" env:"DB_NAME" env-default:"postgres"`
 	User string `yaml:"user" env:"DB_USER" env-default:"postgres"`
 	Password string `yaml:"password" env:"DB_PASSWORD" env-default:"postgres"`
-	// When you run the program locally, you need the host to be `localhost`
-	// When it's run with docker-compose, it needs to be `cassandra`, so we're
-	// passing it in the `docker.env` file.
 	Host     string `yaml:"host" env:"DB_HOST" env-default:"localhost"`
 	Port     string `yaml:"port" env:"DB_PORT" env-default:"5432"`
 	SSLMode     string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
@@ -22,32 +19,40 @@ type DbConfig struct {
 
 type Config struct {
 	Db DbConfig `yaml:"db"`
-	Server struct {
-		Address string `yaml:"address" env:"SERVER_ADDRESS" env-default:"0.0.0.0:5555"`
-	} `yaml:"server"`
 	Service struct {
 		Speaker struct{
-			Address string `yaml:"address" env:"SERVICE_SPEAKER_ADDRESS" env-default:"localhost:5555"`
+			Host string `yaml:"host" env:"SERVICE_SPEAKER_HOST" env-default:"localhost"`
+			Port string `yaml:"port" env:"SERVICE_SPEAKER_PORT" env-default:"4444"`
 		} `yaml:"speaker"`
+		Session struct{
+			Host string `yaml:"host" env:"SERVICE_SESSION_HOST" env-default:"localhost"`
+			Port string `yaml:"port" env:"SERVICE_SESSION_PORT" env-default:"4444"`
+		} `yaml:"session"`
+		Event struct{
+			Host string `yaml:"host" env:"SERVICE_EVENT_HOST" env-default:"localhost"`
+			Port string `yaml:"port" env:"SERVICE_EVENT_PORT" env-default:"4444"`
+		} `yaml:"event"`
 	} `yaml:"service"`
 }
 
-type SmtpConfig struct {
-	Address  string `yaml:"address" env:"SMTP_ADDRESS"`
-	From     string `yaml:"from" env:"SMTP_FROM"`
-	Password string `yaml:"password" env:"SMTP_PASSWORD"`
-}
-
-// Try to read variables from the config file.
-// If it fails, read them from environment.
+// If the filename isn't an empty string read the config from configs directory
+// which is located in the project's root directory.
+// Else, read the variables from the environment.
 func GetConfig(filename string) (*Config, error) {
 	var c Config
-	path := getConfigPath(filename)
-	if err := cleanenv.ReadConfig(path, &c); err != nil {
+	if filename != "" {
+		// Read the config from the configs/{filename} file.
+		// For example: configs/development.yml
+		path := getConfigPath(filename)
+		if err := cleanenv.ReadConfig(path, &c); err != nil {
+			return nil, err
+		}
+	} else {
 		if err := cleanenv.ReadEnv(&c); err != nil {
 			return nil, err
 		}
 	}
+
 	return &c, nil
 }
 

@@ -5,8 +5,13 @@ db:
   host: localhost
   port: 5432
   sslmode: disable
-server:
-  address: 0.0.0.0:5555
 service:
+  session:
+    host: localhost
+    port: 5555
+  event:
+    host: localhost
+    port: 4444
   speaker:
-    address: http://localhost:3333
+    host: localhost
+    port: 3333
