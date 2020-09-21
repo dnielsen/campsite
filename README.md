@@ -1,36 +1,39 @@
-# Campsite (JSON server)
+# campsite
 
-## Prerequisites
-- Node.js
+## How to run using Docker Compose
+Prerequisites: 
+- Docker (installed and running in the background)
+- Node.js (v12 or later)
 - Yarn (`npm install -g yarn`)
 
-## How to run
-1. Go to the server directory
+1. Run the services
     ```
-    cd packages/server
+    docker-compose up
     ```
-
-1. Install the dependencies
+2. Go to the `ui` directory (in another terminal window/tab)
+    ```
+    cd packages/ui
+    ```
+3. Install dependencies
     ```
     yarn install
     ```
-
+4. Run the ui server
+    ```
+    yarn start
     ```
 
-2. Run the JSON server
-    ```
-    yarn dev
-    ```
-   
-2. Go to the client directory (go back to the root directory)
-   ```
-   cd packages/app
-   ```
-
-3. Run the client (in another terminal window)
-    ```
-    yarn install && yarn dev
-    ```
-
-Now your app is available at `http://localhost:3000`. You can change the event, session, and speakers data by modifying
- the file `db.json`.
+Now you should see your app at `http://localhost:3000`
+ 
+ ## pgadmin
+If you want, you can go to `localhost:8080`, there's pgadmin installed, so you could easily edit database data there. By default, the pgadmin credentials are:
+ - username:`root@root.com`
+ - password: `root`. 
+ 
+ Database server:
+ - hostname: `host.docker.internal`
+ - port: `5432`
+ - username: `postgres`
+ - password: `postgres`
+ 
+You can configure those values by modifying `docker.env`

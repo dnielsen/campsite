@@ -6,4 +6,4 @@ db:
   port: 5432
   sslmode: disable
 server:
-  address: 0.0.0.0:4444
+  port: 4444

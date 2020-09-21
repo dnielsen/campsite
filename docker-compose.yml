@@ -1,25 +1,17 @@
 version: "3"
 services:
-#  ui:
-#    container_name: campsite-ui
-#    build: ./packages/app
-#    ports:
-#      - "3000:3000"
-#    restart: always
-#    networks:
-#      - app
-#    depends_on:
-#      - server
-#  server:
-#    container_name: campsite-server
-#    build: ./packages/server
-#    ports:
-#      - "4444:4444"
-#    restart: always
-#    networks:
-#      - app
-#    depends_on:
-#      - postgres
+  server:
+    container_name: campsite-server
+    build: ./packages/server
+    ports:
+      - "4444:4444"
+    restart: always
+    networks:
+      - app
+    depends_on:
+      - postgres
+    env_file:
+      - docker.env
   postgres:
     image: postgres:latest
     ports:

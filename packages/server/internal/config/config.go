@@ -9,31 +9,39 @@ import (
 )
 
 type DbConfig struct {
-	Name     string `yaml:"name" env:"DB_NAME" env-default:"postgres"`
-	User     string `yaml:"user" env:"DB_USER" env-default:"postgres"`
+	Name string `yaml:"name" env:"DB_NAME" env-default:"postgres"`
+	User string `yaml:"user" env:"DB_USER" env-default:"postgres"`
 	Password string `yaml:"password" env:"DB_PASSWORD" env-default:"postgres"`
 	Host     string `yaml:"host" env:"DB_HOST" env-default:"localhost"`
 	Port     string `yaml:"port" env:"DB_PORT" env-default:"5432"`
-	SSLMode  string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
+	SSLMode     string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
 }
 
 type Config struct {
-	Db     DbConfig `yaml:"db"`
+	Db DbConfig `yaml:"db"`
 	Server struct {
-		Address string `yaml:"address" env:"SERVER_ADDRESS" env-default:"0.0.0.0:4444"`
+		Port string `yaml:"port" env:"SERVER_PORT" env-default:"4444"`
 	} `yaml:"server"`
 }
 
-// Try to read variables from the config file.
-// If it fails, read them from environment.
+// If the filename isn't an empty string read the config from configs directory
+// which is located in the project's root directory.
+// Else, read the variables from the environment.
 func GetConfig(filename string) (*Config, error) {
 	var c Config
-	path := getConfigPath(filename)
-	if err := cleanenv.ReadConfig(path, &c); err != nil {
+	if filename != "" {
+		// Read the config from the configs/{filename} file.
+		// For example: configs/development.yml
+		path := getConfigPath(filename)
+		if err := cleanenv.ReadConfig(path, &c); err != nil {
+			return nil, err
+		}
+	} else {
 		if err := cleanenv.ReadEnv(&c); err != nil {
 			return nil, err
 		}
 	}
+
 	return &c, nil
 }
 
@@ -46,7 +54,7 @@ func getConfigPath(configFilename string) string {
 	return filepath.Join(filepath.Dir(currentFilename), "../../configs/", configFilename)
 }
 
-func GetDbConnString(c *DbConfig) string {
+func GetDbConnString(c *DbConfig) string  {
 	vals := getDbValues(c)
 	var p []string
 	for k, v := range vals {

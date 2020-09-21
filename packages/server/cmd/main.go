@@ -4,22 +4,24 @@ import (
 	"dave-web-app/packages/server/internal/config"
 	"dave-web-app/packages/server/internal/handler"
 	"dave-web-app/packages/server/internal/service"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
 func main() {
-	// Initialize the config. If it can't find the file, it will load the variables
-	// from the environment. It would be a good idea to read the file path to the config
-	// from environment, because we might want to have `test.yml` or some other config.
-	c, err := config.GetConfig("development.yml")
+	// Initialize the config. If CONFIG_FILENAME isn't specified (empty string)
+	// then it's gonna load the variables from environment.
+	configFilename := os.Getenv("CONFIG_FILENAME")
+	c, err := config.GetConfig(configFilename)
 	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
+		log.Fatalf("Failed to load config: %v",err)
 	} else {
 		log.Printf("Config has been loaded: %v", c)
 	}
@@ -104,13 +106,13 @@ func main() {
 
 	// For dev only - Set up CORS so our client can consume the api
 	corsWrapper := cors.New(cors.Options{
-		AllowedMethods: []string{"GET", "POST", "PATCH", "PUT", "DELETE"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*"},
 	})
 
 	// Set up the server.
 	srv := &http.Server{
-		Addr:         c.Server.Address,
+		Addr:         fmt.Sprintf("0.0.0.0:%v", c.Server.Port),
 		Handler:      corsWrapper.Handler(r),
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
