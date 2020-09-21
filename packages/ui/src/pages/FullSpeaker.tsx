@@ -73,7 +73,7 @@ function FullSpeaker() {
                       on {moment(session.startDate).format("MM/DD/YYYY")}
                     </td>
                     <td>
-                      <Link to={`/sessions/${session.url}`}>View</Link>
+                      <a href={session.url}>View</a>
                     </td>
                   </tr>
                 ))}
