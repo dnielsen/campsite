@@ -25,14 +25,18 @@ function FullEvent() {
     history.push("/");
   }
 
-  let eventSpeakers: SpeakerPreview[] = [];
-  eventDetails.sessions.forEach((session) => {
-    session.speakers.forEach((speaker) => {
-      if (!eventSpeakers.map((speaker) => speaker.id).includes(speaker.id)) {
-        eventSpeakers = eventSpeakers.concat(speaker);
+  const eventSpeakers = eventDetails.sessions
+    .map((session) => session.speakers)
+    .flat()
+    .reduce((uniqueSpeakers, currSpeaker) => {
+      // @ts-ignore
+      if (uniqueSpeakers.includes(currSpeaker)) {
+        return uniqueSpeakers;
+      } else {
+        // @ts-ignore
+        return uniqueSpeakers.concat(currSpeaker);
       }
-    });
-  });
+    }, []);
 
   return (
     <Container>

@@ -7,3 +7,6 @@ db:
   sslmode: disable
 server:
   address: 0.0.0.0:5555
+service:
+  speaker:
+    address: http://localhost:3333

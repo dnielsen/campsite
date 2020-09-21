@@ -2,17 +2,17 @@ package service
 
 import (
 	"github.com/google/uuid"
-	"github.com/lib/pq"
 )
 
 type Speaker struct {
-	ID        string `gorm:"primaryKey;type:uuid" json:"id"`
-	Name string    `json:"name"`
-	Bio string `json:"bio"`
-	Headline string `json:"headline"`
-	Photo string `json:"photo"`
-	SessionIds pq.StringArray `gorm:"type:uuid[]" json:"sessionIds"`
+	ID         string    `json:"id" gorm:"type:uuid"`
+	Name       string    `json:"name" gorm:"not null"`
+	Bio        string    `json:"bio" gorm:"not null"`
+	Headline   string    `json:"headline" gorm:"not null"`
+	Photo      string    `json:"photo" gorm:"not null"`
+	Sessions   []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;"`
 }
+
 
 type SpeakerInput struct {
 	Name string `json:"name" validate:"required,min=2,max=50"`
@@ -38,8 +38,8 @@ func (api *api) GetAllSpeakers() (*[]Speaker, error) {
 }
 
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {
-	var speaker Speaker
-	if err := api.db.Where("id = ?", id).First(&speaker).Error; err != nil {
+	speaker := Speaker{ID: id}
+	if err := api.db.Preload("Sessions").First(&speaker).Error; err != nil {
 		return nil, err
 	}
 	return &speaker, nil

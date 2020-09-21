@@ -22,14 +22,20 @@ type HttpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-type Datastore interface {
+type EventDatastore interface {
 	GetEventById(id string) (*Event, error)
-	GetAllSessions() (*[]Session, error)
-	GetSessionsByIds(id []string) (*[]Session, error)
-	GetSessionById(id string) (*Session, error)
-	GetAllSpeakers() (*[]Speaker, error)
-	GetSpeakersByIds(ids []string) (*[]Speaker, error)
-	GetSpeakerById(id string) (*Speaker, error)
-	GetSessionsByEventId(id string) (*[]Session, error)
 	GetAllEvents() (*[]Event, error)
+	CreateEvent(i EventInput) (*Event, error)
+}
+
+type SessionDatastore interface {
+	GetAllSessions() (*[]Session, error)
+	GetSessionById(id string) (*Session, error)
+	CreateSession(i SessionInput) (*Session, error)
+}
+
+type SpeakerDatastore interface {
+	GetAllSpeakers() (*[]Speaker, error)
+	GetSpeakerById(id string) (*Speaker, error)
+	CreateSpeaker(i SpeakerInput) (*Speaker, error)
 }

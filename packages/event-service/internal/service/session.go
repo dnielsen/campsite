@@ -1,89 +1,38 @@
 package service
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 	"time"
 )
 
 type Session struct {
 	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
-	Name        string    `json:"name"`
-	StartDate   *time.Time `json:"startDate"`
-	EndDate     *time.Time `json:"endDate"`
-	Description string    `json:"description"`
-	Speakers    []Speaker `json:"speakers,omitempty"`
-	SpeakerIds  []string  `json:"speakerIds" gorm:"type:uuid[]"`
-	EventId string `json:"eventId" gorm:"type:uuid"`
-	Url         string    `json:"url"`
+	Name        string    `json:"name" gorm:"not null"`
+	StartDate   *time.Time `json:"startDate" gorm:"not null"`
+	EndDate     *time.Time `json:"endDate" gorm:"not null"`
+	Description string    `json:"description" gorm:"not null"`
+	Url         string    `json:"url" gorm:"not null"`
+	Event 		Event `json:"-"`
+	EventID 	string `json:"-" gorm:"type:uuid;not null"`
+	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;"`
 }
 
-func (api *api) GetSessionsByIds(ids []string) (*[]Session, error) {
-	log.Println(strings.Join(ids, ","))
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v?id=%v", api.c.Service.Session.Address, strings.Join(ids, ",")), nil)
-	if err != nil {
-		log.Printf("Failed to create new request: %v", err)
-		return nil, err
-	}
-
-	// Make the request.
-	res, err := api.client.Do(req)
-	if err != nil {
-		log.Printf("Failed to do request: %v", err)
-		return nil, err
-	}
-
-	// Read the response body.
-	bytes, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Printf("Failed to read response body: %v", err)
-		return nil, err
-	}
-
-	// Unmarshal the received bytes.
-	var sessions []Session
-	if err = json.Unmarshal(bytes, &sessions); err != nil {
-		log.Printf("Failed to unmarshal speaker body: %v", err)
-		return nil, err
-	}
-
-	return &sessions, nil
-}
-
-
-func (api *api) GetSessionsByEventId(id string) (*[]Session, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/events/%v", api.c.Service.Session.Address, id), nil)
-	if err != nil {
-		log.Printf("Failed to create new request: %v", err)
-		return nil, err
-	}
-
-	// Make the request.
-	res, err := api.client.Do(req)
-	if err != nil {
-		log.Printf("Failed to do request: %v", err)
-		return nil, err
-	}
-
-	// Read the response body.
-	bytes, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Printf("Failed to read response body: %v", err)
-		return nil, err
-	}
-
-	// Unmarshal the received bytes.
-	var sessions []Session
-	if err = json.Unmarshal(bytes, &sessions); err != nil {
-		log.Printf("Failed to unmarshal session body: %v", err)
-		return nil, err
-	}
-
-	return &sessions, nil
+type SessionInput struct {
+	// Name is a required field with a minimum and maximum length of 2 and 100 respectively.
+	Name        string     `json:"name,omitempty" validate:"required,min=2,max=100"`
+	// `validate:"gte"` checks if the date is >= `time.Now.UTC()`
+	StartDate   *time.Time `json:"startDate,omitempty" validate:"required,gte"`
+	EndDate     *time.Time `json:"endDate,omitempty" validate:"required,gte"`
+	Description string     `json:"description,omitempty" validate:"required,min=10,max=1000"`
+	Url         string     `json:"url,omitempty" validate:"required,min=10,max=200"`
+	// `validate:"min=1"` here means the length of the array must be >= 1.
+	SpeakerIds []string `json:"speakerIds,omitempty" validate:"required,min=1,max=10"`
+	EventId string `json:"eventId,omitempty" validate:"required,uuid4"`
 }
 
 func (api *api) GetAllSessions() (*[]Session, error) {
@@ -118,6 +67,43 @@ func (api *api) GetAllSessions() (*[]Session, error) {
 
 func (api *api) GetSessionById(id string) (*Session, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v", api.c.Service.Session.Address, id), nil)
+	if err != nil {
+		log.Printf("Failed to create new request: %v", err)
+		return nil, err
+	}
+
+	// Make the request.
+	res, err := api.client.Do(req)
+	if err != nil {
+		log.Printf("Failed to do request: %v", err)
+	}
+
+	// Read the response body.
+	readBytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return nil, err
+	}
+
+	// Unmarshal the received body bytes.
+	var session Session
+	if err = json.Unmarshal(readBytes, &session); err != nil {
+		log.Printf("Failed to unmarshal session body: %v", err)
+		return nil, err
+	}
+
+	return &session, nil
+}
+
+
+func (api *api) CreateSession(i SessionInput) (*Session, error) {
+	// Marshal the session input.
+	b, err := json.Marshal(i)
+	if err != nil {
+		log.Printf("Failed to marshal session input: %v", err)
+	}
+
+	req, err := http.NewRequest(http.MethodPost, api.c.Service.Session.Address, bytes.NewBuffer(b))
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err

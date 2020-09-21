@@ -7,9 +7,9 @@ import (
 	"net/http"
 )
 
-func GetAllSpeakers(datastore service.Datastore) http.HandlerFunc {
+func GetAllSpeakers(datastore service.SpeakerDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the speakers from the speaker service.
+		// Get all speakers from the speaker service.
 		speakers, err := datastore.GetAllSpeakers()
 		if err != nil {
 			log.Printf("Failed to get speakers: %v", err)

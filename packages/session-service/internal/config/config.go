@@ -25,6 +25,11 @@ type Config struct {
 	Server struct {
 		Address string `yaml:"address" env:"SERVER_ADDRESS" env-default:"0.0.0.0:5555"`
 	} `yaml:"server"`
+	Service struct {
+		Speaker struct{
+			Address string `yaml:"address" env:"SERVICE_SPEAKER_ADDRESS" env-default:"localhost:5555"`
+		} `yaml:"speaker"`
+	} `yaml:"service"`
 }
 
 type SmtpConfig struct {

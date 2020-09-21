@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func GetSessionById(datastore service.Datastore) http.HandlerFunc {
+func GetSessionById(datastore service.SessionDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
@@ -22,16 +22,6 @@ func GetSessionById(datastore service.Datastore) http.HandlerFunc {
 			return
 		}
 
-		// Get the session speakers from speaker service since we're always displaying them along the full session
-		// and attach them to the session.
-		speakers, err := datastore.GetSpeakersByIds(session.SpeakerIds)
-		if err != nil {
-			log.Printf("Failed to get speakers: %v", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		session.Speakers = *speakers
-
 		// Marshal the session.
 		sessionBytes, err := json.Marshal(session)
 		if err != nil {
@@ -40,7 +30,7 @@ func GetSessionById(datastore service.Datastore) http.HandlerFunc {
 			return
 		}
 
-		// Respond json with the session and the attached speakers.
+		// Respond JSON with the session.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(sessionBytes)

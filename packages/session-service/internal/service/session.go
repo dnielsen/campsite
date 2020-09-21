@@ -2,21 +2,35 @@ package service
 
 import (
 	"github.com/google/uuid"
-	"github.com/lib/pq"
 	"time"
 )
+//
+//type Session struct {
+//	ID          string    `json:"id"`
+//	Name        string    `json:"name"`
+//	StartDate   *time.Time `json:"startDate"`
+//	EndDate     *time.Time `json:"endDate"`
+//	Description string    `json:"description"`
+//	// Either live zoom or recorded video's youtube link.
+//	Url string `json:"url"`
+//	EventID 	string `json:"eventId"`
+//	Event Event          `json:"event,omitempty"`
+//	Speakers []Speaker `json:"speakers,omitempty"`
+//}
 
 type Session struct {
 	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
-	Name        string    `json:"name"`
-	StartDate   *time.Time `json:"startDate"`
-	EndDate     *time.Time `json:"endDate"`
-	Description string    `json:"description"`
-	SpeakerIds pq.StringArray `json:"speakerIds" gorm:"type:uuid[]"`
-	EventId 	string `json:"eventId" gorm:"not null"`
-	// Either live zoom or recorded video's youtube link.
-	Url string `json:"url"`
+	Name        string    `json:"name" gorm:"not null"`
+	StartDate   *time.Time `json:"startDate" gorm:"not null"`
+	EndDate     *time.Time `json:"endDate" gorm:"not null"`
+	Description string    `json:"description" gorm:"not null"`
+	Url         string    `json:"url" gorm:"not null"`
+	Event 		Event `json:"-"`
+	EventID 	string `json:"-" gorm:"type:uuid;not null"`
+	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;"`
 }
+
+
 
 type SessionInput struct {
 	// Name is a required field with a minimum and maximum length of 2 and 100 respectively.
@@ -31,25 +45,9 @@ type SessionInput struct {
 	EventId string `json:"eventId,omitempty" validate:"required,uuid4"`
 }
 
-func (api *api) GetSessionsByIds(ids []string) (*[]Session, error) {
-	var sessions []Session
-	if err := api.db.Where("id IN ?", ids).Find(&sessions).Error; err != nil {
-		return nil, err
-	}
-	return &sessions, nil
-}
-
-func (api *api) GetSessionsByEventId(id string) (*[]Session, error) {
-	var sessions []Session
-	if err := api.db.Where("event_id = ?", id).Find(&sessions).Error; err != nil {
-		return nil, err
-	}
-	return &sessions, nil
-}
-
 func (api *api) GetSessionById(id string) (*Session, error) {
-	var session Session
-	if err := api.db.Where("id = ?", id).First(&session).Error; err != nil {
+	session := Session{ID: id}
+	if err := api.db.Preload("Speakers").First(&session).Error; err != nil {
 		return nil, err
 	}
 	return &session, nil
@@ -71,15 +69,19 @@ func (api *api) DeleteSessionById(id string) error {
 }
 
 func (api *api) CreateSession(i SessionInput) (*Session, error) {
+	var speakers []Speaker
+	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
+		return nil, err
+	}
 	session := Session{
 		ID:          uuid.New().String(),
 		Name:        i.Name,
 		StartDate:   i.StartDate,
 		EndDate:     i.EndDate,
 		Description: i.Description,
-		SpeakerIds:  i.SpeakerIds,
-		EventId:     i.EventId,
+		EventID:     i.EventId,
 		Url:         i.Url,
+		Speakers: speakers,
 	}
 	if err := api.db.Create(&session).Error; err != nil {
 		return nil, err

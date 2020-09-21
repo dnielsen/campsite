@@ -1,50 +1,49 @@
 package handler
 
 import (
-	"dave-web-app/packages/session-service/internal/service"
+	"dave-web-app/packages/event-service/internal/service"
 	"encoding/json"
 	"github.com/go-playground/validator"
 	"log"
 	"net/http"
 )
 
-func CreateSession(datastore service.SessionDatastore) http.HandlerFunc {
+func CreateEvent(datastore service.EventDatastore) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
-		var i service.SessionInput
-		err := json.NewDecoder(r.Body).Decode(&i)
-		if err != nil {
-			log.Printf("Failed to unmarshal session input")
+		var i service.EventInput
+		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
+			log.Printf("Failed to unmarshal event input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
 		// Validate the input.
 		if err := validator.New().Struct(i); err != nil {
-			log.Printf("Failed to validate session input")
+			log.Printf("Failed to validate event input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		// Create the session in the database.
-		session, err := datastore.CreateSession(i)
+		// Create the event in the database.
+		event, err := datastore.CreateEvent(i)
 		if err != nil {
-			log.Printf("Failed to create session: %v", err)
+			log.Printf("Failed to create event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Marshal the created session.
-		sessionBytes, err := json.Marshal(session)
+		// Marshal the event.
+		eventBytes, err := json.Marshal(event)
 		if err != nil {
-			log.Printf("Failed to marshal session: %v", err)
+			log.Printf("Failed to marshal event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Respond JSON with the created session.
+		// Respond JSON with the created event
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		w.Write(sessionBytes)
+		w.Write(eventBytes)
 	}
 }

@@ -30,13 +30,31 @@ func main() {
 		log.Fatalf("Failed to initialize the database: %v", err)
 	}
 	// Migrate the database.
-	if err = db.AutoMigrate(&service.Event{}); err != nil {
+	if err = db.AutoMigrate(&service.Speaker{}, &service.Session{},&service.Event{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
 	}
 	// For dev
 	// ---------
 	now := time.Now()
 	later := time.Now().Add(time.Hour * 8)
+	speaker := service.Speaker{
+		ID:       "9c08fbf8-160b-4a86-9981-aeddf4e3798e",
+		Name:     "John Doe",
+		Bio:      "Bio",
+		Headline: "Headline",
+		Photo:    "photo",
+	}
+	session := service.Session{
+		ID:          "be13940b-c7ba-4f97-bdab-b4a47b11ffed",
+		Name:        "Session",
+		StartDate:   &now,
+		EndDate:     &later,
+		Description: "desc",
+		Url:         "url",
+		EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+		Speakers: []service.Speaker{speaker},
+	}
+	address := "San Francisco, California"
 	event := service.Event{
 		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 		Name:          "Great Event",
@@ -45,9 +63,11 @@ func main() {
 		EndDate:       &later,
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
 		OrganizerName: "John Tim",
-		Address:       "San Francisco, California",
+		Address:       &address,
+		Sessions: []service.Session{session},
 	}
-	if err := db.Create(&event).Error; err != nil {
+
+	if err = db.Create(&event).Error; err != nil {
 		log.Printf("Failed to create mock event in database: %v", err)
 	} else {
 		log.Println("Created mock event in database")
@@ -62,14 +82,18 @@ func main() {
 	// Set up handlers.
 	r := mux.NewRouter()
 
-	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
-	r.HandleFunc("/sessions", handler.GetAllSessions(api)).Methods(http.MethodGet)
-
-	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
-	r.HandleFunc("/speakers", handler.GetAllSpeakers(api)).Methods(http.MethodGet)
-
+	r.HandleFunc("/events", handler.GetAllEvents(api)).Methods(http.MethodGet)
+	r.HandleFunc("/events", handler.CreateEvent(api)).Methods(http.MethodPost)
 	r.HandleFunc("/events/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
-	r.HandleFunc("/events", handler.GetEvents(api)).Methods(http.MethodGet)
+
+	r.HandleFunc("/sessions", handler.GetAllSessions(api)).Methods(http.MethodGet)
+	r.HandleFunc("/sessions", handler.CreateSession(api)).Methods(http.MethodPost)
+	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
+
+	r.HandleFunc("/speakers", handler.GetAllSpeakers(api)).Methods(http.MethodGet)
+	r.HandleFunc("/speakers", handler.CreateSpeaker(api)).Methods(http.MethodPost)
+	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
+
 
 	// For dev only - Set up CORS so our client can consume the api
 	corsWrapper := cors.New(cors.Options{

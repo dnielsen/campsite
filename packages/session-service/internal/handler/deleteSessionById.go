@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func DeleteSessionById(datastore service.Datastore) http.HandlerFunc   {
+func DeleteSessionById(datastore service.SessionDatastore) http.HandlerFunc   {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
