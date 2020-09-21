@@ -60,7 +60,7 @@ function FullSpeaker() {
                 </tr>
               </thead>
               <tbody>
-                {speaker.sessions.map((session) => (
+                {speaker.sessions?.map((session) => (
                   <tr key={session.id}>
                     <td>
                       <Link to={`/sessions/${session.id}`}>{session.name}</Link>
@@ -73,7 +73,7 @@ function FullSpeaker() {
                       on {moment(session.startDate).format("MM/DD/YYYY")}
                     </td>
                     <td>
-                      <Link to={`/sessions/${session.url}`}>View</Link>
+                      <a href={session.url}>View</a>
                     </td>
                   </tr>
                 ))}
