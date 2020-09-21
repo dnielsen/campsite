@@ -2,20 +2,19 @@ package service
 
 import (
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 	"time"
 )
 
 type Session struct {
-	ID          string     `json:"id,omitempty" gorm:"primaryKey;type:uuid"`
-	Name        string     `json:"name,omitempty"`
-	StartDate   *time.Time `json:"startDate,omitempty"`
-	EndDate     *time.Time `json:"endDate,omitempty"`
-	Description string     `json:"description,omitempty"`
-	Url         string     `json:"url,omitempty"`
-	Event       Event     `json:"event,omitempty" gorm:"constraint:OnDelete:CASCADE;"`
-	EventID     *string     `json:"-"`
-	Speakers    []Speaker  `json:"speakers" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
+	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
+	Name        string    `json:"name" gorm:"not null"`
+	StartDate   *time.Time `json:"startDate" gorm:"not null"`
+	EndDate     *time.Time `json:"endDate" gorm:"not null"`
+	Description string    `json:"description" gorm:"not null"`
+	Url         string    `json:"url" gorm:"not null"`
+	Event 		Event `json:"-"`
+	EventID 	string `json:"-" gorm:"type:uuid;not null"`
+	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 type SessionInput struct {
@@ -31,21 +30,6 @@ type SessionInput struct {
 	EventId string `json:"eventId,omitempty" validate:"required,uuid4"`
 }
 
-// Add UUID automatically on creation so that we can skip it in our methods.
-func (s *Session) BeforeCreate(tx *gorm.DB) (err error) {
-	s.ID = uuid.New().String()
-	return
-}
-
-func (api *api) GetSessionById(id string) (*Session, error) {
-	var session Session
-	res := api.db.Preload("Speakers").Where("id = ?", id).First(&session)
-	if err := res.Error; err != nil {
-		return nil, err
-	}
-	return &session, nil
-}
-
 func (api *api) GetAllSessions() (*[]Session, error) {
 	var sessions []Session
 	if err := api.db.Find(&sessions).Error; err != nil {
@@ -59,37 +43,32 @@ func (api *api) CreateSession(i SessionInput) (*Session, error) {
 	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
 		return nil, err
 	}
-
-	var event Event
-	if err := api.db.Where("id = ?", i.EventId).First(&event).Error; err != nil {
-		return nil, err
-	}
-
-	// Create the session.
 	session := Session{
+		ID:          uuid.New().String(),
 		Name:        i.Name,
 		StartDate:   i.StartDate,
 		EndDate:     i.EndDate,
 		Description: i.Description,
+		EventID:     i.EventId,
 		Url:         i.Url,
-		EventID: &i.EventId,
+		Speakers: speakers,
 	}
 	if err := api.db.Create(&session).Error; err != nil {
 		return nil, err
 	}
-
-	// A temporary solution since we can't figure out how to do it otherwise
-	// without speaker duplication, however it's not so bad since
-	// most often there's just one speaker per session.
-	for _, speaker := range speakers {
-		if err := api.db.Model(&speaker).Association("Sessions").Append(&session); err != nil {
-			return nil, err
-		}
-	}
-
 	return &session, nil
 }
-func (api *api) DeleteSession(id string) error {
+
+
+func (api *api) GetSessionById(id string) (*Session, error) {
+	session := Session{ID: id}
+	if err := api.db.Preload("Speakers").First(&session).Error; err != nil {
+		return nil, err
+	}
+	return &session, nil
+}
+
+func (api *api) DeleteSessionById(id string) error {
 	if err := api.db.Where("id = ?", id).Delete(&Session{}).Error; err != nil {
 		return err
 	}

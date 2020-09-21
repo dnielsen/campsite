@@ -20,54 +20,58 @@ func main() {
 	c, err := config.GetConfig("development.yml")
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
+	} else {
+		log.Printf("Config has been loaded: %v", c)
 	}
-	log.Printf("Config has been loaded: %v", c)
 
 	// Connect to the database.
 	connStr := config.GetDbConnString(&c.Db)
 	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
+	} else {
+		log.Println("Connected to database")
 	}
-	log.Println("Connected to database")
 
 	// Migrate the database.
 	if err = db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
+	} else {
+		log.Println("Auto migrated database")
 	}
-	log.Println("Auto migrated database")
-	// For dev
+	// For dev - create a mock event in the database.
 	// ---------
-
 	now := time.Now()
-	event := service.Event{
-		ID:            "aef5329b-b934-4d60-bf33-ff2ec368c119",
-		Name:          "BigDataCamp LA 2020",
-		Description:   "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, excepturi magnam nisi numquam quam quidem soluta voluptatem. Aspernatur aut, consequuntur dolore et laudantium libero magnam officia quod repellendus ullam, voluptatibus.",
-		StartDate:     &now,
-		EndDate:       &now,
-		Photo:         "https://devconf.info/assets/images/devconf-cz-social.png",
-		OrganizerName: "David Musk",
-		Address:       "San Jose, CA",
-	}
+	later := time.Now().Add(time.Hour * 8)
 	speaker := service.Speaker{
-		ID:       "aef5329b-b934-4d60-bf33-ff2ec368c119",
+		ID:       "9c08fbf8-160b-4a86-9981-aeddf4e3798e",
 		Name:     "John Doe",
-		Bio:      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, excepturi magnam nisi numquam quam quidem soluta voluptatem. Aspernatur aut, consequuntur dolore et laudantium libero magnam officia quod repellendus ullam, voluptatibus.",
-		Headline: "CEO of Tesla",
-		Photo:    "https://www.mantruckandbus.com/fileadmin/_processed_/2/c/csm_kleiss-interview-header_8a76bdbcb6.jpg",
+		Bio:      "Bio",
+		Headline: "Headline",
+		Photo:    "photo",
 	}
 	session := service.Session{
-		ID:          "391700d5-08dc-4173-9193-80ea1a32b7f9",
-		Name:        "Concurrency in Go",
+		ID:          "be13940b-c7ba-4f97-bdab-b4a47b11ffed",
+		Name:        "Session",
 		StartDate:   &now,
-		EndDate:     &now,
-		Description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, excepturi magnam nisi numquam quam quidem soluta voluptatem. Aspernatur aut, consequuntur dolore et laudantium libero magnam officia quod repellendus ullam, voluptatibus.",
-		Url:         "https://google.com",
-		Speakers:    []service.Speaker{speaker},
+		EndDate:     &later,
+		Description: "desc",
+		Url:         "url",
+		EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+		Speakers: []service.Speaker{speaker},
 	}
-	session.Speakers = []service.Speaker{speaker}
-	event.Sessions = []service.Session{session}
+	address := "San Francisco, California"
+	event := service.Event{
+		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+		Name:          "Great Event",
+		Description: "Very interesting",
+		StartDate:     &now,
+		EndDate:       &later,
+		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+		OrganizerName: "John Tim",
+		Address:       &address,
+		Sessions: []service.Session{session},
+	}
 
 	if err := db.Create(&event).Error; err != nil {
 		log.Printf("Failed to create mock data in database: %v", err)
@@ -76,12 +80,13 @@ func main() {
 	}
 	// ----------
 
+	// Set up the API.
 	api := service.NewAPI(db)
 
 	// Set up the router.
 	r := mux.NewRouter()
 
-	// Set up handlers.
+	// Set up the handlers.
 	r.HandleFunc("/events", handler.GetEvents(api)).Methods(http.MethodGet)
 	r.HandleFunc("/events", handler.CreateEvent(api)).Methods(http.MethodPost)
 	r.HandleFunc("/events/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
@@ -113,6 +118,7 @@ func main() {
 	}
 	// Start the server.
 	log.Printf("Listening at: %v", srv.Addr)
-	err = srv.ListenAndServe()
-	log.Fatalf("Failed to listen: %v", err)
+	if err = srv.ListenAndServe(); err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
 }

@@ -14,7 +14,7 @@ func DeleteSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
 		id := vars[ID]
 
 		// Delete the speaker from the database.
-		if err := datastore.DeleteSpeaker(id); err != nil {
+		if err := datastore.DeleteSpeakerById(id); err != nil {
 			log.Printf("Failed to delete speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
