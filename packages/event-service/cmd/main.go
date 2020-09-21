@@ -85,14 +85,17 @@ func main() {
 	r.HandleFunc("/events", handler.GetAllEvents(api)).Methods(http.MethodGet)
 	r.HandleFunc("/events", handler.CreateEvent(api)).Methods(http.MethodPost)
 	r.HandleFunc("/events/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/events/{id}", handler.DeleteEventById(api)).Methods(http.MethodDelete)
 
 	r.HandleFunc("/sessions", handler.GetAllSessions(api)).Methods(http.MethodGet)
 	r.HandleFunc("/sessions", handler.CreateSession(api)).Methods(http.MethodPost)
 	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/sessions/{id}", handler.DeleteSessionById(api)).Methods(http.MethodDelete)
 
 	r.HandleFunc("/speakers", handler.GetAllSpeakers(api)).Methods(http.MethodGet)
 	r.HandleFunc("/speakers", handler.CreateSpeaker(api)).Methods(http.MethodPost)
 	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/speakers/{id}", handler.DeleteSpeakerById(api)).Methods(http.MethodDelete)
 
 
 	// For dev only - Set up CORS so our client can consume the api

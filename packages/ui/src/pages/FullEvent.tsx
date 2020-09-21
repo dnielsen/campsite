@@ -25,18 +25,13 @@ function FullEvent() {
     history.push("/");
   }
 
-  const eventSpeakers = eventDetails.sessions
-    .map((session) => session.speakers)
-    .flat()
-    .reduce((uniqueSpeakers, currSpeaker) => {
-      // @ts-ignore
-      if (uniqueSpeakers.includes(currSpeaker)) {
-        return uniqueSpeakers;
-      } else {
-        // @ts-ignore
-        return uniqueSpeakers.concat(currSpeaker);
-      }
-    }, []);
+  if (eventDetails.sessions) {
+    const eventSpeakersWithDuplicates = eventDetails.sessions
+      .map((session) => session.speakers)
+      .flat();
+
+    eventDetails.speakers = util.getUniqueSpeakers(eventSpeakersWithDuplicates);
+  }
 
   return (
     <Container>
@@ -79,8 +74,12 @@ function FullEvent() {
             <button type={"button"} onClick={handleClick}>
               Delete
             </button>
-            <SessionSchedule sessions={eventDetails.sessions} />
-            <SpeakerList speakers={eventSpeakers} />
+            {eventDetails.sessions && (
+              <SessionSchedule sessions={eventDetails.sessions} />
+            )}
+            {eventDetails.speakers && (
+              <SpeakerList speakers={eventDetails.speakers} />
+            )}
           </Col>
         </Row>
       </s.EventWrapper>

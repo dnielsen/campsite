@@ -60,3 +60,11 @@ func (api *api) CreateEvent(i EventInput) (*Event, error) {
 	}
 	return &event, nil
 }
+
+func (api *api) DeleteEventById(id string) error {
+	event := Event{ID: id}
+	if err := api.db.Delete(&event).Error; err != nil {
+		return err
+	}
+	return nil
+}

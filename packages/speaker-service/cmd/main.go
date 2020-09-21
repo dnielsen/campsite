@@ -59,7 +59,7 @@ func main() {
 	r.HandleFunc("/", handler.GetSpeakers(api)).Methods(http.MethodGet)
 	r.HandleFunc("/", handler.CreateSpeaker(api)).Methods(http.MethodPost)
 	r.HandleFunc("/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
-	r.HandleFunc("/{id}", handler.DeleteSpeakerById(api)).Methods(http.MethodPut)
+	r.HandleFunc("/{id}", handler.DeleteSpeakerById(api)).Methods(http.MethodDelete)
 
 	// Set up the server.
 	srv := &http.Server{

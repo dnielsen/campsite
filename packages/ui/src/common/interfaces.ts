@@ -13,11 +13,12 @@ export interface EventDetails {
   // We might add null address support later - that is, when an event takes place online
   // instead of in-person.
   address: string;
-  sessions: Session[];
+  sessions?: Session[];
+  speakers?: SpeakerPreview[];
 }
 
 export interface Speaker extends SpeakerPreview {
-  sessions: Session[];
+  sessions?: Session[];
 }
 
 export interface SpeakerPreview {

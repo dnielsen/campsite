@@ -19,7 +19,7 @@ type Session struct {
 	Url         string    `json:"url" gorm:"not null"`
 	Event 		Event `json:"-"`
 	EventID 	string `json:"-" gorm:"type:uuid;not null"`
-	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;"`
+	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 type SessionInput struct {
@@ -93,6 +93,22 @@ func (api *api) GetSessionById(id string) (*Session, error) {
 	}
 
 	return &session, nil
+}
+
+func (api *api) DeleteSessionById(id string) error {
+	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%v/%v", api.c.Service.Session.Address, id), nil)
+	if err != nil {
+		log.Printf("Failed to create new request: %v", err)
+		return err
+	}
+
+	// Make the request.
+	if _, err := api.client.Do(req); err != nil {
+		log.Printf("Failed to do request: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 

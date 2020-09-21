@@ -15,7 +15,7 @@ type Speaker struct {
 	Bio        string    `json:"bio" gorm:"not null"`
 	Headline   string    `json:"headline" gorm:"not null"`
 	Photo      string    `json:"photo" gorm:"not null"`
-	Sessions   []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;"`
+	Sessions   []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 type SpeakerInput struct {
@@ -25,8 +25,6 @@ type SpeakerInput struct {
 	Headline string `json:"headline,omitempty" validate:"required,min=2,max=30"`
 	Photo    string `json:"photo,omitempty" validate:"required,min=10,max=150"`
 }
-
-
 
 func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("%v/%v", api.c.Service.Speaker.Address, id), nil)
@@ -122,4 +120,22 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	}
 
 	return &speaker, nil
+}
+
+
+
+func (api *api) DeleteSpeakerById(id string) error {
+	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%v/%v", api.c.Service.Speaker.Address, id), nil)
+	if err != nil {
+		log.Printf("Failed to create new request: %v", err)
+		return err
+	}
+
+	// Make the request.
+	if _, err := api.client.Do(req); err != nil {
+		log.Printf("Failed to do request: %v", err)
+		return err
+	}
+
+	return nil
 }

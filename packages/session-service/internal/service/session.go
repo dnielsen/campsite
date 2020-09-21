@@ -4,19 +4,6 @@ import (
 	"github.com/google/uuid"
 	"time"
 )
-//
-//type Session struct {
-//	ID          string    `json:"id"`
-//	Name        string    `json:"name"`
-//	StartDate   *time.Time `json:"startDate"`
-//	EndDate     *time.Time `json:"endDate"`
-//	Description string    `json:"description"`
-//	// Either live zoom or recorded video's youtube link.
-//	Url string `json:"url"`
-//	EventID 	string `json:"eventId"`
-//	Event Event          `json:"event,omitempty"`
-//	Speakers []Speaker `json:"speakers,omitempty"`
-//}
 
 type Session struct {
 	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
@@ -27,7 +14,7 @@ type Session struct {
 	Url         string    `json:"url" gorm:"not null"`
 	Event 		Event `json:"-"`
 	EventID 	string `json:"-" gorm:"type:uuid;not null"`
-	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;"`
+	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 

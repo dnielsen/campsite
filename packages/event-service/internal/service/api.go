@@ -26,16 +26,19 @@ type EventDatastore interface {
 	GetEventById(id string) (*Event, error)
 	GetAllEvents() (*[]Event, error)
 	CreateEvent(i EventInput) (*Event, error)
+	DeleteEventById(id string) error
 }
 
 type SessionDatastore interface {
 	GetAllSessions() (*[]Session, error)
 	GetSessionById(id string) (*Session, error)
 	CreateSession(i SessionInput) (*Session, error)
+	DeleteSessionById(id string) error
 }
 
 type SpeakerDatastore interface {
 	GetAllSpeakers() (*[]Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)
 	CreateSpeaker(i SpeakerInput) (*Speaker, error)
+	DeleteSpeakerById(id string) error
 }
