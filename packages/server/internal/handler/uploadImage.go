@@ -11,7 +11,7 @@ import (
 // It's the most common used name.
 const FORM_DATA_NAME = "file"
 
-func UploadImage(datastore service.S3Datastore) http.HandlerFunc  {
+func UploadImage(datastore service.S3Service) http.HandlerFunc  {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Parse the request body, that is the form data.
 		// `10 << 20` specifies a maximum upload size of 10MB.

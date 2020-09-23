@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func GetEvents(datastore service.EventDatastore) http.HandlerFunc {
+func GetEvents(datastore service.EventService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// We can later add url parameters to
 		// specify the ids of the events we want

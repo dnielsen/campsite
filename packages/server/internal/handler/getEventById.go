@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func GetEventById(datastore service.EventDatastore) http.HandlerFunc {
+func GetEventById(datastore service.EventService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func GetSessions(datastore service.SessionDatastore) http.HandlerFunc {
+func GetSessions(datastore service.SessionService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// We can later add url parameters to
 		// specify the ids of the events we want

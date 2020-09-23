@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func CreateSpeaker(datastore service.SpeakerDatastore) http.HandlerFunc {
+func CreateSpeaker(datastore service.SpeakerService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SpeakerInput

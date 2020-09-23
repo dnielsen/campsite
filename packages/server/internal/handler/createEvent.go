@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func CreateEvent(datastore service.EventDatastore) http.HandlerFunc {
+func CreateEvent(datastore service.EventService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.EventInput

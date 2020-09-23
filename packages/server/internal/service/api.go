@@ -17,27 +17,27 @@ func NewAPI(db *gorm.DB, s *session.Session) *api {
 	return &api{db, u}
 }
 
-type EventDatastore interface {
+type EventService interface {
 	GetAllEvents() (*[]Event, error)
 	CreateEvent(i EventInput) (*Event, error)
 	GetEventById(id string) (*Event, error)
 	DeleteEventById(id string) error
 }
 
-type SessionDatastore interface {
+type SessionService interface {
 	GetAllSessions() (*[]Session, error)
 	CreateSession(i SessionInput) (*Session, error)
 	GetSessionById(id string) (*Session, error)
 	DeleteSessionById(id string) error
 }
 
-type SpeakerDatastore interface {
+type SpeakerService interface {
 	GetAllSpeakers() (*[]Speaker, error)
 	CreateSpeaker(i SpeakerInput) (*Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)
 	DeleteSpeakerById(id string) error
 }
 
-type S3Datastore interface {
+type S3Service interface {
 	UploadImage(file multipart.File, fileHeader *multipart.FileHeader) (*Upload, error)
 }

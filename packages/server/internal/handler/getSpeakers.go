@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func GetSpeakers(datastore service.SpeakerDatastore) http.HandlerFunc {
+func GetSpeakers(datastore service.SpeakerService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// We can later add url parameters to
 		// specify the ids of the events we want

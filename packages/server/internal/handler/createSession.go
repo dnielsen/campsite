@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func CreateSession(datastore service.SessionDatastore) http.HandlerFunc {
+func CreateSession(datastore service.SessionService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SessionInput
