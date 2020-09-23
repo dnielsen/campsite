@@ -42,10 +42,11 @@ func NewDb(c *config.DbConfig) *gorm.DB {
 	return db
 }
 
-// Same as NewDb but additionally migrates the database and creates
+// The same as NewDb but additionally migrates the database and creates
 // mock data in the database.
 func NewDevDb(c *config.DbConfig) *gorm.DB {
 	db := NewDb(c)
+
 	// Migrate the database.
 	if err := db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
