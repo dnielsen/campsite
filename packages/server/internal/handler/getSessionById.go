@@ -8,14 +8,15 @@ import (
 	"net/http"
 )
 
-func GetSessionById(datastore service.SessionService) http.HandlerFunc {
+// `/sessions/{id}` GET route.
+func GetSessionById(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
 		// Get the session from the database.
-		session, err := datastore.GetSessionById(id)
+		session, err := api.GetSessionById(id)
 		if err != nil {
 			log.Printf("Failed to get session: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

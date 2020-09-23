@@ -8,7 +8,8 @@ import (
 	"net/http"
 )
 
-func CreateSpeaker(datastore service.SpeakerService) http.HandlerFunc {
+// `/speakers` POST route.
+func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SpeakerInput
@@ -27,7 +28,7 @@ func CreateSpeaker(datastore service.SpeakerService) http.HandlerFunc {
 		}
 
 		// Create the speaker in the database.
-		speaker, err := datastore.CreateSpeaker(i)
+		speaker, err := api.CreateSpeaker(i)
 		if err != nil {
 			log.Printf("Failed to create speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

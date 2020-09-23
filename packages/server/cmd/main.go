@@ -28,7 +28,7 @@ func main() {
 	s := storage.NewS3Session()
 
 	// Set up the API.
-	api := service.NewAPI(db, s)
+	api := service.NewAPI(db, s, c)
 
 	// Set up the router.
 	r := mux.NewRouter()

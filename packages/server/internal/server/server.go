@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	READ_TIMEOUT = 15 * time.Second
+	READ_TIMEOUT  = 15 * time.Second
 	WRITE_TIMEOUT = 15 * time.Second
-	IDLE_TIMEOUT = 120 * time.Second
+	IDLE_TIMEOUT  = 120 * time.Second
 )
 
 func Start(c *config.ServerConfig, r *mux.Router) {

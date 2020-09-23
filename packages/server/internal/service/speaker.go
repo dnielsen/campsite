@@ -3,12 +3,12 @@ package service
 import "github.com/google/uuid"
 
 type Speaker struct {
-	ID         string    `json:"id" gorm:"type:uuid"`
-	Name       string    `json:"name" gorm:"not null"`
-	Bio        string    `json:"bio" gorm:"not null"`
-	Headline   string    `json:"headline" gorm:"not null"`
-	Photo      string    `json:"photo" gorm:"not null"`
-	Sessions   []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
+	ID       string    `json:"id" gorm:"type:uuid"`
+	Name     string    `json:"name" gorm:"not null"`
+	Bio      string    `json:"bio" gorm:"not null"`
+	Headline string    `json:"headline" gorm:"not null"`
+	Photo    string    `json:"photo" gorm:"not null"`
+	Sessions []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 type SpeakerInput struct {
@@ -19,7 +19,7 @@ type SpeakerInput struct {
 	Photo    string `json:"photo,omitempty" validate:"required,min=10,max=150"`
 }
 
-func (api *api) GetAllSpeakers() (*[]Speaker, error) {
+func (api *API) GetAllSpeakers() (*[]Speaker, error) {
 	var speakers []Speaker
 	if err := api.db.Find(&speakers).Error; err != nil {
 		return nil, err
@@ -27,13 +27,13 @@ func (api *api) GetAllSpeakers() (*[]Speaker, error) {
 	return &speakers, nil
 }
 
-func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
+func (api *API) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	speaker := Speaker{
-		ID:         uuid.New().String(),
-		Name:       i.Name,
-		Bio:        i.Bio,
-		Headline:   i.Headline,
-		Photo:      i.Photo,
+		ID:       uuid.New().String(),
+		Name:     i.Name,
+		Bio:      i.Bio,
+		Headline: i.Headline,
+		Photo:    i.Photo,
 	}
 	if err := api.db.Create(&speaker).Error; err != nil {
 		return nil, err
@@ -41,15 +41,17 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	return &speaker, nil
 }
 
-func (api *api) GetSpeakerById(id string) (*Speaker, error) {
+func (api *API) GetSpeakerById(id string) (*Speaker, error) {
 	speaker := Speaker{ID: id}
+	// We're preloading sessions since we need them in the speaker by id page.
+	// For now we're getting all of the properties, we'll optimize it later.
 	if err := api.db.Preload("Sessions").First(&speaker).Error; err != nil {
 		return nil, err
 	}
 	return &speaker, nil
 }
 
-func (api *api) DeleteSpeakerById(id string) error {
+func (api *API) DeleteSpeakerById(id string) error {
 	speaker := Speaker{ID: id}
 	if err := api.db.Delete(&speaker).Error; err != nil {
 		return err

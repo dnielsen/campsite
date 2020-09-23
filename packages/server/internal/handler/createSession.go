@@ -8,7 +8,8 @@ import (
 	"net/http"
 )
 
-func CreateSession(datastore service.SessionService) http.HandlerFunc {
+// `/sessions` POST route.
+func CreateSession(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SessionInput
@@ -27,7 +28,7 @@ func CreateSession(datastore service.SessionService) http.HandlerFunc {
 		}
 
 		// Create the session in the database.
-		session, err := datastore.CreateSession(i)
+		session, err := api.CreateSession(i)
 		if err != nil {
 			log.Printf("Failed to create session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

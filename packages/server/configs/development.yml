@@ -7,3 +7,6 @@ db:
   sslmode: disable
 server:
   port: 4444
+s3:
+  bucket: events-monolith
+  region: eu-central-1

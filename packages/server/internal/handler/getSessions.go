@@ -7,14 +7,15 @@ import (
 	"net/http"
 )
 
-func GetSessions(datastore service.SessionService) http.HandlerFunc {
+// `/sessions` GET route.
+func GetSessions(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// We can later add url parameters to
 		// specify the ids of the events we want
 		// if needed.
 
 		// Get the sessions from the database.
-		sessions, err := datastore.GetAllSessions()
+		sessions, err := api.GetAllSessions()
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

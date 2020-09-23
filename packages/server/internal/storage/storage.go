@@ -11,7 +11,7 @@ const (
 	AWS_S3_REGION = "eu-central-1"
 )
 
-func NewS3Session() *session.Session  {
+func NewS3Session() *session.Session {
 	s, err := session.NewSession(
 		&aws.Config{
 			Region: aws.String(AWS_S3_REGION),

@@ -7,14 +7,15 @@ import (
 	"net/http"
 )
 
-func GetSpeakers(datastore service.SpeakerService) http.HandlerFunc {
+// `/speakers/{id}` GET route.
+func GetSpeakers(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// We can later add url parameters to
 		// specify the ids of the events we want
 		// if needed.
 
 		// Get the speakers from the database.
-		speakers, err := datastore.GetAllSpeakers()
+		speakers, err := api.GetAllSpeakers()
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

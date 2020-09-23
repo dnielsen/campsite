@@ -8,12 +8,12 @@ import (
 )
 
 type DbConfig struct {
-	Name string `yaml:"name" env:"DB_NAME" env-default:"postgres"`
-	User string `yaml:"user" env:"DB_USER" env-default:"postgres"`
+	Name     string `yaml:"name" env:"DB_NAME" env-default:"postgres"`
+	User     string `yaml:"user" env:"DB_USER" env-default:"postgres"`
 	Password string `yaml:"password" env:"DB_PASSWORD" env-default:"postgres"`
 	Host     string `yaml:"host" env:"DB_HOST" env-default:"localhost"`
 	Port     string `yaml:"port" env:"DB_PORT" env-default:"5432"`
-	SSLMode     string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
+	SSLMode  string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
 }
 
 type ServerConfig struct {
@@ -21,8 +21,14 @@ type ServerConfig struct {
 }
 
 type Config struct {
-	Db DbConfig `yaml:"db"`
+	Db     DbConfig     `yaml:"db"`
 	Server ServerConfig `yaml:"server"`
+	S3     S3Config     `yaml:"s3"`
+}
+
+type S3Config struct {
+	Bucket string `yaml:"bucket" env:"S3_BUCKET" env-default:"events-monolith"`
+	Region string `yaml:"region" env:"S3_REGION" env-default:"eu-central-1"`
 }
 
 // If the filename isn't an empty string read the config from configs directory
@@ -55,13 +61,12 @@ func getConfigPath(configFilename string) string {
 	return filepath.Join(filepath.Dir(currentFilename), "../../configs/", configFilename)
 }
 
-// Initialize the config. It will throw if an error occurs.
+// Initialize the config. It will panic if an error occurs.
 func NewConfig(filename string) *Config {
 	c, err := getConfig(filename)
 	if err != nil {
-		log.Fatalf("Failed to load config: %v",err)
+		log.Fatalf("Failed to load config: %v", err)
 	}
-
 	log.Printf("Config has been loaded: %v", c)
 	return c
 }

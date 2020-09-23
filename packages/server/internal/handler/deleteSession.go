@@ -7,14 +7,15 @@ import (
 	"net/http"
 )
 
-func DeleteSession(datastore service.SessionService) http.HandlerFunc {
+// `/sessions/{id}` DELETE route.
+func DeleteSession(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
 		// Delete the session from the database.
-		if err := datastore.DeleteSessionById(id); err != nil {
+		if err := api.DeleteSessionById(id); err != nil {
 			log.Printf("Failed to delete session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

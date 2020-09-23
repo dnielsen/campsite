@@ -7,14 +7,15 @@ import (
 	"net/http"
 )
 
-func DeleteSpeaker(datastore service.SpeakerService) http.HandlerFunc {
+// `/speakers/{id}` DELETE route.
+func DeleteSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
 		// Delete the speaker from the database.
-		if err := datastore.DeleteSpeakerById(id); err != nil {
+		if err := api.DeleteSpeakerById(id); err != nil {
 			log.Printf("Failed to delete speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

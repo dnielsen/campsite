@@ -7,14 +7,15 @@ import (
 	"net/http"
 )
 
-func DeleteEvent(datastore service.EventService) http.HandlerFunc {
+// `/events/{id}` DELETE route.
+func DeleteEvent(api service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
 		// Delete the event from the database.
-		if err := datastore.DeleteEventById(id); err != nil {
+		if err := api.DeleteEventById(id); err != nil {
 			log.Printf("Failed to delete event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

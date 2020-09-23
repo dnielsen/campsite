@@ -8,7 +8,8 @@ import (
 	"net/http"
 )
 
-func CreateEvent(datastore service.EventService) http.HandlerFunc {
+// `/events` POST route.
+func CreateEvent(api service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.EventInput
@@ -27,7 +28,7 @@ func CreateEvent(datastore service.EventService) http.HandlerFunc {
 		}
 
 		// Create the event in the database.
-		event, err := datastore.CreateEvent(i)
+		event, err := api.CreateEvent(i)
 		if err != nil {
 			log.Printf("Failed to create event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

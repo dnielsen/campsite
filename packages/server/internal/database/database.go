@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func getDbConnString(c *config.DbConfig) string  {
+func getDbConnString(c *config.DbConfig) string {
 	vals := getDbValues(c)
 	var p []string
 	for k, v := range vals {
@@ -44,7 +44,7 @@ func NewDb(c *config.DbConfig) *gorm.DB {
 
 // Same as NewDb but additionally migrates the database and creates
 // mock data in the database.
-func NewDevDb(c *config.DbConfig) *gorm.DB  {
+func NewDevDb(c *config.DbConfig) *gorm.DB {
 	db := NewDb(c)
 	// Migrate the database.
 	if err := db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}); err != nil {
@@ -72,7 +72,7 @@ func getMockEvent() service.Event {
 	event := service.Event{
 		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 		Name:          "Great Event",
-		Description: "Very interesting",
+		Description:   "Very interesting",
 		StartDate:     &now,
 		EndDate:       &later,
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",

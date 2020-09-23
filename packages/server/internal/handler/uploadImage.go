@@ -11,7 +11,8 @@ import (
 // It's the most common used name.
 const FORM_DATA_NAME = "file"
 
-func UploadImage(datastore service.S3Service) http.HandlerFunc  {
+// `/upload` POST route.
+func UploadImage(api service.S3API) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Parse the request body, that is the form data.
 		// `10 << 20` specifies a maximum upload size of 10MB.
@@ -31,7 +32,7 @@ func UploadImage(datastore service.S3Service) http.HandlerFunc  {
 		defer file.Close()
 
 		// Upload the image to S3.
-		upload, err := datastore.UploadImage(file, fileHeader)
+		upload, err := api.UploadImage(file, fileHeader)
 		if err != nil {
 			log.Printf("Failed to uploaded image: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -8,14 +8,15 @@ import (
 	"net/http"
 )
 
-func GetEventById(datastore service.EventService) http.HandlerFunc {
+// `/events/{id}` GET route.
+func GetEventById(api service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
 		// Get the event from the database.
-		event, err := datastore.GetEventById(id)
+		event, err := api.GetEventById(id)
 		if err != nil {
 			log.Printf("Failed to get event: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
