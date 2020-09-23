@@ -18,6 +18,7 @@ import (
 )
 
 const (
+	// TODO: move it to env/config
 	AWS_S3_REGION = "eu-central-1"
 )
 

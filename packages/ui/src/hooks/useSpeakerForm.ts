@@ -12,6 +12,7 @@ export default function useSpeakerForm(): UseForm<FormSpeakerInput> {
 
   async function onSubmit(input: FormSpeakerInput) {
     // Send a request to create the speaker.
+    console.log(input);
     const createdSpeaker = (await fetch(BASE_SPEAKER_API_URL, {
       method: "POST",
       body: JSON.stringify(input),

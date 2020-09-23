@@ -1,6 +1,7 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
 import { FormConfig, FormSpeakerInput } from "../../common/interfaces";
+import ImageUploadField from "../../components/ImageUploadField";
 
 interface Props {
   formConfig: FormConfig<FormSpeakerInput>;
@@ -26,7 +27,7 @@ function SpeakerForm(props: Props) {
           <section>
             {/*For now it's just a url, later we might add a photo upload*/}
             <label htmlFor="photo">Photo</label>
-            <Field type={"text"} name={"photo"} />
+            <ImageUploadField name={"photo"} />
           </section>
           <button type={"submit"} disabled={isSubmitting}>
             Submit

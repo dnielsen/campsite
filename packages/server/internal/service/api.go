@@ -39,5 +39,5 @@ type SpeakerDatastore interface {
 }
 
 type S3Datastore interface {
-	UploadImage(file multipart.File, fileHeader *multipart.FileHeader) (*s3manager.UploadOutput, error)
+	UploadImage(file multipart.File, fileHeader *multipart.FileHeader) (*Upload, error)
 }

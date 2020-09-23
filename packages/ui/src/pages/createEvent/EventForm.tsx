@@ -2,6 +2,7 @@ import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
 import { FormConfig, FormEventInput } from "../../common/interfaces";
 import DateTimeField from "../../components/DateTimeField";
+import ImageUploadField from "../../components/ImageUploadField";
 
 interface Props {
   formConfig: FormConfig<FormEventInput>;
@@ -22,7 +23,7 @@ function EventForm(props: Props) {
           </section>
           <section>
             <label htmlFor={"photo"}>Photo</label>
-            <Field type={"text"} name={"photo"} />
+            <ImageUploadField name={"photo"} />
           </section>
           <section>
             <label htmlFor={"organizerName"}>Organizer name</label>

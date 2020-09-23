@@ -99,3 +99,7 @@ export interface FormConfig<T> {
 export interface UseForm<T> {
   formConfig: FormConfig<T>;
 }
+
+export interface Upload {
+  url: string;
+}

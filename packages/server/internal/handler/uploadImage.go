@@ -7,17 +7,23 @@ import (
 	"net/http"
 )
 
+// Our frontend appends a file and sets a `file` name.
+// It's the most common used name.
+const FORM_DATA_NAME = "file"
+
 
 func UploadImage(datastore service.S3Datastore) http.HandlerFunc  {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// `10 << 20` specifies a maximum upload of 10MB.
+		// Parse the request body, that is the form data.
+		// `10 << 20` specifies a maximum upload size of 10MB.
 		if err := r.ParseMultipartForm(10 << 20); err != nil {
 			log.Printf("Failed to parse file from body: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		file, fileHeader, err := r.FormFile("file")
+		// Read the form data.
+		file, fileHeader, err := r.FormFile(FORM_DATA_NAME)
 		if err != nil {
 			log.Printf("Failed to get form file: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
@@ -25,20 +31,23 @@ func UploadImage(datastore service.S3Datastore) http.HandlerFunc  {
 		}
 		defer file.Close()
 
-		result, err := datastore.UploadImage(file, fileHeader)
+		// Upload the image to S3.
+		upload, err := datastore.UploadImage(file, fileHeader)
 		if err != nil {
 			log.Printf("Failed to uploaded image: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		bytes, err := json.Marshal(result)
+		// Marshal the upload.
+		bytes, err := json.Marshal(upload)
 		if err != nil {
 			log.Printf("Failed to marshal upload result: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
+		// Respond JSON with the upload.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(bytes)
