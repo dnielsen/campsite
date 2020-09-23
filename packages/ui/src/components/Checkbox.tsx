@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "formik";
+import { Field, FieldProps, FormikProps } from "formik";
 
 interface Props {
   value: string;
@@ -9,24 +9,23 @@ interface Props {
 
 function Checkbox(props: Props) {
   // TODO types
-  function handleChange({ field, form }: any) {
+  function handleChange({ field, form }: FieldProps<string[]>) {
     // If it's already in the value array, remove it, otherwise add it.
     const newFieldValue = field.value.includes(props.value)
-      ? field.value.filter((value: any) => value !== props.value)
+      ? field.value.filter((value) => value !== props.value)
       : field.value.concat(props.value);
     form.setFieldValue(props.name, newFieldValue);
   }
 
   return (
     <Field name={props.name}>
-      {/*TODO types*/}
-      {({ field, form }: any) => (
+      {(fieldProps: FieldProps) => (
         <label>
           <input
             type="checkbox"
             {...props}
-            checked={field.value.includes(props.value)}
-            onChange={() => handleChange({ field, form })}
+            checked={fieldProps.field.value.includes(props.value)}
+            onChange={() => handleChange(fieldProps)}
           />
           {props.label}
         </label>

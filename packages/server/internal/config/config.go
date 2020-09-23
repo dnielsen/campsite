@@ -1,11 +1,10 @@
 package config
 
 import (
-	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
+	"log"
 	"path/filepath"
 	"runtime"
-	"strings"
 )
 
 type DbConfig struct {
@@ -17,17 +16,19 @@ type DbConfig struct {
 	SSLMode     string `yaml:"sslmode" env:"DB_SSLMODE" env-default:"disable"`
 }
 
+type ServerConfig struct {
+	Port string `yaml:"port" env:"SERVER_PORT" env-default:"4444"`
+}
+
 type Config struct {
 	Db DbConfig `yaml:"db"`
-	Server struct {
-		Port string `yaml:"port" env:"SERVER_PORT" env-default:"4444"`
-	} `yaml:"server"`
+	Server ServerConfig `yaml:"server"`
 }
 
 // If the filename isn't an empty string read the config from configs directory
 // which is located in the project's root directory.
 // Else, read the variables from the environment.
-func GetConfig(filename string) (*Config, error) {
+func getConfig(filename string) (*Config, error) {
 	var c Config
 	if filename != "" {
 		// Read the config from the configs/{filename} file.
@@ -54,28 +55,13 @@ func getConfigPath(configFilename string) string {
 	return filepath.Join(filepath.Dir(currentFilename), "../../configs/", configFilename)
 }
 
-func GetDbConnString(c *DbConfig) string  {
-	vals := getDbValues(c)
-	var p []string
-	for k, v := range vals {
-		p = append(p, fmt.Sprintf("%s=%s", k, v))
+// Initialize the config. It will throw if an error occurs.
+func NewConfig(filename string) *Config {
+	c, err := getConfig(filename)
+	if err != nil {
+		log.Fatalf("Failed to load config: %v",err)
 	}
-	return strings.Join(p, " ")
-}
 
-func getDbValues(c *DbConfig) map[string]string {
-	p := map[string]string{}
-	setIfNotEmpty(p, "dbname", c.Name)
-	setIfNotEmpty(p, "host", c.Host)
-	setIfNotEmpty(p, "user", c.User)
-	setIfNotEmpty(p, "password", c.Password)
-	setIfNotEmpty(p, "port", c.Port)
-	setIfNotEmpty(p, "sslmode", c.SSLMode)
-	return p
-}
-
-func setIfNotEmpty(m map[string]string, key, val string) {
-	if val != "" {
-		m[key] = val
-	}
+	log.Printf("Config has been loaded: %v", c)
+	return c
 }

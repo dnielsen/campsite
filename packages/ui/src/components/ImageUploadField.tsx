@@ -1,5 +1,5 @@
 import React from "react";
-import { Field } from "formik";
+import { Field, FieldProps, FormikProps } from "formik";
 import { Upload } from "../common/interfaces";
 import { BASE_UPLOAD_API_URL } from "../common/constants";
 
@@ -13,17 +13,19 @@ const FORM_DATA_NAME = "file";
 function ImageUploadField(props: Props) {
   async function handleChange(
     event: React.ChangeEvent<HTMLInputElement>,
-    form: any,
+    // TODO: remove `any`
+    form: FormikProps<any>,
   ) {
+    // Validate the file.
     if (event.target.validity.valid && event.target.files?.length == 1) {
       // Get the file.
       const [file] = event.target.files;
-      // Set up form data that's gonna set up for us the needed headers automatically.
+      // Set up the form data, it's gonna set up for us the needed headers automatically.
       const fd = new FormData();
       fd.append(FORM_DATA_NAME, file);
 
       // Send the request with the form data to our backend
-      // which is gonna upload it to Amazon S3
+      // which is gonna upload it to Amazon S3.
       const upload = (await fetch(BASE_UPLOAD_API_URL, {
         method: "POST",
         body: fd,
@@ -35,8 +37,7 @@ function ImageUploadField(props: Props) {
   }
   return (
     <Field name={props.name}>
-      {/*TODO types*/}
-      {({ form }: any) => (
+      {({ form }: FieldProps) => (
         <input
           type={"file"}
           accept={"image/*"}

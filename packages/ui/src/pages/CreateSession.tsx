@@ -5,7 +5,7 @@ import { EventDetails, SpeakerPreview } from "../common/interfaces";
 
 function CreateSession() {
   // A temporary solution, later we might load just the speaker/event ids and names,
-  // and do it asynchronously - after having loaded the rest of the form.
+  // and do it asynchronously, that is after having loaded the rest of the form.
   const {
     data: speakers,
     loading: speakersLoading,
