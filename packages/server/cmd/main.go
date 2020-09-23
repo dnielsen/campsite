@@ -5,6 +5,8 @@ import (
 	"dave-web-app/packages/server/internal/handler"
 	"dave-web-app/packages/server/internal/service"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"gorm.io/driver/postgres"
@@ -13,6 +15,10 @@ import (
 	"net/http"
 	"os"
 	"time"
+)
+
+const (
+	AWS_S3_REGION = "eu-central-1"
 )
 
 func main() {
@@ -45,23 +51,6 @@ func main() {
 	// ---------
 	now := time.Now()
 	later := time.Now().Add(time.Hour * 8)
-	speaker := service.Speaker{
-		ID:       "9c08fbf8-160b-4a86-9981-aeddf4e3798e",
-		Name:     "John Doe",
-		Bio:      "Bio",
-		Headline: "Headline",
-		Photo:    "photo",
-	}
-	session := service.Session{
-		ID:          "be13940b-c7ba-4f97-bdab-b4a47b11ffed",
-		Name:        "Session",
-		StartDate:   &now,
-		EndDate:     &later,
-		Description: "desc",
-		Url:         "url",
-		EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
-		Speakers: []service.Speaker{speaker},
-	}
 	address := "San Francisco, California"
 	event := service.Event{
 		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
@@ -72,7 +61,22 @@ func main() {
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
 		OrganizerName: "John Tim",
 		Address:       &address,
-		Sessions: []service.Session{session},
+		Sessions: []service.Session{{
+			ID:          "be13940b-c7ba-4f97-bdab-b4a47b11ffed",
+			Name:        "Session",
+			StartDate:   &now,
+			EndDate:     &later,
+			Description: "desc",
+			Url:         "url",
+			EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+			Speakers: []service.Speaker{{
+				ID:       "9c08fbf8-160b-4a86-9981-aeddf4e3798e",
+				Name:     "John Doe",
+				Bio:      "Bio",
+				Headline: "Headline",
+				Photo:    "photo",
+			}},
+		}},
 	}
 
 	if err := db.Create(&event).Error; err != nil {
@@ -82,11 +86,22 @@ func main() {
 	}
 	// ----------
 
+	s, err := session.NewSession(
+		&aws.Config{
+			Region: aws.String(AWS_S3_REGION),
+		})
+	if err != nil {
+		log.Fatalf("Failed to create new aws session: %v", err)
+	}
+
 	// Set up the API.
-	api := service.NewAPI(db)
+	api := service.NewAPI(db, s)
 
 	// Set up the router.
 	r := mux.NewRouter()
+
+	r.Handle("/images", handler.UploadImage(api)).Methods(http.MethodPost)
+	//r.Handle("/images/{filename}", handler.GetImage()).Methods(http.MethodGet)
 
 	// Set up the handlers.
 	r.HandleFunc("/events", handler.GetEvents(api)).Methods(http.MethodGet)

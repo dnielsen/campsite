@@ -1,14 +1,13 @@
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import {
-  FormConfig,
   FormSpeakerInput,
   SpeakerPreview,
   UseForm,
 } from "../common/interfaces";
 import { BASE_SPEAKER_API_URL } from "../common/constants";
 
-export default function useCreateSpeakerForm(): UseForm<FormSpeakerInput> {
+export default function useSpeakerForm(): UseForm<FormSpeakerInput> {
   const history = useHistory();
 
   async function onSubmit(input: FormSpeakerInput) {

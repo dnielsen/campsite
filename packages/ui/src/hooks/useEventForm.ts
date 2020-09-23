@@ -7,11 +7,13 @@ import {
   UseForm,
 } from "../common/interfaces";
 import { BASE_EVENT_API_URL } from "../common/constants";
+import moment from "moment-timezone";
 
-export default function useCreateEventForm(): UseForm<FormEventInput> {
+export default function useEventForm(): UseForm<FormEventInput> {
   const history = useHistory();
 
   async function onSubmit(input: FormEventInput) {
+    console.log(input);
     // Process the input.
     const fetchInput: FetchEventInput = {
       ...input,
@@ -28,14 +30,16 @@ export default function useCreateEventForm(): UseForm<FormEventInput> {
     history.push(`/events/${createdEvent.id}`);
   }
 
+  // For example: `06/27/2020 5:06 PM`
+  const now = moment(new Date()).format("mm/DD/yyyy hh:mm a");
   const initialValues: FormEventInput = {
     name: "",
     description: "",
     address: "",
     organizerName: "",
     photo: "",
-    startDate: "",
-    endDate: "",
+    startDate: now,
+    endDate: now,
   };
 
   const validationSchema = Yup.object().shape({});

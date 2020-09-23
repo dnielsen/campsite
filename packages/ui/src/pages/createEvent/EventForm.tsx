@@ -1,6 +1,7 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
 import { FormConfig, FormEventInput } from "../../common/interfaces";
+import DateTimeField from "../../components/DateTimeField";
 
 interface Props {
   formConfig: FormConfig<FormEventInput>;
@@ -33,11 +34,11 @@ function EventForm(props: Props) {
           </section>
           <section>
             <label htmlFor={"startDate"}>Start date</label>
-            <Field type={"date"} name={"startDate"} />
+            <DateTimeField name={"startDate"} />
           </section>
           <section>
             <label htmlFor={"endDate"}>End date</label>
-            <Field type={"date"} name={"endDate"} />
+            <DateTimeField name={"endDate"} />
           </section>
           <button type={"submit"} disabled={isSubmitting}>
             Submit

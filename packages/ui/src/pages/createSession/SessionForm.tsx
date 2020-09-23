@@ -2,7 +2,8 @@ import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
 import { EventDetails, SpeakerPreview } from "../../common/interfaces";
 import Checkbox from "../../components/Checkbox";
-import useCreateSessionForm from "../../hooks/useCreateSessionForm";
+import DateTimeField from "../../components/DateTimeField";
+import useSessionForm from "../../hooks/useSessionForm";
 
 // A temporary solution, later we might load speakers and events asynchronously,
 // and fetch less data.
@@ -12,7 +13,7 @@ interface Props {
 }
 
 function SessionForm(props: Props) {
-  const { formConfig } = useCreateSessionForm({
+  const { formConfig } = useSessionForm({
     defaultEventIdValue: props.events[0].id,
   });
 
@@ -34,11 +35,11 @@ function SessionForm(props: Props) {
           </section>
           <section>
             <label htmlFor={"startDate"}>Start date</label>
-            <Field type={"date"} name={"startDate"} />
+            <DateTimeField name={"startDate"} />
           </section>
           <section>
             <label htmlFor={"endDate"}>End date</label>
-            <Field type={"date"} name={"endDate"} />
+            <DateTimeField name={"endDate"} />
           </section>
           <section>
             <label htmlFor="eventId">Event</label>
@@ -59,11 +60,6 @@ function SessionForm(props: Props) {
                 label={speaker.name}
               />
             ))}
-            {/*<SelectField*/}
-            {/*  options={options}*/}
-            {/*  name={"speakerOptions"}*/}
-            {/*  defaultValue={props.formConfig.initialValues.speakerOptions}*/}
-            {/*/>*/}
           </section>
           <button type={"submit"} disabled={isSubmitting}>
             Submit

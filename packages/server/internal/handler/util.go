@@ -1,3 +1,6 @@
 package handler
 
-const ID = "id"
+const (
+	ID = "id"
+	FILENAME = "filename"
+)

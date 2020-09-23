@@ -1,9 +1,9 @@
 import React from "react";
-import useCreateSpeakerForm from "../hooks/useCreateSpeakerForm";
 import SpeakerForm from "./createSpeaker/SpeakerForm";
+import useSpeakerForm from "../hooks/useSpeakerForm";
 
 function CreateSpeaker() {
-  const { formConfig } = useCreateSpeakerForm();
+  const { formConfig } = useSpeakerForm();
 
   return (
     <div>

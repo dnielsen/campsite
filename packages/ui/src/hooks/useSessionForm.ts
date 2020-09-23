@@ -2,18 +2,18 @@ import * as Yup from "yup";
 import {
   FetchSessionInput,
   FormSessionInput,
-  Option,
   SessionPreview,
   UseForm,
 } from "../common/interfaces";
 import { BASE_SESSION_API_URL } from "../common/constants";
 import { useHistory } from "react-router-dom";
+import moment from "moment-timezone";
 
 interface Props {
   defaultEventIdValue: string;
 }
 
-export default function useCreateSessionForm(
+export default function useSessionForm(
   props: Props,
 ): UseForm<FormSessionInput> {
   const history = useHistory();
@@ -26,7 +26,6 @@ export default function useCreateSessionForm(
       endDate: new Date(input.endDate),
     };
 
-    console.log(fetchInput);
     // Send a request to create the session.
     const createdSession = (await fetch(`${BASE_SESSION_API_URL}`, {
       method: "POST",
@@ -36,12 +35,14 @@ export default function useCreateSessionForm(
     history.push(`/sessions/${createdSession.id}`);
   }
 
+  // For example: `06/27/2020 5:06 PM`
+  const now = moment(new Date()).format("mm/DD/yyyy hh:mm a");
   const initialValues: FormSessionInput = {
     name: "",
     description: "",
     url: "",
-    startDate: "",
-    endDate: "",
+    startDate: now,
+    endDate: now,
     eventId: props.defaultEventIdValue,
     speakerIds: [],
   };
