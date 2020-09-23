@@ -7,6 +7,7 @@ import * as g from "../styled/globalStyles";
 import * as s from "../styled/speakerStyles";
 import util from "../common/util";
 import moment from "moment";
+import SpeakerItem from "../bilal/speaker/SpeakerItem";
 
 function FullSpeaker() {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,8 @@ function FullSpeaker() {
 
   if (loading) return <div>loading...</div>;
   if (error) return <div>something went wrong: {error.message}</div>;
+
+  return <SpeakerItem speaker={speaker} />;
 
   async function handleClick() {
     await fetch(`${BASE_SPEAKER_API_URL}/${id}`, { method: "DELETE" });

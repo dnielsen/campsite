@@ -2,23 +2,28 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import FullSpeaker from "./pages/FullSpeaker";
 import FullSession from "./pages/FullSession";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
 import Speakers from "./pages/Speakers";
 import CreateSpeaker from "./pages/CreateSpeaker";
 import CreateSession from "./pages/CreateSession";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import FullEvent from "./pages/FullEvent";
+import Header from "./bilal/header";
+import Footer from "./bilal/footer";
+import Events from "./pages/Events";
 
 function App() {
   return (
     <div>
       <Header />
+      {/*<Header />*/}
       <main>
         <Switch>
           <Route exact path="/speakers">
             <Speakers />
+          </Route>
+          <Route exact path="/events">
+            <Events />
           </Route>
           <Route exact path="/speakers/create">
             <CreateSpeaker />

@@ -9,6 +9,7 @@ import {
   BASE_SESSION_API_URL,
   BASE_SPEAKER_API_URL,
 } from "../common/constants";
+import SessionItem from "../bilal/session/SessionItem";
 
 function FullSession() {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +19,8 @@ function FullSession() {
 
   if (loading) return <div>loading...</div>;
   if (error) return <div>something went wrong: {error.message}</div>;
+
+  return <SessionItem session={session} />;
 
   async function handleClick() {
     await fetch(`${BASE_SESSION_API_URL}/${id}`, { method: "DELETE" });
