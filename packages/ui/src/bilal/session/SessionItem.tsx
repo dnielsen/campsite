@@ -5,8 +5,8 @@ import moment from "moment";
 import util from "../../common/util";
 
 // import styled component
-import * as s from "../../styles/sessionStyles";
-import * as g from "../../styles/globalStyles";
+import * as s from "../styles/sessionStyles";
+import * as g from "../styles/globalStyles";
 
 interface Props {
   session: Session;

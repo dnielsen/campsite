@@ -6,8 +6,8 @@ import util from "../../common/util";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 // import styled component
-import * as s from "../../styles/homePageStyles";
-import * as g from "../../styles/globalStyles";
+import * as s from "../styles/homePageStyles";
+import * as g from "../styles/globalStyles";
 
 function HomePage() {
   return (
