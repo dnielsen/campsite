@@ -26,7 +26,7 @@ type SpeakerInput struct {
 	Photo    string `json:"photo,omitempty" validate:"required,min=10,max=150"`
 }
 
-func (api *api) GetSpeakerById(id string) (*Speaker, error) {
+func (api *API) GetSpeakerById(id string) (*Speaker, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -56,7 +56,7 @@ func (api *api) GetSpeakerById(id string) (*Speaker, error) {
 	return &speaker, nil
 }
 
-func (api *api) GetAllSpeakers() (*[]Speaker, error) {
+func (api *API) GetAllSpeakers() (*[]Speaker, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -86,7 +86,7 @@ func (api *api) GetAllSpeakers() (*[]Speaker, error) {
 	return &speakers, nil
 }
 
-func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
+func (api *API) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	// Marshal the speaker input.
 	b, err := json.Marshal(i)
 	if err != nil {
@@ -124,7 +124,7 @@ func (api *api) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 
 
 
-func (api *api) DeleteSpeakerById(id string) error {
+func (api *API) DeleteSpeakerById(id string) error {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)

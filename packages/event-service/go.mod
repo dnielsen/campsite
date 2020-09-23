@@ -3,6 +3,7 @@ module dave-web-app/packages/event-service
 go 1.14
 
 require (
+	github.com/aws/aws-sdk-go v1.34.30
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/google/go-cmp v0.5.2

@@ -18,25 +18,27 @@ type Event struct {
 }
 
 type EventInput struct {
-	Name          string     `json:"name,omitempty" validate:"required,min=2,max=100"`
+	Name          string     `json:"name,omitempty"`
 	// `gte` stands for >= time.Now.UTC()
-	StartDate     *time.Time `json:"startDate,omitempty" validate:"required,gte"`
-	EndDate       *time.Time `json:"endDate,omitempty" validate:"required,gte"`
-	Description   string     `json:"description,omitempty" validate:"required,min=20,max=2000"`
-	Photo         string     `json:"photo,omitempty" validate:"required,min=10,max=200"`
-	OrganizerName string     `json:"organizerName,omitempty" validate:"required,min=2,max=50"`
-	Address       *string     `json:"address,omitempty" validate:"required,min=5,max=100"`
+	StartDate     *time.Time `json:"startDate,omitempty"`
+	EndDate       *time.Time `json:"endDate,omitempty"`
+	Description   string     `json:"description,omitempty"`
+	Photo         string     `json:"photo,omitempty"`
+	OrganizerName string     `json:"organizerName,omitempty"`
+	Address       *string     `json:"address,omitempty"`
 }
 
-func (api *api) GetEventById(id string) (*Event, error) {
+func (api *API) GetEventById(id string) (*Event, error) {
 	event := Event{ID: id}
+	// We're preloading the event's sessions and the sessions' speakers because we need
+	// them in our event by id page.
 	if err := api.db.Preload("Sessions.Speakers").First(&event).Error; err != nil {
 		return nil, err
 	}
 	return &event, nil
 }
 
-func (api *api) GetAllEvents() (*[]Event, error) {
+func (api *API) GetAllEvents() (*[]Event, error) {
 	var events []Event
 	if err := api.db.Find(&events).Error; err != nil {
 		return nil, err
@@ -44,7 +46,7 @@ func (api *api) GetAllEvents() (*[]Event, error) {
 	return &events, nil
 }
 
-func (api *api) CreateEvent(i EventInput) (*Event, error) {
+func (api *API) CreateEvent(i EventInput) (*Event, error) {
 	event := Event{
 		ID:            uuid.New().String(),
 		Name:          i.Name,
@@ -61,7 +63,7 @@ func (api *api) CreateEvent(i EventInput) (*Event, error) {
 	return &event, nil
 }
 
-func (api *api) DeleteEventById(id string) error {
+func (api *API) DeleteEventById(id string) error {
 	event := Event{ID: id}
 	if err := api.db.Delete(&event).Error; err != nil {
 		return err

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func GetAllEvents(datastore service.EventDatastore) http.HandlerFunc {
+func GetAllEvents(datastore service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get all events from the database.
 		events, err := datastore.GetAllEvents()

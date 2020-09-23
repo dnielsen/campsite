@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func DeleteSpeakerById(datastore service.SpeakerDatastore) http.HandlerFunc {
+func DeleteSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)

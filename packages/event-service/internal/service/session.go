@@ -35,7 +35,7 @@ type SessionInput struct {
 	EventId string `json:"eventId,omitempty" validate:"required,uuid4"`
 }
 
-func (api *api) GetAllSessions() (*[]Session, error) {
+func (api *API) GetAllSessions() (*[]Session, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Session.Host, api.c.Service.Session.Port), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -65,7 +65,7 @@ func (api *api) GetAllSessions() (*[]Session, error) {
 	return &sessions, nil
 }
 
-func (api *api) GetSessionById(id string) (*Session, error) {
+func (api *API) GetSessionById(id string) (*Session, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -95,7 +95,7 @@ func (api *api) GetSessionById(id string) (*Session, error) {
 	return &session, nil
 }
 
-func (api *api) DeleteSessionById(id string) error {
+func (api *API) DeleteSessionById(id string) error {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -112,7 +112,7 @@ func (api *api) DeleteSessionById(id string) error {
 }
 
 
-func (api *api) CreateSession(i SessionInput) (*Session, error) {
+func (api *API) CreateSession(i SessionInput) (*Session, error) {
 	// Marshal the session input.
 	b, err := json.Marshal(i)
 	if err != nil {

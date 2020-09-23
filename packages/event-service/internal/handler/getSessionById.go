@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func GetSessionById(datastore service.SessionDatastore) http.HandlerFunc {
+func GetSessionById(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)

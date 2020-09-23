@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func GetSpeakerById(datastore service.SpeakerDatastore) http.HandlerFunc {
+func GetSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)

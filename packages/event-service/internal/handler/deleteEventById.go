@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func DeleteEventById(datastore service.EventDatastore) http.HandlerFunc {
+func DeleteEventById(datastore service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
