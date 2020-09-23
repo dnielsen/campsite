@@ -1,5 +1,5 @@
 import React from "react";
-import { Session } from "../../common/interfaces";
+import { Session } from "../../../common/interfaces";
 import SessionScheduleRow from "./SessionScheduleRow";
 
 interface Props {

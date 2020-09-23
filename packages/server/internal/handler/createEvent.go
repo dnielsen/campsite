@@ -12,8 +12,7 @@ func CreateEvent(datastore service.EventService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.EventInput
-		err := json.NewDecoder(r.Body).Decode(&i)
-		if err != nil {
+		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			log.Printf("Failed to unmarshal event input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

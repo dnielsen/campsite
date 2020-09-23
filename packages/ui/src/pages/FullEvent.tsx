@@ -3,7 +3,7 @@ import { EventDetails } from "../common/interfaces";
 import useAPI from "../hooks/useAPI";
 import { useHistory, useParams } from "react-router-dom";
 import { BASE_EVENT_API_URL } from "../common/constants";
-import EventItem from "../bilal/event/EventItem";
+import EventItem from "../bilal/components/event/EventItem";
 
 function FullEvent() {
   const { id } = useParams<{ id: string }>();

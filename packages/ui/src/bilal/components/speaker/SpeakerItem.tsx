@@ -1,7 +1,7 @@
 import React from "react";
-import { Speaker } from "../../common/interfaces";
+import { Speaker } from "../../../common/interfaces";
 import SpeakerPreviewItem from "./SpeakerPreviewItem";
-import SpeakerSessionSchedule from "../SpeakerSessionSchedule";
+import SpeakerSessionSchedule from "../../SpeakerSessionSchedule";
 
 interface Props {
   speaker: Speaker;

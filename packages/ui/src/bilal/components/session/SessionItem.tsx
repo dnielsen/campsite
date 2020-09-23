@@ -1,12 +1,12 @@
 import React from "react";
-import { Session } from "../../common/interfaces";
+import { Session } from "../../../common/interfaces";
 import SpeakerList from "../speaker/SpeakerList";
 import moment from "moment";
-import util from "../../common/util";
+import util from "../../../common/util";
 
 // import styled component
-import * as s from "../styles/sessionStyles";
-import * as g from "../styles/globalStyles";
+import * as s from "../../styles/sessionStyles";
+import * as g from "../../styles/globalStyles";
 
 interface Props {
   session: Session;

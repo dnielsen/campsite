@@ -8,8 +8,8 @@ import CreateSession from "./pages/CreateSession";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import FullEvent from "./pages/FullEvent";
-import Header from "./bilal/header";
-import Footer from "./bilal/footer";
+import Header from "./bilal/components/header";
+import Footer from "./bilal/components/footer";
 import Events from "./pages/Events";
 
 function App() {

@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
-import { EventDetails } from "../../common/interfaces";
-import util from "../../common/util";
+import { EventDetails } from "../../../common/interfaces";
+import util from "../../../common/util";
 
 // import styled component
-import * as s from "../styles/eventStyles";
-import * as g from "../styles/globalStyles";
+import * as s from "../../styles/eventStyles";
+import * as g from "../../styles/globalStyles";
 
 interface Props {
   eventDetails: EventDetails;

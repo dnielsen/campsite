@@ -7,7 +7,7 @@ import * as g from "../styled/globalStyles";
 import * as s from "../styled/speakerStyles";
 import util from "../common/util";
 import moment from "moment";
-import SpeakerItem from "../bilal/speaker/SpeakerItem";
+import SpeakerItem from "../bilal/components/speaker/SpeakerItem";
 
 function FullSpeaker() {
   const { id } = useParams<{ id: string }>();

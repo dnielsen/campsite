@@ -9,7 +9,7 @@ import {
   BASE_SESSION_API_URL,
   BASE_SPEAKER_API_URL,
 } from "../common/constants";
-import SessionItem from "../bilal/session/SessionItem";
+import SessionItem from "../bilal/components/session/SessionItem";
 
 function FullSession() {
   const { id } = useParams<{ id: string }>();

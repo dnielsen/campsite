@@ -1,7 +1,7 @@
 import React from "react";
 
 // import styled component
-import * as g from "../styles/globalStyles";
+import * as g from "../../styles/globalStyles";
 
 const Header = () => {
   return (

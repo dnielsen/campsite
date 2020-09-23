@@ -1,6 +1,6 @@
 import React from "react";
-import util from "../../common/util";
-import { Session } from "../../common/interfaces";
+import util from "../../../common/util";
+import { Session } from "../../../common/interfaces";
 
 interface Props {
   session: Session;
