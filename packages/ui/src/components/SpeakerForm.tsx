@@ -1,15 +1,15 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import { FormConfig, FormSpeakerInput } from "../../common/interfaces";
-import ImageUploadField from "../../components/ImageUploadField";
+import { FormProps, FormSpeakerInput } from "../common/interfaces";
+import ImageUploadField from "./ImageUploadField";
 
 interface Props {
-  formConfig: FormConfig<FormSpeakerInput>;
+  formProps: FormProps<FormSpeakerInput>;
 }
 
 function SpeakerForm(props: Props) {
   return (
-    <Formik {...props.formConfig}>
+    <Formik {...props.formProps}>
       {({ isSubmitting }: FormikState<FormikValues>) => (
         <Form>
           <section>

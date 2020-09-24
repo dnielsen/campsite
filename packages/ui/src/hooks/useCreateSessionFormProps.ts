@@ -1,21 +1,21 @@
 import * as Yup from "yup";
 import {
   FetchSessionInput,
+  FormProps,
   FormSessionInput,
   SessionPreview,
-  UseForm,
 } from "../common/interfaces";
 import { BASE_SESSION_API_URL } from "../common/constants";
 import { useHistory } from "react-router-dom";
-import moment from "moment-timezone";
+import util from "../common/util";
 
 interface Props {
-  defaultEventIdValue: string;
+  eventId: string;
 }
 
-export default function useSessionForm(
+export default function useCreateSessionFormProps(
   props: Props,
-): UseForm<FormSessionInput> {
+): FormProps<FormSessionInput> {
   const history = useHistory();
 
   async function onSubmit(input: FormSessionInput) {
@@ -36,19 +36,23 @@ export default function useSessionForm(
   }
 
   // For example: `06/27/2020 5:06 PM`
-  const now = moment(new Date()).format("mm/DD/yyyy hh:mm a");
+  const now = new Date();
   const initialValues: FormSessionInput = {
     name: "",
     description: "",
     url: "",
-    startDate: now,
-    endDate: now,
-    eventId: props.defaultEventIdValue,
+    startDate: util.getDateFormValue(now),
+    endDate: util.getDateFormValue(now),
+    eventId: props.eventId ?? "",
     speakerIds: [],
   };
 
   const validationSchema = Yup.object().shape({});
 
-  const formConfig = { onSubmit, validationSchema, initialValues };
-  return { formConfig };
+  return {
+    onSubmit,
+    validationSchema,
+    initialValues,
+    enableReinitialize: true,
+  };
 }

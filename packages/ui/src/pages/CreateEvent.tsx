@@ -1,14 +1,14 @@
 import React from "react";
-import useEventForm from "../hooks/useEventForm";
-import EventForm from "./createEvent/EventForm";
+import EventForm from "../components/EventForm";
+import useCreateEventFormProps from "../hooks/useCreateEventFormProps";
 
 function CreateEvent() {
-  const { formConfig } = useEventForm();
+  const formProps = useCreateEventFormProps();
 
   return (
     <div>
       <h3>Create an event</h3>
-      <EventForm formConfig={formConfig} />
+      <EventForm formProps={formProps} />
     </div>
   );
 }

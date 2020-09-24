@@ -8,26 +8,26 @@ import (
 	"net/http"
 )
 
-// `/events/{id}` PUT route.
-func EditEventById(api service.EventAPI) http.HandlerFunc {
+// `/speaker/{id}` PUT route.
+func EditSpeakerById(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 		// Decode the body.
-		var i service.EventInput
+		var i service.SessionInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
-			log.Printf("Failed to unmarshal event input")
+			log.Printf("Failed to unmarshal session input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Create the event in the database.
-		if err := api.EditEventById(id, i); err != nil {
-			log.Printf("Failed to create event: %v", err)
+		// Edit the session in the database.
+		if err := api.EditSessionById(id, i); err != nil {
+			log.Printf("Failed to create session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond that the event has been edited successfully.
+		// Respond that the session has been edited successfully.
 		w.WriteHeader(http.StatusNoContent)
 	}
 }

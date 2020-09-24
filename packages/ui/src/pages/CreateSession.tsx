@@ -1,7 +1,8 @@
 import React from "react";
-import SessionForm from "./createSession/SessionForm";
+import SessionForm from "../components/SessionForm";
 import useAPI from "../hooks/useAPI";
 import { EventDetails, SpeakerPreview } from "../common/interfaces";
+import useCreateSessionFormProps from "../hooks/useCreateSessionFormProps";
 
 function CreateSession() {
   // A temporary solution, later we might load just the speaker/event ids and names,
@@ -15,6 +16,10 @@ function CreateSession() {
     EventDetails[]
   >("/events");
 
+  const formProps = useCreateSessionFormProps({
+    eventId: events[0].id,
+  });
+
   if (speakersLoading || eventsLoading) return <div>loading...</div>;
   if (speakersError) return <div>error: {speakersError.message}</div>;
   if (eventsError) return <div>error: {eventsError.message}</div>;
@@ -25,7 +30,7 @@ function CreateSession() {
   return (
     <div>
       <h3>Create a session</h3>
-      <SessionForm speakers={speakers} events={events} />
+      <SessionForm speakers={speakers} events={events} formProps={formProps} />
     </div>
   );
 }

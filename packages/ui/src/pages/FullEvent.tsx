@@ -1,11 +1,11 @@
 import React from "react";
-import { EventDetails, Speaker, SpeakerPreview } from "../common/interfaces";
+import { EventDetails } from "../common/interfaces";
 import useAPI from "../hooks/useAPI";
 import util from "../common/util";
 import SessionSchedule from "./fullEvent/SessionSchedule";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import SpeakerList from "../components/SpeakerList";
-import { BASE_EVENT_API_URL, BASE_SPEAKER_API_URL } from "../common/constants";
+import { BASE_EVENT_API_URL } from "../common/constants";
 import * as s from "../styled/eventStyles";
 import { Container, Col, Row } from "react-bootstrap";
 

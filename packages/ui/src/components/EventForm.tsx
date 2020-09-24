@@ -1,16 +1,16 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import { FormConfig, FormEventInput } from "../../common/interfaces";
-import DateTimeField from "../../components/DateTimeField";
-import ImageUploadField from "../../components/ImageUploadField";
+import { FormProps, FormEventInput } from "../common/interfaces";
+import DateTimeField from "./DateTimeField";
+import ImageUploadField from "./ImageUploadField";
 
 interface Props {
-  formConfig: FormConfig<FormEventInput>;
+  formProps: FormProps<FormEventInput>;
 }
 
 function EventForm(props: Props) {
   return (
-    <Formik {...props.formConfig}>
+    <Formik {...props.formProps}>
       {({ isSubmitting }: FormikState<FormikValues>) => (
         <Form noValidate>
           <section>

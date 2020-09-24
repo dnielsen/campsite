@@ -1,24 +1,25 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import { EventDetails, SpeakerPreview } from "../../common/interfaces";
-import Checkbox from "../../components/Checkbox";
-import DateTimeField from "../../components/DateTimeField";
-import useSessionForm from "../../hooks/useSessionForm";
+import {
+  EventDetails,
+  FormProps,
+  FormSessionInput,
+  SpeakerPreview,
+} from "../common/interfaces";
+import Checkbox from "./Checkbox";
+import DateTimeField from "./DateTimeField";
 
 // A temporary solution, later we might load speakers and events asynchronously,
 // and fetch less data.
 interface Props {
   speakers: SpeakerPreview[];
   events: EventDetails[];
+  formProps: FormProps<FormSessionInput>;
 }
 
 function SessionForm(props: Props) {
-  const { formConfig } = useSessionForm({
-    defaultEventIdValue: props.events[0].id,
-  });
-
   return (
-    <Formik {...formConfig}>
+    <Formik {...props.formProps}>
       {({ isSubmitting }: FormikState<FormikValues>) => (
         <Form noValidate>
           <section>

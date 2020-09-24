@@ -4,12 +4,12 @@ import {
   EventDetails,
   FetchEventInput,
   FormEventInput,
-  UseForm,
+  FormProps,
 } from "../common/interfaces";
 import { BASE_EVENT_API_URL } from "../common/constants";
-import moment from "moment-timezone";
+import util from "../common/util";
 
-export default function useEventForm(): UseForm<FormEventInput> {
+export default function useCreateEventFormProps(): FormProps<FormEventInput> {
   const history = useHistory();
 
   async function onSubmit(input: FormEventInput) {
@@ -32,23 +32,20 @@ export default function useEventForm(): UseForm<FormEventInput> {
     history.push(`/events/${createdEvent.id}`);
   }
 
-  // For example: `06/27/2020 5:06 PM`. `now` is a string formatted properly,
-  // because `react-datetime` library needs it this way.
-  const now = moment(new Date()).format("mm/DD/yyyy hh:mm a");
+  const now = new Date();
   const initialValues: FormEventInput = {
     name: "",
     description: "",
     address: "",
     organizerName: "",
     photo: "",
-    startDate: now,
-    endDate: now,
+    startDate: util.getDateFormValue(now),
+    endDate: util.getDateFormValue(now),
   };
 
   const validationSchema = Yup.object().shape({
     // name: Yup.string().min(2).max(50)
   });
 
-  const formConfig = { onSubmit, validationSchema, initialValues };
-  return { formConfig };
+  return { onSubmit, validationSchema, initialValues };
 }

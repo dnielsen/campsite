@@ -28,32 +28,46 @@ func (api *API) GetAllSpeakers() (*[]Speaker, error) {
 }
 
 func (api *API) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
-	speaker := Speaker{
+	s := Speaker{
 		ID:       uuid.New().String(),
 		Name:     i.Name,
 		Bio:      i.Bio,
 		Headline: i.Headline,
 		Photo:    i.Photo,
 	}
-	if err := api.db.Create(&speaker).Error; err != nil {
+	if err := api.db.Create(&s).Error; err != nil {
 		return nil, err
 	}
-	return &speaker, nil
+	return &s, nil
 }
 
 func (api *API) GetSpeakerById(id string) (*Speaker, error) {
-	speaker := Speaker{ID: id}
+	s := Speaker{ID: id}
 	// We're preloading sessions since we need them in the speaker by id page.
 	// For now we're getting all of the properties, we'll optimize it later.
-	if err := api.db.Preload("Sessions").First(&speaker).Error; err != nil {
+	if err := api.db.Preload("Sessions").First(&s).Error; err != nil {
 		return nil, err
 	}
-	return &speaker, nil
+	return &s, nil
 }
 
 func (api *API) DeleteSpeakerById(id string) error {
-	speaker := Speaker{ID: id}
-	if err := api.db.Delete(&speaker).Error; err != nil {
+	s := Speaker{ID: id}
+	if err := api.db.Delete(&s).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (api *API) EditSpeakerById(id string, i SpeakerInput) error {
+	s := Speaker{
+		ID:       id,
+		Name:     i.Name,
+		Bio:      i.Bio,
+		Headline: i.Headline,
+		Photo:    i.Photo,
+	}
+	if err := api.db.Updates(&s).Error; err != nil {
 		return err
 	}
 	return nil

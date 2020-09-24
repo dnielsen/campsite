@@ -70,3 +70,31 @@ func (api *API) DeleteSessionById(id string) error {
 	}
 	return nil
 }
+
+
+func (api *API) EditSessionById(id string, i SessionInput) error {
+	// Update the session (besides speakers).
+	session := Session{
+		ID:          id,
+		Name:        i.Name,
+		StartDate:   i.StartDate,
+		EndDate:     i.EndDate,
+		Description: i.Description,
+		Url:         i.Url,
+		EventID:     i.EventId,
+	}
+	if err := api.db.Updates(&session).Error; err != nil {
+		return err
+	}
+	// Update the session speakers. We're doing it this way instead of adding it to the
+	// session struct because otherwise we would just add new speaker ids to the session_speaker table
+	// instead of replacing them.
+	var speakers []Speaker
+	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
+		return err
+	}
+	if err := api.db.Model(&session).Association("Speakers").Replace(speakers); err != nil {
+		return err
+	}
+	return nil
+}

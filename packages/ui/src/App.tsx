@@ -10,6 +10,8 @@ import CreateSession from "./pages/CreateSession";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import FullEvent from "./pages/FullEvent";
+import EditEvent from "./pages/EditEvent";
+import EditSpeaker from "./pages/EditSpeaker";
 
 function App() {
   return (
@@ -26,6 +28,9 @@ function App() {
           <Route exact path="/speakers/:id">
             <FullSpeaker />
           </Route>
+          <Route exact path="/speakers/:id/edit">
+            <EditSpeaker />
+          </Route>
           <Route exact path="/sessions/create">
             <CreateSession />
           </Route>
@@ -37,6 +42,9 @@ function App() {
           </Route>
           <Route exact path="/events/:id">
             <FullEvent />
+          </Route>
+          <Route exact path="/events/:id/edit">
+            <EditEvent />
           </Route>
           <Route exact path="/">
             <Home />

@@ -33,6 +33,7 @@ type SessionAPI interface {
 	CreateSession(i SessionInput) (*Session, error)
 	GetSessionById(id string) (*Session, error)
 	DeleteSessionById(id string) error
+	EditSessionById(id string, i SessionInput) error
 }
 
 type SpeakerAPI interface {
@@ -40,6 +41,7 @@ type SpeakerAPI interface {
 	CreateSpeaker(i SpeakerInput) (*Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)
 	DeleteSpeakerById(id string) error
+	EditSpeakerById(id string, i SpeakerInput) error
 }
 
 type S3API interface {
