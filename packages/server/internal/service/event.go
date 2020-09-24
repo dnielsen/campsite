@@ -70,3 +70,20 @@ func (api *API) DeleteEventById(id string) error {
 	}
 	return nil
 }
+
+func (api *API) EditEventById(id string, i EventInput) error {
+	event := Event{
+		ID:            id,
+		Name:          i.Name,
+		Description:   i.Description,
+		StartDate:     i.StartDate,
+		EndDate:       i.EndDate,
+		Photo:         i.Photo,
+		OrganizerName: i.OrganizerName,
+		Address:       i.Address,
+	}
+	if err := api.db.Updates(&event).Error; err != nil {
+		return err
+	}
+	return nil
+}

@@ -25,6 +25,7 @@ type EventAPI interface {
 	CreateEvent(i EventInput) (*Event, error)
 	GetEventById(id string) (*Event, error)
 	DeleteEventById(id string) error
+	EditEventById(id string, i EventInput) error
 }
 
 type SessionAPI interface {

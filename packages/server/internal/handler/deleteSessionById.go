@@ -7,21 +7,21 @@ import (
 	"net/http"
 )
 
-// `/speakers/{id}` DELETE route.
-func DeleteSpeaker(api service.SpeakerAPI) http.HandlerFunc {
+// `/sessions/{id}` DELETE route.
+func DeleteSessionById(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
-		// Delete the speaker from the database.
-		if err := api.DeleteSpeakerById(id); err != nil {
-			log.Printf("Failed to delete speaker: %v", err)
+		// Delete the session from the database.
+		if err := api.DeleteSessionById(id); err != nil {
+			log.Printf("Failed to delete session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Respond the speaker deletion has been successful.
+		// Respond the session deletion has been successful.
 		w.WriteHeader(http.StatusNoContent)
 	}
 }
