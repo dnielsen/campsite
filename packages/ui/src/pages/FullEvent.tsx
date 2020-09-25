@@ -3,7 +3,7 @@ import { EventDetails } from "../common/interfaces";
 import useAPI from "../hooks/useAPI";
 import util from "../common/util";
 import SessionSchedule from "./fullEvent/SessionSchedule";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import SpeakerList from "../components/SpeakerList";
 import { BASE_EVENT_API_URL } from "../common/constants";
 import * as s from "../styled/eventStyles";
@@ -19,7 +19,8 @@ function FullEvent() {
   if (loading) return <div>loading...</div>;
   if (error) return <div>something went wrong: {error.message}</div>;
 
-  async function handleClick() {
+  async function handleDelete() {
+    // Send a request to delete the event.
     await fetch(`${BASE_EVENT_API_URL}/${id}`, { method: "DELETE" });
     // Redirect to the home page after deleting the speaker.
     history.push("/");
@@ -71,7 +72,8 @@ function FullEvent() {
                 </s.EventRegister>
               </s.EventContent>
             </s.Event>
-            <button type={"button"} onClick={handleClick}>
+            <Link to={`/events/${id}/edit`}>Edit</Link>
+            <button type={"button"} onClick={handleDelete}>
               Delete
             </button>
             {eventDetails.sessions && (

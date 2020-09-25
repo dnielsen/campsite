@@ -6,7 +6,6 @@ import SpeakerForm from "../components/SpeakerForm";
 function EditSpeaker() {
   const { id } = useParams<{ id: string }>();
   const formProps = useEditSpeakerFormProps({ id });
-
   return (
     <div>
       <h3>Edit speaker</h3>

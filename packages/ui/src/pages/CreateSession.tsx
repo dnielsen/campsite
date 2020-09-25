@@ -17,7 +17,7 @@ function CreateSession() {
   >("/events");
 
   const formProps = useCreateSessionFormProps({
-    eventId: events[0].id,
+    eventId: events ? events[0].id : "",
   });
 
   if (speakersLoading || eventsLoading) return <div>loading...</div>;

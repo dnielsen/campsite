@@ -8,13 +8,11 @@ import (
 	"dave-web-app/packages/server/internal/service"
 	"github.com/gorilla/mux"
 	"net/http"
-	"os"
 )
 
 func main() {
-	// Initialize the config. If CONFIG_FILENAME isn't specified (empty string)
-	// then it's gonna load the variables from environment.
-	c := config.NewConfig(os.Getenv("CONFIG_FILENAME"))
+	// Initialize the config (load environment variables into it).
+	c := config.NewConfig()
 
 	// Create a new database connection. Also, since it's a dev db,
 	// migrate it and create sample mock data there.
