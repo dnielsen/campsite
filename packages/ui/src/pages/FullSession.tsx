@@ -5,10 +5,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import util from "../common/util";
 import moment from "moment";
 import SpeakerList from "../components/SpeakerList";
-import {
-  BASE_SESSION_API_URL,
-  BASE_SPEAKER_API_URL,
-} from "../common/constants";
+import { BASE_SESSION_API_URL } from "../common/constants";
 
 function FullSession() {
   const { id } = useParams<{ id: string }>();
@@ -39,6 +36,7 @@ function FullSession() {
           <p>{session.description}</p>
         </div>
       </div>
+      <Link to={`/sessions/${id}/edit`}>Edit</Link>
       <button type={"button"} onClick={handleClick}>
         Delete
       </button>

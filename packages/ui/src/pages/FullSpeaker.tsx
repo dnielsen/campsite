@@ -46,6 +46,7 @@ function FullSpeaker() {
             <h3>About Me</h3>
             <p>{speaker.bio}</p>
           </s.SpeakerBio>
+          <Link to={`/speakers/${id}/edit`}>Edit</Link>
           <button onClick={handleClick}>Delete</button>
         </s.SpeakerInfoWrapper>
         <s.SpeakerSessionWrapper>
