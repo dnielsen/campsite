@@ -27,10 +27,10 @@ Prerequisites:
 Now you should see your app at `http://localhost:3000`
  
  ## Sample pages
- Events page: `http://localhost:3000`
- Event by id page: `http://localhost:3000/events`
- Session by id page: `http://localhost:3000/sessions/be13940b-c7ba-4f97-bdab-b4a47b11ffed`
- Speaker by id page: `http://localhost:3000/speakers/9c08fbf8-160b-4a86-9981-aeddf4e3798e`
+ - Events page: `http://localhost:3000`
+ - Event by id page: `http://localhost:3000/events`
+ - Session by id page: `http://localhost:3000/sessions/be13940b-c7ba-4f97-bdab-b4a47b11ffed`
+ - Speaker by id page: `http://localhost:3000/speakers/9c08fbf8-160b-4a86-9981-aeddf4e3798e`
  
  ## pgadmin
 If you want, you can go to `localhost:8080`, there's pgadmin installed, so you could easily edit database data there. By default, the pgadmin credentials are:
