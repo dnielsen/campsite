@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
-import { EventDetails } from "../../../common/interfaces";
+import { EventDetails } from "../../common/interfaces";
 import SpeakerList from "../speaker/SpeakerList";
 import SessionSchedule from "../session/SessionSchedule";
-import util from "../../../common/util";
+import util from "../../common/util";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 // import styled component

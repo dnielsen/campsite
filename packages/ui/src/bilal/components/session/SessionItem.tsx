@@ -1,18 +1,14 @@
 import React from "react";
-import { Session } from "../../../common/interfaces";
+import { Session } from "../../common/interfaces";
 import SpeakerList from "../speaker/SpeakerList";
 import moment from "moment";
-import util from "../../../common/util";
+import util from "../../common/util";
 
 // import styled component
 import * as s from "../../styles/sessionStyles";
 import * as g from "../../styles/globalStyles";
 
-interface Props {
-  session: Session;
-}
-
-function SessionItem(props: Props) {
+function SessionItem() {
   return (
     <g.Container>
       <s.SessionWrapper>
@@ -34,6 +30,16 @@ function SessionItem(props: Props) {
               <s.SessionRegister>Registration</s.SessionRegister>
               <s.SessionWatch>Watch</s.SessionWatch>
             </s.SpeakerSessionScheduleWrapper>
+            <s.VideoWrapper>
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/IZwdHxC3my0"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </s.VideoWrapper>
             <h2>Description</h2>
             <p>
               What comes next? What are the most innovative developments in Big

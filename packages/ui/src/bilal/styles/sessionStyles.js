@@ -13,7 +13,7 @@ export const FlexWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  @media (max-width: 767px) {
+  @media (max-width: 991px) {
     flex-direction: column;
   }
 `;
@@ -29,6 +29,10 @@ export const SessionListWrapper = styled.div`
   border: 1px solid #e3e3e3;
   border-radius: 8px;
   flex: 0 0 20%;
+
+  @media (max-width: 767px) {
+    margin: 0;
+  }
 
   h2 {
     margin: 0;
@@ -66,8 +70,9 @@ export const SessionDetailWrapper = styled.div`
   border: 1px solid #e3e3e3;
   box-shadow: 0px 5px 5px 0 rgba(0, 0, 0, 0.18);
 
-  @media (max-width: 767px) {
-    margin: 15px;
+  @media (max-width: 991px) {
+    margin: 15px 0px;
+    text-align: center;
   }
 
   h2 {
@@ -84,12 +89,25 @@ export const SpeakerSessionScheduleWrapper = styled.div`
   background: #f5f5f5;
   display: flex;
   justify-content: space-between;
-  padding: 15px;
+  padding: 0px 15px;
   color: #414141;
   font-size: 14px;
   border: 1px solid #e3e3e3;
   font-weight: 600;
   border-radius: 8px;
+  flex-wrap: wrap;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+
+  div {
+    margin: 15px 0px;
+
+    @media (max-width: 991px) {
+      flex: 1;
+    }
+  }
 `;
 
 export const SpeakerPhoto = styled.div`
@@ -155,3 +173,20 @@ export const SessionName = styled.div``;
 export const SessionDate = styled.div``;
 export const SessionRegister = styled.div``;
 export const SessionWatch = styled.div``;
+
+export const VideoWrapper = styled.div`
+  position: relative;
+  padding-bottom: 50%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+  margin-top: 30px;
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+`;

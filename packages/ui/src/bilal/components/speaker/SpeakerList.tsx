@@ -1,5 +1,5 @@
 import React from "react";
-import { SpeakerPreview } from "../../../common/interfaces";
+import { SpeakerPreview } from "../../common/interfaces";
 import SpeakerPreviewItem from "./SpeakerPreviewItem";
 
 interface Props {

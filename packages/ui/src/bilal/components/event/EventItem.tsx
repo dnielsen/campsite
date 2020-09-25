@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
-import { EventDetails } from "../../../common/interfaces";
-import util from "../../../common/util";
+import { EventDetails } from "../../common/interfaces";
+import util from "../../common/util";
 
 // import styled component
 import * as s from "../../styles/eventStyles";
 import * as g from "../../styles/globalStyles";
 
 interface Props {
-  eventDetails: EventDetails;
+  eventDetails: any;
 }
 
 function EventItem(props: Props) {
@@ -29,7 +29,7 @@ function EventItem(props: Props) {
                 <s.EventHeading>{props.eventDetails.name}</s.EventHeading>
                 <s.EventTime>
                   <i className="fa fa-calendar mr-2" aria-hidden="true"></i>
-                  {util.getFullDateString(props.eventDetails.startDate)}
+                  {util.getFullDate(props.eventDetails.startDate)}
                 </s.EventTime>
                 <s.EventLocation>
                   <i className="fa fa-map-marker mr-2" aria-hidden="true"></i>
@@ -57,7 +57,7 @@ function EventItem(props: Props) {
                 <s.EventHeading>{props.eventDetails.name}</s.EventHeading>
                 <s.EventTime>
                   <i className="fa fa-calendar mr-2" aria-hidden="true"></i>
-                  {util.getFullDateString(props.eventDetails.startDate)}
+                  {util.getFullDate(props.eventDetails.startDate)}
                 </s.EventTime>
                 <s.EventLocation>
                   <i className="fa fa-map-marker mr-2" aria-hidden="true"></i>
@@ -85,7 +85,7 @@ function EventItem(props: Props) {
                 <s.EventHeading>{props.eventDetails.name}</s.EventHeading>
                 <s.EventTime>
                   <i className="fa fa-calendar mr-2" aria-hidden="true"></i>
-                  {util.getFullDateString(props.eventDetails.startDate)}
+                  {util.getFullDate(props.eventDetails.startDate)}
                 </s.EventTime>
                 <s.EventLocation>
                   <i className="fa fa-map-marker mr-2" aria-hidden="true"></i>

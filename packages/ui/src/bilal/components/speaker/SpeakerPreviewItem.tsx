@@ -1,12 +1,12 @@
 import React from "react";
-import { SpeakerPreview } from "../../../common/interfaces";
+import { SpeakerPreview } from "../../common/interfaces";
 
 // import styled component
 import * as s from "../../styles/speakerStyles";
 import * as g from "../../styles/globalStyles";
 
 interface Props {
-  speaker: SpeakerPreview;
+  speaker: any;
 }
 
 function SpeakerPreviewItem(props: Props) {

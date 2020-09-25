@@ -64,6 +64,7 @@ export const LearnFromBestLogos = styled.div`
 
 export const BrandImages = styled.div`
   display: flex;
+  flex-wrap: wrap;
 
   @media (max-width: 767px) {
     justify-content: center;

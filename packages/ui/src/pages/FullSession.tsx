@@ -20,7 +20,7 @@ function FullSession() {
   if (loading) return <div>loading...</div>;
   if (error) return <div>something went wrong: {error.message}</div>;
 
-  return <SessionItem session={session} />;
+  return <SessionItem />;
 
   async function handleClick() {
     await fetch(`${BASE_SESSION_API_URL}/${id}`, { method: "DELETE" });
