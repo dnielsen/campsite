@@ -12,6 +12,7 @@ import Home from "./pages/Home";
 import FullEvent from "./pages/FullEvent";
 import EditEvent from "./pages/EditEvent";
 import EditSpeaker from "./pages/EditSpeaker";
+import EditSession from "./pages/EditSession";
 
 function App() {
   return (
@@ -36,6 +37,9 @@ function App() {
           </Route>
           <Route exact path="/sessions/:id">
             <FullSession />
+          </Route>
+          <Route exact path="/sessions/:id/edit">
+            <EditSession />
           </Route>
           <Route exact path="/events/create">
             <CreateEvent />
