@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func GetAllSessions(datastore service.SessionDatastore) http.HandlerFunc {
+func GetAllSessions(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		sessions, err := datastore.GetAllSessions()
 

@@ -12,7 +12,7 @@ require (
 	github.com/ilyakaznacheev/cleanenv v1.2.5
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/lib/pq v1.3.0
-	github.com/rs/cors v1.7.0 // indirect
+	github.com/rs/cors v1.7.0
 	gorm.io/driver/postgres v1.0.0
 	gorm.io/gorm v1.20.0
 )

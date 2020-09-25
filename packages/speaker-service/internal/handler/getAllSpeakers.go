@@ -3,34 +3,33 @@ package handler
 import (
 	"dave-web-app/packages/speaker-service/internal/service"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func GetSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
+// `/` GET route.
+func GetAllSpeakers(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the speaker id parameter
-		vars := mux.Vars(r)
-		id := vars[ID]
-
-		// Get the speaker from the database.
-		speaker, err := datastore.GetSpeakerById(id)
+		// Get the speakers from the database.
+		log.Println("hi")
+		speakers, err := api.GetAllSpeakers()
 		if err != nil {
-			log.Printf("Failed to get speaker by id: %v", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			log.Printf("Failed to get speakers: %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Marshal the speaker.
-		speakerBytes, err := json.Marshal(speaker)
+		log.Println("hi2")
+		// Marshal the speakers.
+		speakerBytes, err := json.Marshal(speakers)
 		if err != nil {
 			log.Printf("Failed to marshal speakers: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Respond json with the speaker.
+		log.Println("hi23")
+		// Respond json with the speakers.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(speakerBytes)

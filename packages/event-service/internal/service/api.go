@@ -2,23 +2,20 @@ package service
 
 import (
 	"dave-web-app/packages/event-service/internal/config"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"gorm.io/gorm"
 	"mime/multipart"
 	"net/http"
+	"os"
 )
 
 type API struct {
 	db     *gorm.DB
-	u *s3manager.Uploader
 	client HttpClient
 	c      *config.Config
 }
 
-func NewAPI(db *gorm.DB, s *session.Session, client HttpClient, c *config.Config) *API {
-	u := s3manager.NewUploader(s)
-	return &API{db, u, client, c}
+func NewAPI(db *gorm.DB, client HttpClient, c *config.Config) *API {
+	return &API{db, client, c}
 }
 
 // We define our own interface so that we can mock it,
@@ -28,26 +25,30 @@ type HttpClient interface {
 }
 
 type EventAPI interface {
-	GetEventById(id string) (*Event, error)
 	GetAllEvents() (*[]Event, error)
 	CreateEvent(i EventInput) (*Event, error)
+	GetEventById(id string) (*Event, error)
+	EditEventById(id string, i EventInput) error
 	DeleteEventById(id string) error
 }
 
 type SessionAPI interface {
 	GetAllSessions() (*[]Session, error)
-	GetSessionById(id string) (*Session, error)
 	CreateSession(i SessionInput) (*Session, error)
+	GetSessionById(id string) (*Session, error)
+	EditSessionById(id string, i SessionInput) error
 	DeleteSessionById(id string) error
 }
 
 type SpeakerAPI interface {
 	GetAllSpeakers() (*[]Speaker, error)
-	GetSpeakerById(id string) (*Speaker, error)
 	CreateSpeaker(i SpeakerInput) (*Speaker, error)
+	GetSpeakerById(id string) (*Speaker, error)
+	EditSpeakerById(id string, i SpeakerInput) error
 	DeleteSpeakerById(id string) error
 }
 
-type S3API interface {
+type ImageAPI interface {
+	GetImage(filename string) (*os.File, error)
 	UploadImage(file multipart.File, fileHeader *multipart.FileHeader) (*Upload, error)
 }

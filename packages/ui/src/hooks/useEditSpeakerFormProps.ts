@@ -26,7 +26,7 @@ export default function useEditSpeakerFormProps(
     });
 
     // Redirect to the edited speaker page.
-    history.push(`/events/${props.id}`);
+    history.push(`/speakers/${props.id}`);
   }
 
   // If event details have been fetched then put them in,

@@ -17,22 +17,17 @@ type Session struct {
 	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
-
-
 type SessionInput struct {
-	// Name is a required field with a minimum and maximum length of 2 and 100 respectively.
-	Name        string     `json:"name,omitempty" validate:"required,min=2,max=100"`
-	// `validate:"gte"` checks if the date is >= `time.Now.UTC()`
-	StartDate   *time.Time `json:"startDate,omitempty" validate:"required,gte"`
-	EndDate     *time.Time `json:"endDate,omitempty" validate:"required,gte"`
-	Description string     `json:"description,omitempty" validate:"required,min=10,max=1000"`
-	Url         string     `json:"url,omitempty" validate:"required,min=10,max=200"`
-	// `validate:"min=1"` here means the length of the array must be >= 1.
-	SpeakerIds []string `json:"speakerIds,omitempty" validate:"required,min=1,max=10"`
-	EventId string `json:"eventId,omitempty" validate:"required,uuid4"`
+	Name        string     `json:"name,omitempty"`
+	StartDate   *time.Time `json:"startDate,omitempty"`
+	EndDate     *time.Time `json:"endDate,omitempty"`
+	Description string     `json:"description,omitempty"`
+	Url         string     `json:"url,omitempty"`
+	SpeakerIds []string `json:"speakerIds,omitempty"`
+	EventId string `json:"eventId,omitempty"`
 }
 
-func (api *api) GetSessionById(id string) (*Session, error) {
+func (api *API) GetSessionById(id string) (*Session, error) {
 	session := Session{ID: id}
 	if err := api.db.Preload("Speakers").First(&session).Error; err != nil {
 		return nil, err
@@ -40,7 +35,7 @@ func (api *api) GetSessionById(id string) (*Session, error) {
 	return &session, nil
 }
 
-func (api *api) GetAllSessions() (*[]Session, error) {
+func (api *API) GetAllSessions() (*[]Session, error) {
 	var sessions []Session
 	if err := api.db.Find(&sessions).Error; err != nil {
 		return nil, err
@@ -48,14 +43,14 @@ func (api *api) GetAllSessions() (*[]Session, error) {
 	return &sessions, nil
 }
 
-func (api *api) DeleteSessionById(id string) error {
+func (api *API) DeleteSessionById(id string) error {
 	if err := api.db.Where("id = ?", id).Delete(&Session{}).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (api *api) CreateSession(i SessionInput) (*Session, error) {
+func (api *API) CreateSession(i SessionInput) (*Session, error) {
 	var speakers []Speaker
 	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
 		return nil, err
@@ -74,4 +69,34 @@ func (api *api) CreateSession(i SessionInput) (*Session, error) {
 		return nil, err
 	}
 	return &session, nil
+}
+
+func (api *API) EditSessionById(id string, i SessionInput) error {
+	// Update the session (besides speakers).
+	session := Session{
+		ID:          id,
+		Name:        i.Name,
+		StartDate:   i.StartDate,
+		EndDate:     i.EndDate,
+		Description: i.Description,
+		Url:         i.Url,
+		EventID:     i.EventId,
+	}
+	if err := api.db.Updates(&session).Error; err != nil {
+		return err
+	}
+	// Update the session speakers. We're doing it this way instead of adding it to the
+	// session struct because otherwise we would just add new speaker ids to the session_speaker table
+	// instead of replacing them.
+
+	// Get the speakers with just their ids.
+	var speakers []Speaker
+	if err := api.db.Where("id IN ?", i.SpeakerIds).Select("id").Find(&speakers).Error; err != nil {
+		return err
+	}
+	// Update the speakers
+	if err := api.db.Model(&session).Association("Speakers").Replace(speakers); err != nil {
+		return err
+	}
+	return nil
 }

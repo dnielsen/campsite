@@ -2,20 +2,18 @@ package service
 
 import "gorm.io/gorm"
 
-type api struct {
+type API struct {
 	db *gorm.DB
 }
 
-
-
-func NewAPI(db *gorm.DB) *api {
-	return &api{db}
+func NewAPI(db *gorm.DB) *API {
+	return &API{db}
 }
 
-type Datastore interface {
+type SpeakerAPI interface {
 	GetAllSpeakers() (*[]Speaker, error)
 	CreateSpeaker(i SpeakerInput) (*Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)
+	EditSpeakerById(id string, i SpeakerInput) error
 	DeleteSpeakerById(id string) error
-	GetSpeakersByIds(ids []string) (*[]Speaker, error)
 }

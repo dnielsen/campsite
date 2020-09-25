@@ -3,25 +3,17 @@ package handler
 import (
 	"dave-web-app/packages/session-service/internal/service"
 	"encoding/json"
-	"github.com/go-playground/validator"
 	"log"
 	"net/http"
 )
 
-func CreateSession(datastore service.SessionDatastore) http.HandlerFunc {
+// `/` POST route.
+func CreateSession(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SessionInput
-		err := json.NewDecoder(r.Body).Decode(&i)
-		if err != nil {
+		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			log.Printf("Failed to unmarshal session input")
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		// Validate the input.
-		if err := validator.New().Struct(i); err != nil {
-			log.Printf("Failed to validate session input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}

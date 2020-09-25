@@ -46,6 +46,7 @@ func (api *API) GetAllSessions() (*[]Session, error) {
 	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
+		return nil, err
 	}
 
 	// Read the response body.
@@ -76,6 +77,7 @@ func (api *API) GetSessionById(id string) (*Session, error) {
 	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
+		return nil, err
 	}
 
 	// Read the response body.
@@ -111,12 +113,36 @@ func (api *API) DeleteSessionById(id string) error {
 	return nil
 }
 
+func (api *API) EditSessionById(id string, i SessionInput) error {
+	// Marshal the session input.
+	b, err := json.Marshal(i)
+	if err != nil {
+		log.Printf("Failed to marshal session input: %v", err)
+		return err
+	}
+
+	// Create a request.
+	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), bytes.NewBuffer(b))
+	if err != nil {
+		log.Printf("Failed to create new request: %v", err)
+		return err
+	}
+
+	// Make the request.
+	if _, err := api.client.Do(req); err != nil {
+		log.Printf("Failed to do request: %v", err)
+		return err
+	}
+
+	return nil
+}
 
 func (api *API) CreateSession(i SessionInput) (*Session, error) {
 	// Marshal the session input.
 	b, err := json.Marshal(i)
 	if err != nil {
 		log.Printf("Failed to marshal session input: %v", err)
+		return nil, err
 	}
 
 	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%v:%v", api.c.Service.Session.Host, api.c.Service.Session.Port), bytes.NewBuffer(b))
@@ -129,6 +155,7 @@ func (api *API) CreateSession(i SessionInput) (*Session, error) {
 	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
+		return nil, err
 	}
 
 	// Read the response body.

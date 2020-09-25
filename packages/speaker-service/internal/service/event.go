@@ -2,19 +2,6 @@ package service
 
 import "time"
 
-//type Event struct {
-//	ID            string         `json:"id"`
-//	Name          string         `json:"name"`
-//	Description   string         `json:"description"`
-//	StartDate     *time.Time      `json:"startDate"`
-//	EndDate       *time.Time      `json:"endDate"`
-//	Photo         string         `json:"photo"`
-//	OrganizerName string         `json:"organizerName"`
-//	Address       sql.NullString  `json:"address"`
-//	Sessions      []Session      `json:"sessions,omitempty"`
-//	Speakers      []Speaker      `json:"speakers,omitempty"`
-//}
-
 type Event struct {
 	ID            string         `json:"id" gorm:"type:uuid"`
 	Name          string         `json:"name" gorm:"not null"`

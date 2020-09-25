@@ -6,14 +6,14 @@ import (
 	"net/http"
 )
 
-type api struct {
+type API struct {
 	db     *gorm.DB
 	client HttpClient
 	c      *config.Config
 }
 
-func NewAPI(db *gorm.DB, client HttpClient, c *config.Config) *api {
-	return &api{db, client, c}
+func NewAPI(db *gorm.DB, client HttpClient, c *config.Config) *API {
+	return &API{db, client, c}
 }
 
 // We define our own interface so that we can mock it,
@@ -22,9 +22,10 @@ type HttpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-type SessionDatastore interface {
+type SessionAPI interface {
 	GetAllSessions() (*[]Session, error)
 	CreateSession(i SessionInput) (*Session, error)
 	GetSessionById(id string) (*Session, error)
+	EditSessionById(id string, i SessionInput) error
 	DeleteSessionById(id string) error
 }
