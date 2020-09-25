@@ -2,22 +2,19 @@ package service
 
 import (
 	"dave-web-app/packages/server/internal/config"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"gorm.io/gorm"
 	"mime/multipart"
+	"os"
 )
 
 type API struct {
 	db *gorm.DB
-	u  *s3manager.Uploader
 	c  *config.Config
 }
 
 // Create a new API object.
-func NewAPI(db *gorm.DB, s *session.Session, c *config.Config) *API {
-	u := s3manager.NewUploader(s)
-	return &API{db, u, c}
+func NewAPI(db *gorm.DB, c *config.Config) *API {
+	return &API{db, c}
 }
 
 type EventAPI interface {
@@ -44,6 +41,7 @@ type SpeakerAPI interface {
 	EditSpeakerById(id string, i SpeakerInput) error
 }
 
-type S3API interface {
+type ImageAPI interface {
+	GetImage(filename string) (*os.File, error)
 	UploadImage(file multipart.File, fileHeader *multipart.FileHeader) (*Upload, error)
 }

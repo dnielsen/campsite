@@ -12,7 +12,7 @@ import (
 const FORM_DATA_NAME = "file"
 
 // `/upload` POST route.
-func UploadImage(api service.S3API) http.HandlerFunc {
+func UploadImage(api service.ImageAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Parse the request body, that is the form data.
 		// `10 << 20` specifies a maximum upload size of 10MB.
@@ -31,8 +31,8 @@ func UploadImage(api service.S3API) http.HandlerFunc {
 		}
 		defer file.Close()
 
-		// Upload the image to S3.
-		upload, err := api.UploadImage(file, fileHeader)
+		// Upload the image (save it in the `images` directory).
+		u, err := api.UploadImage(file, fileHeader)
 		if err != nil {
 			log.Printf("Failed to uploaded image: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -40,14 +40,14 @@ func UploadImage(api service.S3API) http.HandlerFunc {
 		}
 
 		// Marshal the upload.
-		bytes, err := json.Marshal(upload)
+		bytes, err := json.Marshal(u)
 		if err != nil {
 			log.Printf("Failed to marshal upload result: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Respond JSON with the upload.
+		// Respond JSON with the upload that has the url of our file.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(bytes)

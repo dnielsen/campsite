@@ -18,13 +18,13 @@ type Session struct {
 }
 
 type SessionInput struct {
-	Name string `json:"name,omitempty"`
+	Name        string     `json:"name,omitempty"`
 	StartDate   *time.Time `json:"startDate,omitempty"`
 	EndDate     *time.Time `json:"endDate,omitempty"`
 	Description string     `json:"description,omitempty"`
 	Url         string     `json:"url,omitempty"`
-	SpeakerIds []string `json:"speakerIds,omitempty"`
-	EventId    string   `json:"eventId,omitempty"`
+	SpeakerIds  []string   `json:"speakerIds,omitempty"`
+	EventId     string     `json:"eventId,omitempty"`
 }
 
 func (api *API) GetAllSessions() (*[]Session, error) {
@@ -70,7 +70,6 @@ func (api *API) DeleteSessionById(id string) error {
 	}
 	return nil
 }
-
 
 func (api *API) EditSessionById(id string, i SessionInput) error {
 	// Update the session (besides speakers).

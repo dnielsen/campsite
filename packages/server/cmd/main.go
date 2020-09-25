@@ -6,7 +6,6 @@ import (
 	"dave-web-app/packages/server/internal/handler"
 	"dave-web-app/packages/server/internal/server"
 	"dave-web-app/packages/server/internal/service"
-	"dave-web-app/packages/server/internal/storage"
 	"github.com/gorilla/mux"
 	"net/http"
 	"os"
@@ -21,20 +20,15 @@ func main() {
 	// migrate it and create sample mock data there.
 	db := database.NewDevDb(&c.Db)
 
-	// Create a new S3 session.
-	//
-	// Temporarily, we're not passing the AWS config, because there's
-	// no support for it currently in our `config` module. We'll change that later.
-	s := storage.NewS3Session()
-
 	// Set up the API.
-	api := service.NewAPI(db, s, c)
+	api := service.NewAPI(db, c)
 
 	// Set up the router.
 	r := mux.NewRouter()
 
 	// Register our handlers.
-	r.HandleFunc("/upload", handler.UploadImage(api)).Methods(http.MethodPost)
+	r.HandleFunc("/images", handler.UploadImage(api)).Methods(http.MethodPost)
+	r.HandleFunc("/images/{filename}", handler.GetImage(api)).Methods(http.MethodGet)
 
 	r.HandleFunc("/events", handler.GetEvents(api)).Methods(http.MethodGet)
 	r.HandleFunc("/events", handler.CreateEvent(api)).Methods(http.MethodPost)

@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, FieldProps, FormikProps } from "formik";
 import { Upload } from "../common/interfaces";
-import { BASE_UPLOAD_API_URL } from "../common/constants";
+import { BASE_IMAGE_API_URL } from "../common/constants";
 
 interface Props {
   name: string;
@@ -26,7 +26,7 @@ function ImageUploadField(props: Props) {
 
       // Send the request with the form data to our backend
       // which is gonna upload it to Amazon S3.
-      const upload = (await fetch(BASE_UPLOAD_API_URL, {
+      const upload = (await fetch(BASE_IMAGE_API_URL, {
         method: "POST",
         body: fd,
       }).then((res) => res.json())) as Upload;
