@@ -17,7 +17,8 @@ const (
 )
 
 func Start(c *config.ServerConfig, r *mux.Router) {
-	// For dev only - Set up CORS so our client (React app) can consume the api.
+	// Set up CORS so our client (React app; or any other app)
+	// can consume the api.
 	corsWrapper := cors.New(cors.Options{
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*"},
