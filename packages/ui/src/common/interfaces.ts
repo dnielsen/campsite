@@ -6,8 +6,8 @@ export interface EventDetails {
   id: string;
   name: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   photo: string;
   organizerName: string;
   // We might add null address support later - that is, when an event takes place online
@@ -31,6 +31,7 @@ export interface SpeakerPreview {
 
 export interface Session extends SessionPreview {
   speakers: SpeakerPreview[];
+  eventId: string;
 }
 
 export interface SessionPreview {
@@ -90,12 +91,13 @@ export interface Option {
   value: string;
 }
 
-export interface FormConfig<T> {
+export interface FormProps<T> {
   onSubmit: (input: T) => void;
   initialValues: T;
   validationSchema: Yup.ObjectSchema;
+  enableReinitialize?: boolean;
 }
 
-export interface UseForm<T> {
-  formConfig: FormConfig<T>;
+export interface Upload {
+  url: string;
 }

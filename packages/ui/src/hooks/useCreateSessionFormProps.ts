@@ -1,21 +1,21 @@
 import * as Yup from "yup";
 import {
   FetchSessionInput,
+  FormProps,
   FormSessionInput,
-  Option,
   SessionPreview,
-  UseForm,
 } from "../common/interfaces";
 import { BASE_SESSION_API_URL } from "../common/constants";
 import { useHistory } from "react-router-dom";
+import util from "../common/util";
 
 interface Props {
-  defaultEventIdValue: string;
+  eventId: string;
 }
 
-export default function useCreateSessionForm(
+export default function useCreateSessionFormProps(
   props: Props,
-): UseForm<FormSessionInput> {
+): FormProps<FormSessionInput> {
   const history = useHistory();
 
   async function onSubmit(input: FormSessionInput) {
@@ -26,7 +26,6 @@ export default function useCreateSessionForm(
       endDate: new Date(input.endDate),
     };
 
-    console.log(fetchInput);
     // Send a request to create the session.
     const createdSession = (await fetch(`${BASE_SESSION_API_URL}`, {
       method: "POST",
@@ -36,18 +35,24 @@ export default function useCreateSessionForm(
     history.push(`/sessions/${createdSession.id}`);
   }
 
+  // For example: `06/27/2020 5:06 PM`
+  const now = new Date();
   const initialValues: FormSessionInput = {
     name: "",
     description: "",
     url: "",
-    startDate: "",
-    endDate: "",
-    eventId: props.defaultEventIdValue,
+    startDate: util.getDateFormValue(now),
+    endDate: util.getDateFormValue(now),
+    eventId: props.eventId ?? "",
     speakerIds: [],
   };
 
   const validationSchema = Yup.object().shape({});
 
-  const formConfig = { onSubmit, validationSchema, initialValues };
-  return { formConfig };
+  return {
+    onSubmit,
+    validationSchema,
+    initialValues,
+    enableReinitialize: true,
+  };
 }

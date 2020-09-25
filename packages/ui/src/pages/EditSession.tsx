@@ -1,10 +1,13 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import SessionForm from "../components/SessionForm";
+import useEditSessionFormProps from "../hooks/useEditSessionFormProps";
 import useAPI from "../hooks/useAPI";
 import { EventDetails, SpeakerPreview } from "../common/interfaces";
-import useCreateSessionFormProps from "../hooks/useCreateSessionFormProps";
 
-function CreateSession() {
+function EditSession() {
+  const { id } = useParams<{ id: string }>();
+  const formProps = useEditSessionFormProps({ id });
   // A temporary solution, later we might load just the speaker/event ids and names,
   // and do it asynchronously, that is after having loaded the rest of the form.
   const {
@@ -16,23 +19,15 @@ function CreateSession() {
     EventDetails[]
   >("/events");
 
-  const formProps = useCreateSessionFormProps({
-    eventId: events[0].id,
-  });
-
   if (speakersLoading || eventsLoading) return <div>loading...</div>;
   if (speakersError) return <div>error: {speakersError.message}</div>;
   if (eventsError) return <div>error: {eventsError.message}</div>;
-
-  if (events.length === 0) return <div>Create an event first.</div>;
-  if (speakers.length === 0) return <div>Create a speaker first.</div>;
-
   return (
     <div>
-      <h3>Create a session</h3>
+      <h3>Edit Session</h3>
       <SessionForm speakers={speakers} events={events} formProps={formProps} />
     </div>
   );
 }
 
-export default CreateSession;
+export default EditSession;

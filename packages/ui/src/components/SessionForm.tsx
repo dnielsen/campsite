@@ -1,23 +1,25 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import { EventDetails, SpeakerPreview } from "../../common/interfaces";
-import Checkbox from "../../components/Checkbox";
-import useCreateSessionForm from "../../hooks/useCreateSessionForm";
+import {
+  EventDetails,
+  FormProps,
+  FormSessionInput,
+  SpeakerPreview,
+} from "../common/interfaces";
+import Checkbox from "./Checkbox";
+import DateTimeField from "./DateTimeField";
 
 // A temporary solution, later we might load speakers and events asynchronously,
 // and fetch less data.
 interface Props {
   speakers: SpeakerPreview[];
   events: EventDetails[];
+  formProps: FormProps<FormSessionInput>;
 }
 
 function SessionForm(props: Props) {
-  const { formConfig } = useCreateSessionForm({
-    defaultEventIdValue: props.events[0].id,
-  });
-
   return (
-    <Formik {...formConfig}>
+    <Formik {...props.formProps}>
       {({ isSubmitting }: FormikState<FormikValues>) => (
         <Form noValidate>
           <section>
@@ -34,11 +36,11 @@ function SessionForm(props: Props) {
           </section>
           <section>
             <label htmlFor={"startDate"}>Start date</label>
-            <Field type={"date"} name={"startDate"} />
+            <DateTimeField name={"startDate"} />
           </section>
           <section>
             <label htmlFor={"endDate"}>End date</label>
-            <Field type={"date"} name={"endDate"} />
+            <DateTimeField name={"endDate"} />
           </section>
           <section>
             <label htmlFor="eventId">Event</label>
@@ -59,11 +61,6 @@ function SessionForm(props: Props) {
                 label={speaker.name}
               />
             ))}
-            {/*<SelectField*/}
-            {/*  options={options}*/}
-            {/*  name={"speakerOptions"}*/}
-            {/*  defaultValue={props.formConfig.initialValues.speakerOptions}*/}
-            {/*/>*/}
           </section>
           <button type={"submit"} disabled={isSubmitting}>
             Submit

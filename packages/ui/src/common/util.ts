@@ -12,7 +12,7 @@ function getHourRangeString(startDate: string, endDate: string) {
   return `${startTime} - ${endTime}`;
 }
 
-function getFullDateString(date: Date) {
+function getFullDateString(date: string) {
   return moment(date).tz(TIMEZONE).format("MM/DD/YYYY h:mma z");
 }
 
@@ -34,14 +34,16 @@ function getUniqueSpeakers(speakers: SpeakerPreview[]) {
   }, [] as SpeakerPreview[]);
 }
 
-function getValueForDateField(date: string) {
-  return moment(date).format("YYYY-MM-DD");
+// For example: `06/27/2020 5:06 PM`. We need this function
+// because `react-datetime` library requires the date formatted this way.
+function getDateFormValue(date: string | Date) {
+  return moment(date).format("MM/DD/yyyy hh:mm a");
 }
 
 export default {
   getHourRangeString,
   getFullDateString,
   getUniqueElementsFromMultidimensionalArray,
-  getValueForDateField,
   getUniqueSpeakers,
+  getDateFormValue,
 };

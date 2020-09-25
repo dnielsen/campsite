@@ -1,14 +1,16 @@
 import React from "react";
 import { Field, Form, Formik, FormikState, FormikValues } from "formik";
-import { FormConfig, FormEventInput } from "../../common/interfaces";
+import { FormProps, FormEventInput } from "../common/interfaces";
+import DateTimeField from "./DateTimeField";
+import ImageUploadField from "./ImageUploadField";
 
 interface Props {
-  formConfig: FormConfig<FormEventInput>;
+  formProps: FormProps<FormEventInput>;
 }
 
 function EventForm(props: Props) {
   return (
-    <Formik {...props.formConfig}>
+    <Formik {...props.formProps}>
       {({ isSubmitting }: FormikState<FormikValues>) => (
         <Form noValidate>
           <section>
@@ -21,7 +23,7 @@ function EventForm(props: Props) {
           </section>
           <section>
             <label htmlFor={"photo"}>Photo</label>
-            <Field type={"text"} name={"photo"} />
+            <ImageUploadField name={"photo"} />
           </section>
           <section>
             <label htmlFor={"organizerName"}>Organizer name</label>
@@ -33,11 +35,11 @@ function EventForm(props: Props) {
           </section>
           <section>
             <label htmlFor={"startDate"}>Start date</label>
-            <Field type={"date"} name={"startDate"} />
+            <DateTimeField name={"startDate"} />
           </section>
           <section>
             <label htmlFor={"endDate"}>End date</label>
-            <Field type={"date"} name={"endDate"} />
+            <DateTimeField name={"endDate"} />
           </section>
           <button type={"submit"} disabled={isSubmitting}>
             Submit
