@@ -10,7 +10,6 @@ interface Props {
 function SpeakerSessionSchedule(props: Props) {
   return (
     <div>
-      <p>Sessions</p>
       <table>
         <th>
           <tr>

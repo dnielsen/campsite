@@ -1,11 +1,11 @@
 import React from "react";
 
-// import bootstrap container
-import Container from "react-bootstrap/Container";
+// import styled component
+import * as g from "../../styles/globalStyles";
 
 const Footer = () => {
   return (
-    <Container>
+    <g.Container>
       <footer>
         <p>
           {"Copyright © "}
@@ -14,7 +14,7 @@ const Footer = () => {
           {"."}
         </p>
       </footer>
-    </Container>
+    </g.Container>
   );
 };
 

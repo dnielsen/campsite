@@ -8,11 +8,13 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@types/react-tabs": "^2.3.2",
     "next": "latest",
+    "next-images": "^1.4.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "styled-components": "^5.2.0",
-    "next-images": "^1.4.0"
+    "react-tabs": "^3.1.1",
+    "styled-components": "^5.2.0"
   },
   "devDependencies": {
     "@opencensus/exporter-zipkin": "^0.0.22",

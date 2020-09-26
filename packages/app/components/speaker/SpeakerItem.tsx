@@ -10,12 +10,8 @@ interface Props {
 function SpeakerItem(props: Props) {
   return (
     <div>
-      <div>
-        <div>
-          <SpeakerPreviewItem speaker={props.speaker} />
-        </div>
-      </div>
-      <SpeakerSessionSchedule sessions={props.speaker.sessions} />
+      <SpeakerPreviewItem speaker={props.speaker} />
+      {/* <SpeakerSessionSchedule sessions={props.speaker.sessions} /> */}
     </div>
   );
 }

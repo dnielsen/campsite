@@ -30,7 +30,7 @@ const Layout = ({ children, title = "This is the default title" }: Props) => (
     <g.GlobalStyle />
     <Header />
     {children}
-    <Footer />
+    {/* <Footer /> */}
   </div>
 );
 

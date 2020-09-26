@@ -1,6 +1,7 @@
 import Layout from "../components/Layout";
 import React from "react";
 import EventItem from "../components/event/EventItem";
+import HomePage from "../components/home";
 import { EventDetails, EventResponse } from "../common/interfaces";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 import {
@@ -14,6 +15,7 @@ function IndexPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <Layout title="Campsite">
       <EventItem eventDetails={props.eventDetails} />
+       {/*<HomePage eventDetails={props.eventDetails}/>*/}
     </Layout>
   );
 }
