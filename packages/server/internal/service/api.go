@@ -43,5 +43,5 @@ type SpeakerAPI interface {
 
 type ImageAPI interface {
 	GetImage(filename string) (*os.File, error)
-	UploadImage(file multipart.File, fileHeader *multipart.FileHeader) (*Upload, error)
+	UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error)
 }
