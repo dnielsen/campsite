@@ -14,8 +14,6 @@ services:
       - docker.env
     networks:
       - app
-    expose:
-      - 4444
   speaker-service:
     container_name: campsite-speaker-service
     build: ./packages/speaker-service
@@ -28,8 +26,6 @@ services:
       - postgres
     networks:
       - app
-    expose:
-      - 3333
   session-service:
     container_name: campsite-session-service
     build: ./packages/session-service
