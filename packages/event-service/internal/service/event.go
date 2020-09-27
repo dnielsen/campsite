@@ -19,7 +19,6 @@ type Event struct {
 
 type EventInput struct {
 	Name string `json:"name,omitempty"`
-	// `gte` stands for >= time.Now.UTC()
 	StartDate     *time.Time `json:"startDate,omitempty"`
 	EndDate       *time.Time `json:"endDate,omitempty"`
 	Description   string     `json:"description,omitempty"`

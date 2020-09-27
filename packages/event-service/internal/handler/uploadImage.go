@@ -32,7 +32,7 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 		defer file.Close()
 
 		// Upload the image (save it in the `images` directory).
-		u, err := api.UploadImage(file, fileHeader)
+		u, err := api.UploadImage(file, fileHeader, r.Host)
 		if err != nil {
 			log.Printf("Failed to upload image: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

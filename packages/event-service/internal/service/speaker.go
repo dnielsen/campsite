@@ -20,10 +20,10 @@ type Speaker struct {
 
 type SpeakerInput struct {
 	// Name is a required field with a minimum and maximum length of 2 and 50 respectively.
-	Name     string `json:"name,omitempty" validate:"required,min=2,max=50"`
-	Bio      string `json:"bio,omitempty" validate:"required,min=20,max=2000"`
-	Headline string `json:"headline,omitempty" validate:"required,min=2,max=30"`
-	Photo    string `json:"photo,omitempty" validate:"required,min=10,max=150"`
+	Name     string `json:"name,omitempty"`
+	Bio      string `json:"bio,omitempty"`
+	Headline string `json:"headline,omitempty"`
+	Photo    string `json:"photo,omitempty"`
 }
 
 func (api *API) GetSpeakerById(id string) (*Speaker, error) {

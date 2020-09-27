@@ -23,16 +23,13 @@ type Session struct {
 }
 
 type SessionInput struct {
-	// Name is a required field with a minimum and maximum length of 2 and 100 respectively.
-	Name        string     `json:"name,omitempty" validate:"required,min=2,max=100"`
-	// `validate:"gte"` checks if the date is >= `time.Now.UTC()`
-	StartDate   *time.Time `json:"startDate,omitempty" validate:"required,gte"`
-	EndDate     *time.Time `json:"endDate,omitempty" validate:"required,gte"`
-	Description string     `json:"description,omitempty" validate:"required,min=10,max=1000"`
-	Url         string     `json:"url,omitempty" validate:"required,min=10,max=200"`
-	// `validate:"min=1"` here means the length of the array must be >= 1.
-	SpeakerIds []string `json:"speakerIds,omitempty" validate:"required,min=1,max=10"`
-	EventId string `json:"eventId,omitempty" validate:"required,uuid4"`
+	Name        string     `json:"name,omitempty"`
+	StartDate   *time.Time `json:"startDate,omitempty"`
+	EndDate     *time.Time `json:"endDate,omitempty"`
+	Description string     `json:"description,omitempty"`
+	Url         string     `json:"url,omitempty"`
+	SpeakerIds []string `json:"speakerIds,omitempty"`
+	EventId string `json:"eventId,omitempty"`
 }
 
 func (api *API) GetAllSessions() (*[]Session, error) {

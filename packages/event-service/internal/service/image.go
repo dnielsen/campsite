@@ -14,7 +14,7 @@ type Upload struct {
 
 // If we were to make a production app, we'd store it, for example, using
 // Amazon S3.
-func (api *API) UploadImage(file multipart.File, fileHeader *multipart.FileHeader) (*Upload, error) {
+func (api *API) UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error) {
 	originalFilename := fileHeader.Filename
 	// Create a temporary file in our `images` directory with a unique filename
 	// so that we can later save the received file into it. `*` will be replaced
@@ -39,7 +39,7 @@ func (api *API) UploadImage(file multipart.File, fileHeader *multipart.FileHeade
 
 	// Return with an Upload
 	path := tempFile.Name()
-	u := Upload{Url: fmt.Sprintf("http://localhost:%v/%v", api.c.Server.Port, path)}
+	u := Upload{Url: fmt.Sprintf("http://%v/%v", host, path)}
 	return &u, nil
 }
 

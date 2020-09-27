@@ -1,16 +1,31 @@
 package main
 
 import (
+	"contrib.go.opencensus.io/exporter/zipkin"
 	"dave-web-app/packages/event-service/internal/config"
 	"dave-web-app/packages/event-service/internal/database"
 	"dave-web-app/packages/event-service/internal/handler"
 	"dave-web-app/packages/event-service/internal/server"
 	"dave-web-app/packages/event-service/internal/service"
 	"github.com/gorilla/mux"
+	openZipkin "github.com/openzipkin/zipkin-go"
+	httpZipkin "github.com/openzipkin/zipkin-go/reporter/http"
+	"go.opencensus.io/trace"
+	"log"
 	"net/http"
 )
 
 func main() {
+	localEndpointURI := "192.168.1.5:5454"
+	reporterURI := "http://localhost:9411/api/v2/spans"
+	serviceName := "event-service"
+	localEndpoint, err := openZipkin.NewEndpoint(serviceName, localEndpointURI)
+	if err != nil {
+		log.Fatalf("Failed to create new zipkin endpoint: %v", err)
+	}
+	reporter := httpZipkin.NewReporter(reporterURI)
+	exp := zipkin.NewExporter(reporter, localEndpoint)
+	trace.RegisterExporter(exp)
 	// Initialize the config.
 	c := config.NewConfig()
 
