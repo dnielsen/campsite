@@ -1,17 +1,17 @@
 version: "3"
 services:
-#  server:
-#    container_name: campsite-server
-#    build: ./packages/server
-#    ports:
-#      - "4444:4444"
-#    restart: always
-#    networks:
-#      - app
-#    depends_on:
-#      - postgres
-#    env_file:
-#      - docker.env
+  server:
+    container_name: campsite-server
+    build: ./packages/server
+    ports:
+      - "4444:4444"
+    restart: always
+    networks:
+      - app
+    depends_on:
+      - postgres
+    env_file:
+      - docker.env
   postgres:
     image: postgres:latest
     ports:
@@ -22,19 +22,19 @@ services:
       - docker.env
     networks:
       - app
-  pgadmin:
-    links:
-      - postgres
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    ports:
-      - "8080:80"
-    volumes:
-      - ./data/pgadmin:/var/lib/pgadmin/
-    env_file:
-      - docker.env
-    networks:
-      - app
+#  pgadmin:
+#    links:
+#      - postgres
+#    container_name: pgadmin
+#    image: dpage/pgadmin4
+#    ports:
+#      - "8080:80"
+#    volumes:
+#      - ./data/pgadmin:/var/lib/pgadmin/
+#    env_file:
+#      - docker.env
+#    networks:
+#      - app
 networks:
   app:
     driver: bridge
