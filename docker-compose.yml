@@ -48,19 +48,19 @@ services:
       - docker.env
     networks:
       - app
-  pgadmin:
-    links:
-      - postgres
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    ports:
-      - "8080:80"
-    volumes:
-      - ./data/pgadmin:/var/lib/pgadmin/
-    env_file:
-      - docker.env
-    networks:
-      - app
+#  pgadmin:
+#    links:
+#      - postgres
+#    container_name: pgadmin
+#    image: dpage/pgadmin4
+#    ports:
+#      - "8080:80"
+#    volumes:
+#      - ./data/pgadmin:/var/lib/pgadmin/
+#    env_file:
+#      - docker.env
+#    networks:
+#      - app
 networks:
   app:
     driver: bridge
