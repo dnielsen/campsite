@@ -8,8 +8,11 @@ packages/ui/build
 packages/ui/yarn-debug.log*
 packages/ui/yarn-error.log*
 
+#
+#packages/server
+
 # Server
-packages/event-service/images
+packages/event-service/images/*
 
 # We're ignoring those files in case they're
 # mistakenly added into the project root directory.
