@@ -12,8 +12,8 @@ type Session struct {
 	EndDate     *time.Time `json:"endDate" gorm:"not null"`
 	Description string    `json:"description" gorm:"not null"`
 	Url         string    `json:"url" gorm:"not null"`
-	Event 		Event `json:"-"`
-	EventID 	string `json:"-" gorm:"type:uuid;not null"`
+	Event 		Event `json:"event,omitempty"`
+	EventID 	string `json:"eventId,omitempty" gorm:"type:uuid;not null"`
 	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
@@ -29,7 +29,7 @@ type SessionInput struct {
 
 func (api *API) GetSessionById(id string) (*Session, error) {
 	session := Session{ID: id}
-	if err := api.db.Preload("Speakers").First(&session).Error; err != nil {
+	if err := api.db.Preload("Speakers").Preload("Event.Sessions").First(&session).Error; err != nil {
 		return nil, err
 	}
 	return &session, nil
