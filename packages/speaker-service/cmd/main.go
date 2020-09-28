@@ -6,6 +6,7 @@ import (
 	"dave-web-app/packages/speaker-service/internal/handler"
 	"dave-web-app/packages/speaker-service/internal/server"
 	"dave-web-app/packages/speaker-service/internal/service"
+	"dave-web-app/packages/speaker-service/internal/tracing"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -22,6 +23,11 @@ func main() {
 
 	// Set up the router.
 	r := mux.NewRouter()
+
+	// Set up the tracing middleware.
+	t := tracing.NewTracer(&c.Server)
+	tracingMiddleware := tracing.NewTracingMiddleware(t)
+	r.Use(tracingMiddleware)
 
 	// Set up the handlers.
 	r.HandleFunc("/", handler.GetAllSpeakers(api)).Methods(http.MethodGet)

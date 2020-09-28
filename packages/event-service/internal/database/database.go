@@ -72,8 +72,8 @@ func getMockEvent() service.Event {
 	address := "San Francisco, California"
 	event := service.Event{
 		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
-		Name:          "Great Event",
-		Description:   "Very interesting",
+		Name:          "BigDataCamp LA 2020",
+		Description:   "Very interesting asdkask alsdaskdl asda dalsdkal sdkasdlas dlkas",
 		StartDate:     &now,
 		EndDate:       &later,
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
@@ -84,15 +84,15 @@ func getMockEvent() service.Event {
 			Name:        "Session",
 			StartDate:   &now,
 			EndDate:     &later,
-			Description: "desc",
-			Url:         "url",
+			Description: "akdlaskd alsd aklsd askd asldkalsdkaldjalfajd fasjdkfl asjd laldfasdlfjasl dfalkdjf ",
+			Url:         "https://google.com",
 			EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 			Speakers: []service.Speaker{{
 				ID:       "9c08fbf8-160b-4a86-9981-aeddf4e3798e",
 				Name:     "John Doe",
-				Bio:      "Bio",
-				Headline: "Headline",
-				Photo:    "photo",
+				Bio:      "Very interesting person",
+				Headline: "CEO of Tesla",
+				Photo:    "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
 			}},
 		}},
 	}
