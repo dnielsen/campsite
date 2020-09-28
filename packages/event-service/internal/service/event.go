@@ -9,6 +9,7 @@ type Event struct {
 	ID            string     `json:"id" gorm:"type:uuid"`
 	Name          string     `json:"name" gorm:"not null"`
 	Description   string     `json:"description" gorm:"not null"`
+	RegistrationUrl string `json:"registrationUrl" gorm:"not null"`
 	StartDate     *time.Time `json:"startDate" gorm:"not null"`
 	EndDate       *time.Time `json:"endDate" gorm:"not null"`
 	Photo         string     `json:"photo" gorm:"not null"`
@@ -21,6 +22,7 @@ type EventInput struct {
 	Name string `json:"name,omitempty"`
 	StartDate     *time.Time `json:"startDate,omitempty"`
 	EndDate       *time.Time `json:"endDate,omitempty"`
+	RegistrationUrl string `json:"registrationUrl,omitempty"`
 	Description   string     `json:"description,omitempty"`
 	Photo         string     `json:"photo,omitempty"`
 	OrganizerName string     `json:"organizerName,omitempty"`

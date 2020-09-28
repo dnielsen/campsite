@@ -74,6 +74,7 @@ func getMockEvent() service.Event {
 		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 		Name:          "BigDataCamp LA 2020",
 		Description:   "Very interesting asdkask alsdaskdl asda dalsdkal sdkasdlas dlkas",
+		RegistrationUrl: "https://www.eventbrite.com/e/redis-day-london-2019-registration-71402886957#",
 		StartDate:     &now,
 		EndDate:       &later,
 		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
