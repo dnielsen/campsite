@@ -1,13 +1,14 @@
 package handler
 
 import (
-	"dave-web-app/packages/speaker-service/internal/service"
+	"campsite/packages/speaker-service/internal/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
+// `/{id}` GET route.
 func GetSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the speaker id parameter

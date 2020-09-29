@@ -1,8 +1,8 @@
 package server
 
 import (
-	"dave-web-app/packages/event-service/internal/config"
-	"dave-web-app/packages/event-service/internal/tracing"
+	"campsite/packages/event-service/internal/config"
+	"campsite/packages/event-service/internal/tracing"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"

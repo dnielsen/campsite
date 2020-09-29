@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"dave-web-app/packages/session-service/internal/service"
+	"campsite/packages/session-service/internal/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

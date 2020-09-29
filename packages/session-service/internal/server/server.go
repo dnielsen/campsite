@@ -1,8 +1,8 @@
 package server
 
 import (
-	"dave-web-app/packages/session-service/internal/config"
-	"dave-web-app/packages/session-service/internal/tracing"
+	"campsite/packages/session-service/internal/config"
+	"campsite/packages/session-service/internal/tracing"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"

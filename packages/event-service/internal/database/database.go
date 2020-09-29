@@ -1,9 +1,9 @@
 package database
 
 import (
-	"dave-web-app/packages/event-service/internal/config"
-	"dave-web-app/packages/event-service/internal/service"
-	"dave-web-app/packages/event-service/internal/util"
+	"campsite/packages/event-service/internal/config"
+	"campsite/packages/event-service/internal/service"
+	"campsite/packages/event-service/internal/util"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"dave-web-app/packages/event-service/internal/service"
+	"campsite/packages/event-service/internal/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"

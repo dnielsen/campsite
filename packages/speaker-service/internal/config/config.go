@@ -5,6 +5,7 @@ import (
 	"log"
 )
 
+// The Postgres config.
 type DbConfig struct {
 	Name string `env:"DB_NAME" env-default:"postgres"`
 	User string `env:"DB_USER" env-default:"postgres"`
@@ -15,7 +16,14 @@ type DbConfig struct {
 }
 
 type ServerConfig struct {
+	// Enables tracing middleware that forwards
+	// requests to `http://localhost:9411/api/v2/spans`.
+	// It's using Zipkin Go package. We need it to show Hypertrace
+	// functionality.
 	Tracing bool `env:"SERVER_TRACING" env-default:"false"`
+	// We skip the `SERVER_PORT` environment variable and instead use
+	// `SERVICE_SPEAKER_PORT` since otherwise we'd need to have
+	// duplicated data.
 	Port string `env:"SERVICE_SPEAKER_PORT" env-default:"3333"`
 }
 

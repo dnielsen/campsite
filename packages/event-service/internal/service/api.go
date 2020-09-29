@@ -1,7 +1,7 @@
 package service
 
 import (
-	"dave-web-app/packages/event-service/internal/config"
+	"campsite/packages/event-service/internal/config"
 	"gorm.io/gorm"
 	"mime/multipart"
 	"net/http"

@@ -1,8 +1,8 @@
 package server
 
 import (
-	"dave-web-app/packages/speaker-service/internal/config"
-	"dave-web-app/packages/speaker-service/internal/tracing"
+	"campsite/packages/speaker-service/internal/config"
+	"campsite/packages/speaker-service/internal/tracing"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"

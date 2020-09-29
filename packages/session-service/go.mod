@@ -1,4 +1,4 @@
-module dave-web-app/packages/session-service
+module campsite/packages/session-service
 
 go 1.14
 

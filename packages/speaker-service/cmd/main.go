@@ -1,11 +1,11 @@
 package main
 
 import (
-	"dave-web-app/packages/speaker-service/internal/config"
-	"dave-web-app/packages/speaker-service/internal/database"
-	"dave-web-app/packages/speaker-service/internal/handler"
-	"dave-web-app/packages/speaker-service/internal/server"
-	"dave-web-app/packages/speaker-service/internal/service"
+	"campsite/packages/speaker-service/internal/config"
+	"campsite/packages/speaker-service/internal/database"
+	"campsite/packages/speaker-service/internal/handler"
+	"campsite/packages/speaker-service/internal/server"
+	"campsite/packages/speaker-service/internal/service"
 	"github.com/gorilla/mux"
 	"net/http"
 )

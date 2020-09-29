@@ -1,4 +1,4 @@
-module dave-web-app/packages/event-service
+module campsite/packages/event-service
 
 go 1.14
 

@@ -1,4 +1,4 @@
-module dave-web-app/packages/speaker-service
+module campsite/packages/speaker-service
 
 go 1.14
 

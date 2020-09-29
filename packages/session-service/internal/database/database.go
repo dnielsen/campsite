@@ -1,8 +1,8 @@
 package database
 
 import (
-	"dave-web-app/packages/session-service/internal/config"
-	"dave-web-app/packages/session-service/internal/util"
+	"campsite/packages/session-service/internal/config"
+	"campsite/packages/session-service/internal/util"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

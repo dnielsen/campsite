@@ -1,8 +1,8 @@
 package database
 
 import (
-	"dave-web-app/packages/speaker-service/internal/config"
-	"dave-web-app/packages/speaker-service/internal/util"
+	"campsite/packages/speaker-service/internal/config"
+	"campsite/packages/speaker-service/internal/util"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+// Example output:
+// `"user=postgres password=postgres dbname=postgres host=localhost port=5432 sslmode=disable"`
 func getDbConnString(c *config.DbConfig) string {
 	vals := getDbValues(c)
 	var p []string
@@ -30,6 +32,8 @@ func getDbValues(c *config.DbConfig) map[string]string {
 	return p
 }
 
+// Initializes a new database with the provided configuration.
+// Crashes the program if failed to connect.
 func NewDb(c *config.DbConfig) *gorm.DB {
 	connStr := getDbConnString(c)
 	db, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})

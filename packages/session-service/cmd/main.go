@@ -1,11 +1,11 @@
 package main
 
 import (
-	"dave-web-app/packages/session-service/internal/config"
-	"dave-web-app/packages/session-service/internal/database"
-	"dave-web-app/packages/session-service/internal/handler"
-	"dave-web-app/packages/session-service/internal/server"
-	"dave-web-app/packages/session-service/internal/service"
+	"campsite/packages/session-service/internal/config"
+	"campsite/packages/session-service/internal/database"
+	"campsite/packages/session-service/internal/handler"
+	"campsite/packages/session-service/internal/server"
+	"campsite/packages/session-service/internal/service"
 	"github.com/gorilla/mux"
 	"net/http"
 )

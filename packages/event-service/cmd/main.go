@@ -1,11 +1,11 @@
 package main
 
 import (
-	"dave-web-app/packages/event-service/internal/config"
-	"dave-web-app/packages/event-service/internal/database"
-	"dave-web-app/packages/event-service/internal/handler"
-	"dave-web-app/packages/event-service/internal/server"
-	"dave-web-app/packages/event-service/internal/service"
+	"campsite/packages/event-service/internal/config"
+	"campsite/packages/event-service/internal/database"
+	"campsite/packages/event-service/internal/handler"
+	"campsite/packages/event-service/internal/server"
+	"campsite/packages/event-service/internal/service"
 	"github.com/gorilla/mux"
 	"net/http"
 )

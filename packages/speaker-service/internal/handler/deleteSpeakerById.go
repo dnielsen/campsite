@@ -1,12 +1,13 @@
 package handler
 
 import (
-	"dave-web-app/packages/speaker-service/internal/service"
+	"campsite/packages/speaker-service/internal/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
+// `/` DELETE route.
 func DeleteSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc   {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
