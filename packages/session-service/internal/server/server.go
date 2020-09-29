@@ -2,6 +2,7 @@ package server
 
 import (
 	"dave-web-app/packages/session-service/internal/config"
+	"dave-web-app/packages/session-service/internal/tracing"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"
@@ -15,7 +16,13 @@ const (
 	IDLE_TIMEOUT  = 120 * time.Second
 )
 
-func Start(c *config.ServerConfig, r *mux.Router) {
+func Start(r *mux.Router, c *config.ServerConfig) {
+	// Enable tracing, that is add a tracing middleware
+	// to the router.
+	if c.Tracing == true {
+		tracing.EnableTracing(r, c.Port)
+	}
+
 	// Set up the server.
 	srv := &http.Server{
 		Addr:         fmt.Sprintf("0.0.0.0:%v", c.Port),

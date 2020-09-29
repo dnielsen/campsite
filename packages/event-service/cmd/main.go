@@ -6,7 +6,6 @@ import (
 	"dave-web-app/packages/event-service/internal/handler"
 	"dave-web-app/packages/event-service/internal/server"
 	"dave-web-app/packages/event-service/internal/service"
-	"dave-web-app/packages/event-service/internal/tracing"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -20,19 +19,11 @@ func main() {
 	// migrate it and create sample mock data there.
 	db := database.NewDevDb(&c.Db)
 
-	// We define our own HttpClient to enable mocking (for easier testing).
-	var client service.HttpClient
-	client = http.DefaultClient
 	// Set up the API.
-	api := service.NewAPI(db, client, c)
+	api := service.NewAPI(db, c)
 
 	// Set up the router.
 	r := mux.NewRouter()
-
-	// Set up the tracing middleware.
-	t := tracing.NewTracer(&c.Server)
-	tracingMiddleware := tracing.NewTracingMiddleware(t)
-	r.Use(tracingMiddleware)
 
 	// Register our handlers.
 	r.HandleFunc("/images", handler.UploadImage(api)).Methods(http.MethodPost)
@@ -57,5 +48,5 @@ func main() {
 	r.HandleFunc("/sessions/{id}", handler.DeleteSessionById(api)).Methods(http.MethodDelete)
 
 	// Start the server.
-	server.Start(&c.Server, r)
+	server.Start(r, &c.Server)
 }

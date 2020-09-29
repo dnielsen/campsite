@@ -2,6 +2,7 @@ package server
 
 import (
 	"dave-web-app/packages/event-service/internal/config"
+	"dave-web-app/packages/event-service/internal/tracing"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -16,7 +17,13 @@ const (
 	IDLE_TIMEOUT  = 120 * time.Second
 )
 
-func Start(c *config.ServerConfig, r *mux.Router) {
+func Start(r *mux.Router, c *config.ServerConfig) {
+	// Enable tracing, that is add a tracing middleware
+	// to the router.
+	if c.Tracing == true {
+		tracing.EnableTracing(r, c.Port)
+	}
+
 	// For dev only - Set up CORS so our client (React app) can consume the api.
 	corsWrapper := cors.New(cors.Options{
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},

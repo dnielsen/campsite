@@ -1,7 +1,6 @@
 package tracing
 
 import (
-	"dave-web-app/packages/speaker-service/internal/config"
 	"github.com/gorilla/mux"
 	"github.com/openzipkin/zipkin-go"
 	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
@@ -17,12 +16,20 @@ const SERVICE_NAME = "speaker-service"
 // 1 means 100% of traces will be recorded.
 const TRACE_RECORD_RATE = 1
 
-func NewTracer(c *config.ServerConfig) *zipkin.Tracer {
+
+func EnableTracing(r *mux.Router, serverPort string)  {
+	t := newTracer(serverPort)
+	tracingMiddleware := newTracingMiddleware(t)
+	r.Use(tracingMiddleware)
+	log.Println("Tracing has been enabled")
+}
+
+func newTracer(serverPort string) *zipkin.Tracer {
 	// The reporter sends traces to the zipkin server.
 	reporter := reporterHttp.NewReporter(ENDPOINT_URL)
 
 	// Convert the port to an integer.
-	port, err := strconv.Atoi(c.Port)
+	port, err := strconv.Atoi(serverPort)
 	if err != nil {
 		log.Fatalf("Failed to convert port to integer: %v", err)
 	}
@@ -47,6 +54,7 @@ func NewTracer(c *config.ServerConfig) *zipkin.Tracer {
 	return t
 }
 
-func NewTracingMiddleware(t *zipkin.Tracer) mux.MiddlewareFunc {
+
+func newTracingMiddleware(t *zipkin.Tracer) mux.MiddlewareFunc {
 	return zipkinHttp.NewServerMiddleware(t)
 }

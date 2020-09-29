@@ -43,6 +43,8 @@ services:
     ports:
       - "5555:5555"
     restart: always
+    environment:
+      - SERVER_PORT=5555
     env_file:
       - docker.env
     depends_on:
@@ -53,8 +55,10 @@ services:
     image: postgres:latest
     ports:
       - "5432:5432"
-    env_file:
-      - docker.env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     networks:
       - app
 #  zipkin:
@@ -75,8 +79,9 @@ services:
 #      - "8080:80"
 #    volumes:
 #      - ./data/pgadmin:/var/lib/pgadmin/
-#    env_file:
-#      - docker.env
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=root@root.com
+#      - PGADMIN_DEFAULT_PASSWORD=root
 #    networks:
 #      - app
 networks:

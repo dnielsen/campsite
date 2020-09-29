@@ -2,10 +2,8 @@
 package config
 
 import (
-	"fmt"
 	"github.com/ilyakaznacheev/cleanenv"
 	"log"
-	"strings"
 )
 
 type DbConfig struct {
@@ -18,7 +16,8 @@ type DbConfig struct {
 }
 
 type ServerConfig struct {
-	Port string `env:"SERVER_PORT" env-default:"4444"`
+	Tracing bool `env:"SERVER_TRACING" env-default:"false"`
+	Port string `env:"SERVICE_EVENT_PORT" env-default:"4444"`
 }
 
 type ServiceConfig struct {
@@ -48,32 +47,4 @@ func NewConfig() *Config {
 	log.Printf("Config has been loaded: %v", c)
 	return &c
 }
-
-// Example result: "user=postgres password=postgres sslmode=disable ..."
-func GetDbConnString(c *DbConfig) string  {
-	vals := getDbValues(c)
-	var p []string
-	for k, v := range vals {
-		p = append(p, fmt.Sprintf("%s=%s", k, v))
-	}
-	return strings.Join(p, " ")
-}
-
-func getDbValues(c *DbConfig) map[string]string {
-	p := map[string]string{}
-	setIfNotEmpty(p, "dbname", c.Name)
-	setIfNotEmpty(p, "host", c.Host)
-	setIfNotEmpty(p, "user", c.User)
-	setIfNotEmpty(p, "password", c.Password)
-	setIfNotEmpty(p, "port", c.Port)
-	setIfNotEmpty(p, "sslmode", c.SSLMode)
-	return p
-}
-
-func setIfNotEmpty(m map[string]string, key, val string) {
-	if val != "" {
-		m[key] = val
-	}
-}
-
 
