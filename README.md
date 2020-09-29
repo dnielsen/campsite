@@ -1,27 +1,5 @@
 # campsite
 
-## How to run Campsite on your laptop
-Prerequisites: 
-- Go (Golang) installed (i.e. `brew install golang`)
-- Docker (installed and running in the background)
-
-If first time:
-1. If not `brew install golang` then need to clone into `~/go/src`
-2. `git clone https://github.com/dnielsen/campsite/` 
-3. `cd campsite` 
-4. Run the script to run the database through Docker: `./scripts/dev dbstart`
-5. `cd packages/event-service`
-6. `go run cmd/main.go`
-7. Do 5. and 6. again for `speaker-service` and `session-service`
-
-
-If already cloned:
-1. `cd campsite`
-2. `git checkout master`
-3. `git pull`
-
-Now you should see your API is available at `http://localhost:4444`. Please keep in mind it's just the API. If you want to run the interface too, please visit the `campsite-ui` repo.
-
 ## How to run using Docker Compose
 Prerequisites: 
 - Docker (installed and running in the background)
@@ -30,6 +8,32 @@ Prerequisites:
     ```
     docker-compose up
     ```
+
+Now you should see your API is available at `http://localhost:4444`. Please keep in mind it's just the API. If you want to run the interface too, please visit the `campsite-ui` repo.
+
+## How to run Campsite locally (without Docker Compose).
+Prerequisites: 
+- Go (Golang) installed (i.e. `brew install golang`)
+- Docker (installed and running in the background)
+
+If first time:
+1. Clone the repo: `git clone https://github.com/dnielsen/campsite/` (if you haven't installed Go using `brew`, you might need to clone it into `~/go/src`).
+2. Go to the cloned directory: `cd campsite`. 
+4. Run the script that's gonna run the database using Docker: `./scripts/dev dbstart` (it might take about 15 seconds to run fully).
+5. Go to the event service directory: `cd packages/event-service`
+6. Run the event service: `go run cmd/main.go`
+7. Open another terminal tab/window and go to session service directory: `cd packages/session-service`.
+8. Run the session service: `go run cmd/main.go`
+9. Open another terminal tab/window and go to speaker service directory: `cd packages/speaker-service`.
+8. Run the speaker service: `go run cmd/main.go`
+
+(if already cloned:
+```
+cd campsite
+git checkout master
+git pull
+```
+)
 
 Now you should see your API is available at `http://localhost:4444`. Please keep in mind it's just the API. If you want to run the interface too, please visit the `campsite-ui` repo.
 
