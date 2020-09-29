@@ -4,10 +4,9 @@
 Prerequisites: 
 - Docker (installed and running in the background)
 
-1. Run the services
-    ```
-    docker-compose up
-    ```
+1. If you had previously run it, remove the services first: `docker-compose down`
+
+2. Run the services: `docker-compose up`
 
 Now you should see your API is available at `http://localhost:4444`. Please keep in mind it's just the API. If you want to run the interface too, please visit the `campsite-ui` repo.
 
@@ -19,7 +18,8 @@ Prerequisites:
 If first time:
 1. Clone the repo: `git clone https://github.com/dnielsen/campsite/` (if you haven't installed Go using `brew`, you might need to clone it into `~/go/src`).
 2. Go to the cloned directory: `cd campsite`. 
-4. Run the script that's gonna run the database using Docker: `./scripts/dev dbstart` (it might take about 15 seconds to run fully).
+3. If you had previously started the database, stop it: `./scripts/dev dbstop`.
+4. Start the database: `./scripts/dev dbstart`.
 5. Go to the event service directory: `cd packages/event-service`
 6. Run the event service: `go run cmd/main.go`
 7. Open another terminal tab/window and go to session service directory: `cd packages/session-service`.
@@ -31,6 +31,8 @@ If first time:
 ```
 cd campsite
 git checkout master
+docker-compose down
+./scripts/dev dbstop
 git pull
 ```
 )
