@@ -2,5 +2,4 @@ version: 0.2
 phases:
   build:
     commands:
-      - service docker start
       - docker-compose up -d
