@@ -1,8 +1,6 @@
 version: 0.2
 phases:
-  install:
-    runtime-versions:
-      docker: 19
   build:
     commands:
+      - service docker start
       - docker-compose up -d
