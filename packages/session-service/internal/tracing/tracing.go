@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-const ENDPOINT_URL = "http://localhost:9411/api/v2/spans"
+const ENDPOINT_URL = "http://host.docker.internal:9411/api/v2/spans"
 const SERVICE_NAME = "session-service"
 // TRACE_RECORD_RATE is a float from 0 to 1.
 // 1 means 100% of traces will be recorded.
