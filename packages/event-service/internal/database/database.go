@@ -73,12 +73,12 @@ func getMockEvent() service.Event {
 	event := service.Event{
 		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
 		Name:          "BigDataCamp LA 2020",
-		Description:   "Very interesting asdkask alsdaskdl asda dalsdkal sdkasdlas dlkas",
+		Description:   "BigDataCamp is an unconference where early adopters of BigData technologies, such as Hadoop, exchange ideas. With the rapid change occurring in the industry, we need a place where we can meet to share our experiences, challenges and solutions. At BigDataCamp, you are encouraged to share your thoughts in several open discussions, as we strive for the advancement of BigData. Data Scientists, Developers, IT professionals, users and vendors are all encouraged to participate.",
 		RegistrationUrl: "https://www.eventbrite.com/e/redis-day-london-2019-registration-71402886957#",
 		StartDate:     &now,
 		EndDate:       &later,
-		Photo:         "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-		OrganizerName: "John Tim",
+		Photo:         "https://events.redislabs.com/wp-content/uploads/2020/04/redisconf2020-hero-m-4.png",
+		OrganizerName: "Tim Apple",
 		Address:       &address,
 		Sessions: []service.Session{{
 			ID:          "be13940b-c7ba-4f97-bdab-b4a47b11ffed",
