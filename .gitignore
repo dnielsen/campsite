@@ -13,6 +13,7 @@ packages/ui/yarn-error.log*
 
 # Server
 packages/event-service/images/*
+!packages/event-service/images/682841579-man.jpg
 
 # We're ignoring those files in case they're
 # mistakenly added into the project root directory.

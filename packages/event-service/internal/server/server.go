@@ -20,8 +20,8 @@ const (
 func Start(r *mux.Router, c *config.ServerConfig) {
 	// Enable tracing, that is add a tracing middleware
 	// to the router.
-	if c.Tracing == true {
-		tracing.EnableTracing(r, c.Port)
+	if c.Tracing.Enabled == true {
+		tracing.EnableTracing(r, c)
 	}
 
 	// For dev only - Set up CORS so our client (React app) can consume the api.

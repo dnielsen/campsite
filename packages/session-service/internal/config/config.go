@@ -15,8 +15,13 @@ type DbConfig struct {
 }
 
 type ServerConfig struct {
-	Tracing bool `env:"SERVER_TRACING" env-default:"false"`
+	Tracing TracingConfig
 	Port string `env:"SERVICE_SESSION_PORT" env-default:"5555"`
+}
+
+type TracingConfig struct {
+	Enabled bool `env:"SERVER_TRACING_ENABLED" env-default:"false"`
+	Host string `env:"SERVER_TRACING_HOST" env-default:"localhost"`
 }
 
 type Config struct {

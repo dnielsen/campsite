@@ -19,8 +19,8 @@ const (
 func Start(r *mux.Router, c *config.ServerConfig) {
 	// Enable tracing, that is add a tracing middleware
 	// to the router.
-	if c.Tracing == true {
-		tracing.EnableTracing(r, c.Port)
+	if c.Tracing.Enabled == true {
+		tracing.EnableTracing(r, c)
 	}
 
 	// Set up the server.

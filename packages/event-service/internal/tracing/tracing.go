@@ -1,6 +1,8 @@
 package tracing
 
 import (
+	"campsite/packages/event-service/internal/config"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/openzipkin/zipkin-go"
 	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
@@ -10,26 +12,25 @@ import (
 	"strconv"
 )
 
-const ENDPOINT_URL = "http://host.docker.internal:9411/api/v2/spans"
 const SERVICE_NAME = "event-service"
 // TRACE_RECORD_RATE is a float from 0 to 1.
 // 1 means 100% of traces will be recorded.
 const TRACE_RECORD_RATE = 1
 
-
-func EnableTracing(r *mux.Router, serverPort string)  {
-	t := newTracer(serverPort)
+func EnableTracing(r *mux.Router, c *config.ServerConfig)  {
+	t := newTracer(c)
 	tracingMiddleware := newTracingMiddleware(t)
 	r.Use(tracingMiddleware)
 	log.Println("Tracing has been enabled")
 }
 
-func newTracer(serverPort string) *zipkin.Tracer {
+func newTracer(c *config.ServerConfig) *zipkin.Tracer {
+	endpointUrl := fmt.Sprintf("http://%v:9411/api/v2/spans", c.Tracing.Host)
 	// The reporter sends traces to the zipkin server.
-	reporter := reporterHttp.NewReporter(ENDPOINT_URL)
+	reporter := reporterHttp.NewReporter(endpointUrl)
 
 	// Convert the port to an integer.
-	port, err := strconv.Atoi(serverPort)
+	port, err := strconv.Atoi(c.Port)
 	if err != nil {
 		log.Fatalf("Failed to convert port to integer: %v", err)
 	}
@@ -53,7 +54,6 @@ func newTracer(serverPort string) *zipkin.Tracer {
 
 	return t
 }
-
 
 func newTracingMiddleware(t *zipkin.Tracer) mux.MiddlewareFunc {
 	return zipkinHttp.NewServerMiddleware(t)
