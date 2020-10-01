@@ -68,7 +68,70 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 
 func getMockEvent() service.Event {
 	now := time.Now()
-	later := time.Now().Add(time.Hour * 8)
+	later := now.Add(time.Hour * 1)
+	evenLater := later.Add(time.Hour * 2)
+	evenEvenLater := evenLater.Add(time.Hour * 4)
+	evenEvenEvenLater := evenEvenLater.Add(time.Hour * 22)
+	evenEvenEvenEvenLater := evenEvenLater.Add(time.Hour * 2)
+
+	spk1 := service.Speaker{
+		ID:       "9c08fbf8-160b-4a86-9981-aeddf4e3798e",
+		Name:     "Spencer Waldron",
+		Bio:      "Global Communications Director for Prezi Video - a tool for online classes and learning. Opinions are my own.",
+		Headline: "Head of Remote",
+		Photo:    "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3a8599ecda6125a34ad3dc_Spencer%20Waldron.jpeg",
+	}
+
+	spk2 := service.Speaker{
+		ID: "361655d7-3034-426b-924f-589c79533650",
+		Name: "Iwo Szapar",
+		Bio: "Loop Team is a virtual office that brings the best parts of an office environment to distributed teams - stay in the loop.",
+		Headline: "CEO of Remote-how",
+		Photo: "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3ed56e8ee3ae185f0500e5_Iwo%20Szapar.jpeg",
+	}
+
+	spk3 := service.Speaker{
+		ID: "1c2d5f82-a5ee-4cf2-80ea-b134c0f6d969",
+		Name: "Mike Adams",
+		Bio: "Loop Team is a virtual office that brings the best parts of an office environment to distributed teams - stay in the loop.",
+		Headline: "CEO of Grain",
+		Photo: "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3f7be5fbaf556a9447ed80_Mike%20Adams.jpeg",
+	}
+
+	sess1 := service.Session{
+		ID:          "be13940b-c7ba-4f97-bdab-b4a47b11ffed",
+		Name:        "How to build and maintain great company culture remotely",
+		StartDate:   &now,
+		EndDate:     &later,
+		Description: "On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish.",
+		Url:         "https://google.com",
+		EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+		Speakers: []service.Speaker{spk1, spk2},
+	}
+
+	sess2 := service.Session{
+		ID:          "8b83ebd8-b7f1-4ef3-a141-2049ed59232f",
+		Name:        "Connecting your workforce through your company values",
+		StartDate:   &evenLater,
+		EndDate:     &evenEvenLater,
+		Description: "In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.",
+		Url:         "https://google.com",
+		EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+		Speakers: []service.Speaker{spk2, spk1},
+	}
+
+
+	sess3 := service.Session{
+		ID:          "238f8433-483c-4266-b687-6b8a81ccc39e",
+		Name:        "Connecting your workforce through your company values",
+		StartDate:   &evenEvenEvenLater,
+		EndDate:     &evenEvenEvenEvenLater,
+		Description: "In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.",
+		Url:         "https://google.com",
+		EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
+		Speakers: []service.Speaker{spk3, spk2},
+	}
+
 	address := "San Francisco, California"
 	event := service.Event{
 		ID:            "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
@@ -80,22 +143,7 @@ func getMockEvent() service.Event {
 		Photo:         "https://events.redislabs.com/wp-content/uploads/2020/04/redisconf2020-hero-m-4.png",
 		OrganizerName: "Tim Apple",
 		Address:       &address,
-		Sessions: []service.Session{{
-			ID:          "be13940b-c7ba-4f97-bdab-b4a47b11ffed",
-			Name:        "Session",
-			StartDate:   &now,
-			EndDate:     &later,
-			Description: "akdlaskd alsd aklsd askd asldkalsdkaldjalfajd fasjdkfl asjd laldfasdlfjasl dfalkdjf ",
-			Url:         "https://google.com",
-			EventID:     "ad29d4f9-b0dd-4ea3-9e96-5ff193b50d6f",
-			Speakers: []service.Speaker{{
-				ID:       "9c08fbf8-160b-4a86-9981-aeddf4e3798e",
-				Name:     "John Doe",
-				Bio:      "Very interesting person",
-				Headline: "CEO of Tesla",
-				Photo:    "https://images.unsplash.com/photo-1519834785169-98be25ec3f84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
-			}},
-		}},
+		Sessions: []service.Session{sess1, sess2, sess3},
 	}
 	return event
 }
