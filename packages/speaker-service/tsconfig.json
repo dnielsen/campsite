@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "moduleResolution": "Node",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  }
+}
