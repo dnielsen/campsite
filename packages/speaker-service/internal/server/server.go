@@ -2,7 +2,6 @@ package server
 
 import (
 	"campsite/packages/speaker-service/internal/config"
-	"campsite/packages/speaker-service/internal/tracing"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"
@@ -17,12 +16,6 @@ const (
 )
 
 func Start(r *mux.Router, c *config.ServerConfig) {
-	// Enable tracing, that is add a tracing middleware
-	// to the router.
-	if c.Tracing.Enabled == true {
-		tracing.EnableTracing(r, c)
-	}
-
 	// Set up the server.
 	srv := &http.Server{
 		Addr:         fmt.Sprintf("0.0.0.0:%v", c.Port),

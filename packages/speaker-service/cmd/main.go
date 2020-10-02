@@ -4,9 +4,11 @@ import (
 	"campsite/packages/speaker-service/internal/config"
 	"campsite/packages/speaker-service/internal/database"
 	"campsite/packages/speaker-service/internal/handler"
+	"campsite/packages/speaker-service/internal/middleware"
 	"campsite/packages/speaker-service/internal/server"
 	"campsite/packages/speaker-service/internal/service"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 )
 
@@ -22,6 +24,16 @@ func main() {
 
 	// Set up the router.
 	r := mux.NewRouter()
+
+	// Logger middleware logs the incoming requests.
+	// Example output: `status=200 method=GET path=/events duration=3.714408ms`
+	r.Use(middleware.Logger)
+
+	// Enable tracing - forward our requests to the zipkin server.
+	if c.Server.Tracing.Enabled == true {
+		r.Use(middleware.Tracing(&c.Server))
+		log.Println("Tracing middleware has been enabled")
+	}
 
 	// Set up the handlers.
 	r.HandleFunc("/", handler.GetAllSpeakers(api)).Methods(http.MethodGet)

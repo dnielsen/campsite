@@ -3,9 +3,7 @@ package tracing
 import (
 	"campsite/packages/speaker-service/internal/config"
 	"fmt"
-	"github.com/gorilla/mux"
 	"github.com/openzipkin/zipkin-go"
-	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
 	"github.com/openzipkin/zipkin-go/model"
 	reporterHttp "github.com/openzipkin/zipkin-go/reporter/http"
 	"log"
@@ -17,14 +15,7 @@ const SERVICE_NAME = "speaker-service"
 // 1 means 100% of traces will be recorded.
 const TRACE_RECORD_RATE = 1
 
-func EnableTracing(r *mux.Router, c *config.ServerConfig)  {
-	t := newTracer(c)
-	tracingMiddleware := newTracingMiddleware(t)
-	r.Use(tracingMiddleware)
-	log.Println("Tracing has been enabled")
-}
-
-func newTracer(c *config.ServerConfig) *zipkin.Tracer {
+func NewTracer(c *config.ServerConfig) *zipkin.Tracer {
 	endpointUrl := fmt.Sprintf("http://%v:9411/api/v2/spans", c.Tracing.Host)
 	// The reporter sends traces to the zipkin server.
 	reporter := reporterHttp.NewReporter(endpointUrl)
@@ -53,8 +44,4 @@ func newTracer(c *config.ServerConfig) *zipkin.Tracer {
 	}
 
 	return t
-}
-
-func newTracingMiddleware(t *zipkin.Tracer) mux.MiddlewareFunc {
-	return zipkinHttp.NewServerMiddleware(t)
 }
