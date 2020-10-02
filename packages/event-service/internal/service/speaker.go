@@ -102,6 +102,8 @@ func (api *API) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 		return nil, err
 	}
 
+	req.Header.Add("Content-Type", "application/json")
+
 	// Make the request.
 	res, err := api.client.Do(req)
 	if err != nil {
@@ -140,6 +142,8 @@ func (api *API) EditSpeakerById(id string, i SpeakerInput) error {
 		log.Printf("Failed to create new request: %v", err)
 		return err
 	}
+
+	req.Header.Add("Content-Type", "application/json")
 
 	// Make the request.
 	if _, err = api.client.Do(req); err != nil {

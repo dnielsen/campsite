@@ -1,18 +1,20 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "removeComments": true,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
     "noImplicitAny": true,
-    "target": "es2017",
+    "target": "ES2015",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "types": ["node"],
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["./src"]
 }
