@@ -49,7 +49,7 @@ func NewConfig() *Config {
 		log.Fatalf("Failed to load config: %v",err)
 	}
 
-	log.Printf("Config has been loaded: %v", c)
+	log.Printf("Config has been loaded: %+v", c)
 	return &c
 }
 
