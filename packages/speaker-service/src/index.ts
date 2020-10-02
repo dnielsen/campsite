@@ -9,6 +9,6 @@ import createTypeormConnection from "./createTypeormConnection";
 
   const server = http.createServer(app);
   server.listen(config.PORT, () => {
-    console.log(`Speaker service listening on port ${config.PORT}`);
+    console.log(`Listening on port ${config.PORT}`);
   });
 })();

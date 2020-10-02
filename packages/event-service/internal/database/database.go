@@ -5,6 +5,7 @@ import (
 	"campsite/packages/event-service/internal/service"
 	"campsite/packages/event-service/internal/util"
 	"fmt"
+	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -53,15 +54,26 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	}
 	log.Println("Auto migrated database")
 
-	// Create mock data in the database.
-	event := getMockEvent()
-	if err := db.Create(&event).Error; err != nil {
+	// Create a mock event in the database.
+	mockEvent := getMockEvent()
+	if err := db.Create(&mockEvent).Error; err != nil {
 		// The error will likely occur because we already created it already,
 		// that is, the primary keys we set up above already exists.
 		// We can ignore this.
-		log.Printf("Failed to create mock data in database: %v", err)
+		log.Printf("Failed to create mock event in database: %v", err)
 	}
-	log.Println("Created mock data in database")
+	log.Println("Created mock event in database")
+
+
+	// Create a mock OpenCloudConf event in the database.
+	mockOpenCloudConfEvent := getMockOpenCloudConfEvent()
+	if err := db.Create(&mockOpenCloudConfEvent).Error; err != nil {
+		// The error will likely occur because we already created it already,
+		// that is, the primary keys we set up above already exists.
+		// We can ignore this.
+		log.Printf("Failed to create mock OpenCloudConf event in database: %v", err)
+	}
+	log.Println("Created OpenCloudConf mock event in database")
 
 	return db
 }
@@ -146,4 +158,75 @@ func getMockEvent() service.Event {
 		Sessions: []service.Session{sess1, sess2, sess3},
 	}
 	return event
+}
+
+func getMockOpenCloudConfEvent() *service.Event{
+	spkRandy := newSpeaker("Randy Bias", "", "CloudScaling", "")
+	spkGreg := newSpeaker("Greg DeKoenigsberg", "", "Eucalyptus", "")
+	spkJoe := newSpeaker( "Joe Arnold", "", "Apple", "")
+	spkMark := newSpeaker("Mark Hinkle", "", "Cloudstack.org", "")
+	spkDave := newSpeaker( "Dave Nielsen", "", "Traceable", "")
+	spkDiane := newSpeaker( "Diane Mueller", "", "Tesla", "")
+	spkGordon := newSpeaker( "Gordon Haff", "", "Amazon", "")
+	spkAdrian := newSpeaker( "Adrian Cole", "", "Google", "")
+
+	eventStartDate := time.Date(2012, time.May, 1, 9, 0, 0, 0, time.UTC)
+	eventEndDate := time.Date(2012, time.May, 2, 5, 0, 0, 0, time.UTC)
+
+	ss1 := newSession("Best of Breed: Why Open Clouds are Better", eventStartDate, time.Minute * 30, "", "", *spkDave)
+	ss2 := newSession("The State of the Open Cloud", *ss1.StartDate, time.Minute * 45, "", "", *spkRandy)
+	ss3 := newSession("Open Cloud vs. Open Source: What's the difference?", *ss2.StartDate, time.Minute * 45, "", "", *spkGordon, *spkDiane)
+	ss4 := newSession("Open Cloud APIs - Why All the Fuss? Can an API be THAT important?", *ss3.StartDate, time.Minute * 45, "", "", *spkAdrian)
+	ss5 := newSession("OpenStack Workshop Part 1", *ss4.StartDate, time.Minute * 90, "", "", *spkJoe)
+	ss6 := newSession("Real Key to Open Cloud: Building in Cloud Application Portability", *ss5.StartDate, time.Minute * 45, "", "", *spkGordon)
+	ss7 := newSession("OpenPaaS & Open Eucalyptus", *ss6.StartDate, time.Minute * 30, "", "", *spkGreg)
+	ss8 := newSession("OpenStack Workshop Part 2", *ss7.StartDate, time.Minute * 105, "", "", *spkJoe)
+	ss9 := newSession("Avoiding Cloud-Lock-In", *ss8.StartDate, time.Minute * 60, "", "", *spkMark)
+	ss10 := newSession("Application Portability in the Cloud", *ss9.StartDate, time.Minute * 45, "", "", *spkDiane)
+
+	eventAddress := "Mountain View, CA"
+	event := newEvent("OpenCloudConf", "", "", eventStartDate, eventEndDate, "", "", &eventAddress, ss1, ss2, ss3, ss4, ss5, ss6, ss7, ss8, ss9, ss10)
+
+	return event
+}
+
+
+
+func newEvent(name string, description string, registrationUrl string, startDate time.Time, endDate time.Time, photo string, organizerName string, address *string, sessions ...service.Session) *service.Event {
+	return &service.Event{
+		ID:              uuid.New().String(),
+		Name:            name,
+		Description:     description,
+		RegistrationUrl: registrationUrl,
+		StartDate:       &startDate,
+		EndDate:         &endDate,
+		Photo:           photo,
+		OrganizerName:   organizerName,
+		Address:         address,
+		Sessions: sessions,
+	}
+}
+
+
+func newSession(name string, startDate time.Time, duration time.Duration, description string, url string, speakers ...service.Speaker) service.Session {
+	endDate := startDate.Add(duration)
+	return service.Session{
+		ID:          uuid.New().String(),
+		Name:        name,
+		StartDate:   &startDate,
+		EndDate:     &endDate,
+		Description: description,
+		Url:         url,
+		Speakers:    speakers,
+	}
+}
+
+func newSpeaker(name string, bio string, headline string, photo string) *service.Speaker {
+	return &service.Speaker{
+		ID:       uuid.New().String(),
+		Name:     name,
+		Bio:      bio,
+		Headline: headline,
+		Photo:    photo,
+	}
 }
