@@ -1,14 +1,14 @@
 version: "2.4"
 services:
-#  ui:
-#    container_name: campsite-ui
-#    image: dnielsen/campsite:ui
-#    ports:
-#      - "3000:3000"
-#    restart: always
-#    depends_on:
-#      - postgres
-#      - "event-service"
+  ui:
+    container_name: campsite-ui
+    image: dnielsen/campsite:ui
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - postgres
+      - "event-service"
   event-service:
     container_name: campsite-event-service
     build: ./packages/event-service

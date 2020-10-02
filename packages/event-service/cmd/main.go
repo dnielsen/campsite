@@ -15,7 +15,7 @@ import (
 
 func main() {
 	// Initialize the config which includes
-	// database, server, and other services' configuration
+	// database, server, and other services' configuration.
 	c := config.NewConfig()
 
 	// Create a new database connection. Also, since it's a dev db,
