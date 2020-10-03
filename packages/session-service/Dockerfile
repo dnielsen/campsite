@@ -1,16 +1,32 @@
-FROM golang:1.14.3
+FROM golang:1.15.2 AS builder
+
+ARG SERVICE
 
 RUN apt-get -qq update && apt-get -yqq install upx
 
 ENV GO111MODULE=on \
-    CGO_ENABLED=0
+  CGO_ENABLED=0 \
+  GOOS=linux \
+  GOARCH=amd64
 
-WORKDIR /app
-
+WORKDIR /src
 COPY . .
 
-RUN go build -o main ./cmd/main.go
+RUN go build \
+  -trimpath \
+  -ldflags "-s -w -extldflags '-static'" \
+  -installsuffix cgo \
+  -tags netgo \
+  -o /bin/service \
+  ./cmd/${SERVICE}
 
-EXPOSE 5555
+RUN strip /bin/service
+RUN upx -q -9 /bin/service
 
-CMD ["./main"]
+
+FROM scratch
+COPY --from=builder /bin/service /bin/service
+
+ENV PORT 8080
+
+ENTRYPOINT ["/bin/service"]
