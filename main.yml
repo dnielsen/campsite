@@ -82,6 +82,16 @@ Resources:
           # Get latest cfn scripts; https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html#cfninit
           yum install -y aws-cfn-bootstrap
 
+          # install docker
+          sudo amazon-linux-extras install -y docker
+          sudo service docker start
+          sudo usermod -a -G docker ec2-user
+
+          # install docker-compose
+          sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
+          sudo chmod +x /usr/local/bin/docker-compose
+          sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
           # Have CloudFormation install any files and packages from the metadata
           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --region ${AWS::Region} --resource Instance
 
@@ -96,7 +106,7 @@ Resources:
             # Create log directory
             mkdir -p /home/ec2-user/app/logs
 
-            # Run server
+            # Run the server
             cd app
             sudo service docker start
             sudo docker-compose up

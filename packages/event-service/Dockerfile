@@ -20,10 +20,22 @@ RUN go build \
   -o /bin/service \
   ./cmd/${SERVICE}
 
+# strip program removes information from executable binary programs
+# and object files that is not essential or required for normal
+# and correct execution, thus potentially resulting in better
+# performance and sometimes significantly less disk space usage.
 RUN strip /bin/service
+# UPX is a portable, extendable, high-performance executable
+# packer for several different executable formats. It achieves
+# an excellent compression ratio and offers *very* fast decompression.
+# Your executables suffer no memory overhead or other drawbacks for most
+# of the formats supported, because of in-place decompression.
 RUN upx -q -9 /bin/service
 
-
+# The scratch image is the most minimal image in Docker.
+# This is the base ancestor for all other images.
+# The scratch image is actually empty.
+# It doesn't contain any folders/files.
 FROM scratch
 COPY --from=builder /bin/service /bin/service
 
