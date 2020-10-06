@@ -28,6 +28,7 @@ type HttpClient interface {
 }
 
 type EventAPI interface {
+	ValidateUser(i SignInInput) (*User, error)
 	GetAllEvents() (*[]Event, error)
 	CreateEvent(i EventInput) (*Event, error)
 	GetEventById(id string) (*Event, error)

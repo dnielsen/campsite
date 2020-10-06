@@ -7,8 +7,18 @@ import (
 	"net/http"
 )
 
+// `/sessions/{id}` DELETE route.
 func DeleteSessionById(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Currently our database doesn't know about `User` entity
+		// so we're just ignoring claims.
+		_, err := verifyToken(w, r)
+		if err != nil {
+			log.Printf("Failed to verify token: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
+
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]

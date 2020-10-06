@@ -1,9 +1,17 @@
 package service
 
 import (
+	"errors"
 	"github.com/google/uuid"
 	"time"
 )
+
+
+
+type SignInInput struct {
+	Email string `json:"email,omitempty"`
+	Password string `json:"password,omitempty"`
+}
 
 type Event struct {
 	ID            string     `json:"id" gorm:"type:uuid"`
@@ -27,6 +35,26 @@ type EventInput struct {
 	Photo         string     `json:"photo,omitempty"`
 	OrganizerName string     `json:"organizerName,omitempty"`
 	Address       *string    `json:"address,omitempty"`
+}
+
+type User struct {
+	Email string `json:"email,omitempty"`
+	Password string `json:"password,omitempty"`
+}
+
+// We might change the return of the function to say `UserResponse` later
+// because we won't need, say, the password field.
+func (api *API) ValidateUser(i SignInInput) (*User, error) {
+	// It's a temporary solution. Later we're gonna add proper validation,
+	// password encryption, and we're gonna save the users to the database.
+	if i.Email == "admin@admin.com" && i.Password == "admin" {
+		u := User{Email:    i.Email, Password: i.Password}
+		return &u, nil
+	}
+	// We could also have another case, that is "user not found",
+	// but it's a good practice not to give out information about
+	// existing users. Therefore "user not found" == "wrong credentials".
+	return nil, errors.New("wrong credentials")
 }
 
 func (api *API) GetAllEvents() (*[]Event, error) {

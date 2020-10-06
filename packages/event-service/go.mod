@@ -5,6 +5,7 @@ go 1.14
 require (
 	contrib.go.opencensus.io/exporter/zipkin v0.1.2 // indirect
 	github.com/aws/aws-sdk-go v1.34.30
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/google/go-cmp v0.5.2
