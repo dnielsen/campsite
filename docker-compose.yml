@@ -61,24 +61,3 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-#  zipkin:
-#    image: openzipkin/zipkin
-#    ports:
-#      - "9411:9411"
-#    networks:
-#      - app
-#    restart: always
-#    expose:
-#      - 9411
-#  pgadmin:
-#    links:
-#      - postgres
-#    container_name: pgadmin
-#    image: dpage/pgadmin4
-#    ports:
-#      - "8080:80"
-#    volumes:
-#      - ./data/pgadmin:/var/lib/pgadmin/
-#    environment:
-#      - PGADMIN_DEFAULT_EMAIL=root@root.com
-#      - PGADMIN_DEFAULT_PASSWORD=root
