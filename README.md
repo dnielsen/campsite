@@ -26,4 +26,4 @@ Now you should see the UI at `http://localhost:3000` and the API should be avail
     3. Adjust the config
     4. (optionally) Remove `RUN mkdir /images` and `COPY --from=builder /images /images` from Dockerfile
 4. Session service: analogical to the speaker service
-5. Adjust `docker-compose.yml` appropriately
+5. Adjust `docker-compose.yml` and `docker.env` appropriately
