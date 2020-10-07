@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// `/sessions/{id}` PUT route.
+// `/sessions/{id}` PUT route. It communicates with the session service only.
 func EditSessionById(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// `/sessions/{id}` GET route. It communicates with the session service only.
 func GetSessionById(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

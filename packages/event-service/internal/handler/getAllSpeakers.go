@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/speakers` GET route. It communicates with the speaker service only.
 func GetAllSpeakers(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get all speakers from the speaker service.

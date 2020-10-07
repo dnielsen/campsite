@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// `/speakers/{id}` GET route. It communicates with the speaker service only.
 func GetSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

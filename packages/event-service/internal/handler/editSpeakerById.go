@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// `/speaker/{id}` PUT route.
+// `/speakers/{id}` PUT route. It communicates with the speaker service only.
 func EditSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

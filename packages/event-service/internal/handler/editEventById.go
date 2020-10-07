@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// `/events/{id}` PUT route.
+// `/events/{id}` PUT route. It communicates with the database only.
 func EditEventById(api service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

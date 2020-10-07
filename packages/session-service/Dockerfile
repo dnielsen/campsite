@@ -39,6 +39,4 @@ RUN upx -q -9 /bin/service
 FROM scratch
 COPY --from=builder /bin/service /bin/service
 
-ENV PORT 8080
-
 ENTRYPOINT ["/bin/service"]

@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/sessions` POST route. It communicates with the session service only.
 func CreateSession(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.

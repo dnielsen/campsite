@@ -16,6 +16,8 @@ type API struct {
 
 func NewAPI(db *gorm.DB, c *config.Config) *API {
 	// We define our own HttpClient to enable mocking (for easier testing).
+	// We don't have tests yet, however, it's a common practice to do that
+	// for this reason.
 	var client HttpClient = http.DefaultClient
 
 	return &API{db, client, c}

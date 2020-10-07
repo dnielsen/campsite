@@ -7,11 +7,12 @@ import (
 	"net/http"
 )
 
-// Our frontend appends a file and sets a `file` name.
-// It's the most common used name.
+// Our frontend appends a file and sets the form data name to `file`.
+// It's the most commonly used name for form data.
 const FORM_DATA_NAME = "file"
 
-// `/upload` POST route.
+// `/images` POST route. It doesn't communicate with the database or any of the services.
+// It stores the image in the filesystem (`event-service/images`).
 func UploadImage(api service.ImageAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Parse the request body, that is the form data.

@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/sessions` GET route. It communicates with the session service only.
 func GetAllSessions(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get all sessions from the session service.

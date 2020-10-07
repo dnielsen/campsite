@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/speakers/{id}` DELETE route. It communicates with the speaker service only.
 func DeleteSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

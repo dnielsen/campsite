@@ -16,6 +16,7 @@ const SERVICE_NAME = "event-service"
 const TRACE_RECORD_RATE = 1
 
 func NewTracer(c *config.ServerConfig) *zipkin.Tracer {
+	// The zipkin endpoint.
 	endpointUrl := fmt.Sprintf("http://%v:9411/api/v2/spans", c.Tracing.Host)
 	// The reporter sends traces to the zipkin server.
 	reporter := reporterHttp.NewReporter(endpointUrl)

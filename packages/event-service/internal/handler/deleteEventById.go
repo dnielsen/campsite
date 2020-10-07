@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/events/{id}` DELETE route. It communicates with the database only.
 func DeleteEventById(datastore service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

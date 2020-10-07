@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/speakers` POST route. It communicates with the speaker service only.
 func CreateSpeaker(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.

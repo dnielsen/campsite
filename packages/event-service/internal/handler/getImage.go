@@ -8,6 +8,8 @@ import (
 	"net/http"
 )
 
+// `/images/{id}` GET route. It doesn't communicate with the database or any of the services.
+// It retrieves the images from the filesystem (`event-service/images`).
 func GetImage(api service.ImageAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the filename parameter.

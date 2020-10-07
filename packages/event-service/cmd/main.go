@@ -40,7 +40,8 @@ func main() {
 	// all the others.
 	r.Use(middleware.RequestLimiter)
 
-	// Enable tracing - forward our requests to the zipkin server.
+	// Enable tracing middleware - forward our request data to the zipkin server
+	// that is running with Hypertrace.
 	if c.Server.Tracing.Enabled == true {
 		r.Use(middleware.Tracing(&c.Server))
 		log.Println("Tracing middleware has been enabled")
@@ -48,7 +49,7 @@ func main() {
 
 	// Register our handlers.
 
-	// UploadImage handler reads the form data and saves retrieved image
+	// UploadImage handler reads the form data and saves the retrieved image
 	// into `images` directory placed in the `event-service` directory.
 	r.HandleFunc("/images", handler.UploadImage(api)).Methods(http.MethodPost)
 	// GetImage handler retrieves the image from the `images` directory
@@ -97,22 +98,23 @@ func main() {
 	// since our `ui` isn't using this data besides the `id` to redirect
 	// to the created speaker.
 	r.HandleFunc("/speakers", handler.CreateSpeaker(api)).Methods(http.MethodPost)
+	// GetSpeakerById handler sends a `/{id}` GET request to the speaker service
+	// which retrieves the speaker from the database (if exists), and sends it back
+	// to the event service which then sends it to the client (browser). It returns
+	// all the properties of the speaker along with sessions.
 	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
+	// EditSpeakerById handler sends a `/{id}` PUT request with input body
+	// to the speaker service which edits the speaker (if exists)
+	// in the database. It returns the status 204 No Content and no body.
 	r.HandleFunc("/speakers/{id}", handler.EditSpeakerById(api)).Methods(http.MethodPut)
+	// DeleteSpeakerById handler sends a `/{id}` DELETE request the id
+	// parameter to the speaker service which deletes the speaker (if exists)
+	// in the database. It returns the status 204 No Content and no body.
 	r.HandleFunc("/speakers/{id}", handler.DeleteSpeakerById(api)).Methods(http.MethodDelete)
 
-	// GetAllSessions handler selects all sessions along with all the properties
-	// from the database and sends them to the client. It doesn't join any tables.
-	// It's currently not being used by our `ui`.
+	// For session handlers explanation look up the speaker handlers' comments.
+	// They're analogical.
 	r.HandleFunc("/sessions", handler.GetAllSessions(api)).Methods(http.MethodGet)
-	// CreateSession handler sends a `/` POST request with input body
-	// to the session service which creates a session in the database,
-	// and sends the newly created session back to the event service which
-	// then sends them to the client (browser for example).
-	// There's currently no input validation.
-	// We could optimize this by just returning the id of the created session
-	// since our `ui` isn't using this data besides the `id` to redirect
-	// to the created session.
 	r.HandleFunc("/sessions", handler.CreateSession(api)).Methods(http.MethodPost)
 	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/sessions/{id}", handler.EditSessionById(api)).Methods(http.MethodPut)

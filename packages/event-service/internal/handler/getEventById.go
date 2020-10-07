@@ -8,6 +8,7 @@ import (
 	"net/http"
 )
 
+// `/events/{id}` GET route. It communicates with the database only.
 func GetEventById(datastore service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

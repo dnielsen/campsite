@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/events` POST route. It communicates with the database only.
 func CreateEvent(datastore service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.

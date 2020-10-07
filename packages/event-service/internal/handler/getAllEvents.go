@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/events` GET route. It communicates with the database only.
 func GetAllEvents(datastore service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get all events from the database.

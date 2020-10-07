@@ -7,13 +7,15 @@ import (
 	"time"
 )
 
+// statusWriter let's us be able to retrieve the status property in our Logger middleware.
 type statusWriter struct {
 	http.ResponseWriter
 	status int
 	length int
 }
 
-// Status writer is crucial to get the status code of the request.
+// Status writer the status (code) property to the writer.
+// Otherwise we wouldn't be able to retrieve it for our Logger middleware.
 func (w *statusWriter) WriteHeader(status int) {
 	w.status = status
 	w.ResponseWriter.WriteHeader(status)

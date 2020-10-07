@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// `/sessions/{id}` DELETE route. It communicates with the session service only.
 func DeleteSessionById(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
