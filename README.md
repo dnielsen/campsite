@@ -9,7 +9,7 @@ Prerequisites:
     docker-compose down && docker-compose up --build
     ```
 
-Now you should see the UI at `http://localhost:3000` and the API should be available at `http://localhost:4444`
+Now you should see the UI at `http://localhost:3000` and the Event Service API should be available at `http://localhost:4444/events`
 
 ## How to transform the monolith into microservice architecture
 
