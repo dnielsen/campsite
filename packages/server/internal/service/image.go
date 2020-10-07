@@ -11,7 +11,6 @@ type Upload struct {
 	Url string `json:"url"`
 }
 
-
 // If we were to make a production app, we'd store it, for example, using
 // Amazon S3.
 func (api *API) UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error) {
@@ -43,6 +42,7 @@ func (api *API) UploadImage(file multipart.File, fileHeader *multipart.FileHeade
 	return &u, nil
 }
 
+// Retrieves the image from the filesystem.
 func (api *API) GetImage(filename string) (*os.File, error) {
 	// Get the path to the image
 	path := fmt.Sprintf("./images/%v", filename)

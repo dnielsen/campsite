@@ -15,14 +15,19 @@ type DbConfig struct {
 }
 
 type ServerConfig struct {
+	Tracing TracingConfig
 	Port string `env:"SERVER_PORT" env-default:"4444"`
+}
+
+type TracingConfig struct {
+	Enabled bool `env:"SERVER_TRACING_ENABLED" env-default:"false"`
+	Host string `env:"SERVER_TRACING_HOST" env-default:"localhost"`
 }
 
 type Config struct {
 	Db     DbConfig
 	Server ServerConfig
 }
-
 
 // Read the environment variables into a `Config` struct.
 func NewConfig() *Config {

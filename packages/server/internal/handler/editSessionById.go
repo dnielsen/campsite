@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
@@ -21,9 +21,9 @@ func EditSessionById(api service.SessionAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Create the event in the database.
+		// Edit the session in the database.
 		if err := api.EditSessionById(id, i); err != nil {
-			log.Printf("Failed to create session: %v", err)
+			log.Printf("Failed to edit session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

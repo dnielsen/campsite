@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
@@ -15,7 +15,7 @@ func GetSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 		vars := mux.Vars(r)
 		id := vars[ID]
 
-		// Get the speaker from the database.
+		// Get the speaker from the speaker service.
 		speaker, err := api.GetSpeakerById(id)
 		if err != nil {
 			log.Printf("Failed to get speaker: %v", err)
@@ -23,7 +23,7 @@ func GetSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 			return
 		}
 
-		// Marshal the event.
+		// Marshal the speaker.
 		speakerBytes, err := json.Marshal(speaker)
 		if err != nil {
 			log.Printf("Failed to marshal speaker: %v", err)
@@ -31,6 +31,7 @@ func GetSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 			return
 		}
 
+		// Respond JSON with the speaker.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(speakerBytes)

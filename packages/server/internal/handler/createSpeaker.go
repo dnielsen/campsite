@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -12,8 +12,7 @@ func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SpeakerInput
-		err := json.NewDecoder(r.Body).Decode(&i)
-		if err != nil {
+		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			log.Printf("Failed to unmarshal speaker input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -27,6 +26,7 @@ func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 			return
 		}
 
+		// Marshal the speaker.
 		speakerBytes, err := json.Marshal(speaker)
 		if err != nil {
 			log.Printf("Failed to marshal speaker: %v", err)

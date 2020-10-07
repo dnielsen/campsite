@@ -1,13 +1,15 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"github.com/gorilla/mux"
 	"io"
 	"log"
 	"net/http"
 )
 
+// `/images/{id}` GET route. It doesn't communicate with the database.
+// It retrieves the images from the filesystem (`event-service/images`).
 func GetImage(api service.ImageAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the filename parameter.

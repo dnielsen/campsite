@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
@@ -23,15 +23,19 @@ func GetEventById(api service.EventAPI) http.HandlerFunc {
 			return
 		}
 
+		// Add the (unique) speakers property to the event for our <FullEvent />
+		// so that we don't need to do it on the frontend.
+		event.Speakers = service.GetUniqueSpeakersFromSessions(event.Sessions)
+
 		// Marshal the event.
 		eventBytes, err := json.Marshal(event)
 		if err != nil {
-			log.Printf("Failed to marshal full event: %v", err)
+			log.Printf("Failed to marshal event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Respond JSON with the events.
+		// Respond JSON with the event
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(eventBytes)

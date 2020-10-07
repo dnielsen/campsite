@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -17,11 +17,11 @@ func DeleteEventById(api service.EventAPI) http.HandlerFunc {
 		// Delete the event from the database.
 		if err := api.DeleteEventById(id); err != nil {
 			log.Printf("Failed to delete event: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		// Respond the event deletion has been successful.
+		// Respond that the event has been successfully deleted.
 		w.WriteHeader(http.StatusNoContent)
 	}
 }

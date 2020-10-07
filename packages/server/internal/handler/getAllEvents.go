@@ -1,28 +1,24 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"encoding/json"
 	"log"
 	"net/http"
 )
 
-// `/events` GET route.
-func GetEvents(api service.EventAPI) http.HandlerFunc {
+// `/events` GET route. It communicates with the database only.
+func GetAllEvents(api service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// We can later add url parameters to
-		// specify the ids of the events we want
-		// if needed.
-
-		// Get the events from the database.
+		// Get all events from the database.
 		events, err := api.GetAllEvents()
 		if err != nil {
 			log.Printf("Failed to get events: %v", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Marshal the event.
+		// Marshal the events.
 		eventBytes, err := json.Marshal(events)
 		if err != nil {
 			log.Printf("Failed to marshal events: %v", err)

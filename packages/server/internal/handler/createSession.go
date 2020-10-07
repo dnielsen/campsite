@@ -1,19 +1,18 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"encoding/json"
 	"log"
 	"net/http"
 )
 
-// `/sessions` POST route.
+// `/sessions` POST route. It communicates with the session service only.
 func CreateSession(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SessionInput
-		err := json.NewDecoder(r.Body).Decode(&i)
-		if err != nil {
+		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			log.Printf("Failed to unmarshal session input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -27,7 +26,7 @@ func CreateSession(api service.SessionAPI) http.HandlerFunc {
 			return
 		}
 
-		// Marshal the created session.
+		// Marshal the session.
 		sessionBytes, err := json.Marshal(session)
 		if err != nil {
 			log.Printf("Failed to marshal session: %v", err)

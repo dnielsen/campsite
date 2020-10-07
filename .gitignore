@@ -9,7 +9,8 @@ packages/ui/yarn-debug.log*
 packages/ui/yarn-error.log*
 
 # Server
-packages/server/images/*
+!packages/server/images/143530365-man.jpg
+packages/server/images
 
 # In case node_modules are mistakenly downloaded into the project root directory
 node_modules

@@ -1,14 +1,14 @@
 package handler
 
 import (
-	"dave-web-app/packages/server/internal/service"
+	"campsite/packages/server/internal/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-// `/events/{id}` PUT route.
+// `/events/{id}` PUT route. It communicates with the database only.
 func EditEventById(api service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
@@ -21,9 +21,9 @@ func EditEventById(api service.EventAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Create the event in the database.
+		// Edit the event in the database.
 		if err := api.EditEventById(id, i); err != nil {
-			log.Printf("Failed to create event: %v", err)
+			log.Printf("Failed to edit event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}

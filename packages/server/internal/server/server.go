@@ -1,7 +1,7 @@
 package server
 
 import (
-	"dave-web-app/packages/server/internal/config"
+	"campsite/packages/server/internal/config"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
@@ -16,13 +16,11 @@ const (
 	IDLE_TIMEOUT  = 120 * time.Second
 )
 
-func Start(c *config.ServerConfig, r *mux.Router) {
-	// Set up CORS so our client (React app; or any other app)
-	// can consume the api.
+func Start(r *mux.Router, c *config.ServerConfig) {
+	// For dev only - Set up CORS so our client (React app) can consume the api.
 	corsWrapper := cors.New(cors.Options{
-		AllowedOrigins:         []string{"*"},
-		AllowedMethods:         []string{"GET", "POST", "PUT", "DELETE"},
-		AllowedHeaders:         []string{"Content-Type", "Origin", "Accept", "*"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*"},
 	})
 
 	// Set up the server.

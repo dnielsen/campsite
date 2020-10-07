@@ -1,18 +1,17 @@
 package service
 
 import (
-	"dave-web-app/packages/server/internal/config"
+	"campsite/packages/server/internal/config"
 	"gorm.io/gorm"
 	"mime/multipart"
 	"os"
 )
 
 type API struct {
-	db *gorm.DB
-	c  *config.Config
+	db     *gorm.DB
+	c      *config.Config
 }
 
-// Create a new API object.
 func NewAPI(db *gorm.DB, c *config.Config) *API {
 	return &API{db, c}
 }
@@ -21,24 +20,24 @@ type EventAPI interface {
 	GetAllEvents() (*[]Event, error)
 	CreateEvent(i EventInput) (*Event, error)
 	GetEventById(id string) (*Event, error)
-	DeleteEventById(id string) error
 	EditEventById(id string, i EventInput) error
+	DeleteEventById(id string) error
 }
 
 type SessionAPI interface {
 	GetAllSessions() (*[]Session, error)
 	CreateSession(i SessionInput) (*Session, error)
 	GetSessionById(id string) (*Session, error)
-	DeleteSessionById(id string) error
 	EditSessionById(id string, i SessionInput) error
+	DeleteSessionById(id string) error
 }
 
 type SpeakerAPI interface {
 	GetAllSpeakers() (*[]Speaker, error)
 	CreateSpeaker(i SpeakerInput) (*Speaker, error)
 	GetSpeakerById(id string) (*Speaker, error)
-	DeleteSpeakerById(id string) error
 	EditSpeakerById(id string, i SpeakerInput) error
+	DeleteSpeakerById(id string) error
 }
 
 type ImageAPI interface {

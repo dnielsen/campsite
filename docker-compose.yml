@@ -1,15 +1,22 @@
-version: "3"
+version: "2.4"
 services:
+  ui:
+    container_name: campsite-ui
+    image: dnielsen/campsite:ui
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - server
   server:
     container_name: campsite-server
     build: ./packages/server
     ports:
       - "4444:4444"
     restart: always
-    networks:
-      - app
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - docker.env
   postgres:
@@ -20,21 +27,8 @@ services:
       - ./data/postgres:/var/lib/postgresql/data
     env_file:
       - docker.env
-    networks:
-      - app
-#  pgadmin:
-#    links:
-#      - postgres
-#    container_name: pgadmin
-#    image: dpage/pgadmin4
-#    ports:
-#      - "8080:80"
-#    volumes:
-#      - ./data/pgadmin:/var/lib/pgadmin/
-#    env_file:
-#      - docker.env
-#    networks:
-#      - app
-networks:
-  app:
-    driver: bridge
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
