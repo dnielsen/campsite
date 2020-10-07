@@ -19,7 +19,6 @@ type Speaker struct {
 }
 
 type SpeakerInput struct {
-	// Name is a required field with a minimum and maximum length of 2 and 50 respectively.
 	Name     string `json:"name,omitempty"`
 	Bio      string `json:"bio,omitempty"`
 	Headline string `json:"headline,omitempty"`
