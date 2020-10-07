@@ -3,73 +3,27 @@
 ## How to run using Docker Compose
 Prerequisites: 
 - Docker (installed and running in the background)
-- Node.js (v12 or later)
-- Yarn (`npm install -g yarn`)
 
 1. Run the services
     ```
-    docker-compose up
-    ```
-2. Go to the `ui` directory (in another terminal window/tab)
-    ```
-    cd packages/ui
-    ```
-3. Install dependencies
-    ```
-    yarn install
-    ```
-4. Run the ui server
-    ```
-    yarn start
+    docker-compose down && docker-compose up --build
     ```
 
-Now you should see your app at `http://localhost:3000`
- 
- ## pgadmin
-If you want, you can go to `localhost:8080`, there's pgadmin installed, so you could easily edit database data there. By default, the pgadmin credentials are:
- - username:`root@root.com`
- - password: `root`. 
- 
- Database server:
- - hostname: `host.docker.internal`
- - port: `5432`
- - username: `postgres`
- - password: `postgres`
- 
-You can configure those values by modifying `docker.env`
+Now you should see the UI at `http://localhost:3000` and the API should be available at `http://localhost:4444`
 
-## ui deployment on Amazon S3
+## How to transform the monolith into microservice architecture
 
-1. Go to the ui directory
-    ```
-    cd packages/ui
-    ```
-2. Build the app
-    ```
-    yarn build
-    ```
-3. Go to `https://aws.amazon.com/console/` and sign in.
-4. Click Services (in the upper top corner) and choose S3.
-5. Click Create bucket
-6. In Bucket name field enter your bucket name, for example `campsite-ui`. You can change the region if you want
-. Click next.
-7. Click Next.
-8. Uncheck Block all public access and check I acknowledge that .... Click next.
-9. Click Create bucket
-10. Click on the created bucket's link (in our case it's `campsite-ui`).
-11. Click Upload
-12. Open the `build` directory we've created during the 2nd step, which is in `packages/ui/build`
-13. Drag all the files from the `build` directory onto the Upload page and click Upload.  
-14. Click Properties.
-15. Click Static website hosting box.
-16. Check Use this bucket to host a website, type index.html into the index.html placeholder and click save.
-17. Click Overview, select all the files by clicking the first box, click Actions and then Make public, and click the
- Make public button.
- 
-Your `ui` page has been deployed! Now you can click the `index.html` link, and there's a field Object URL
- with
- the
- link to your website (in our case it's `https://campsite-ui.s3.eu-central-1.amazonaws.com/index.html`). Click it and
-  see your results! Remember, we gotta have the backend running as
-  well for the
-  application to run properly.
+1. Make 3 copies of `server` directory and call them `event-service`, `speaker-service`, `session-service`.
+2. Event service
+    1. `internal/service/speaker.go`
+        - move the existing business logic into `speaker-service/internal/service/speaker.go`
+        - instead of calling the database here, it should call the speaker service via HTTP. You can do that using the HTTP client provided by the Go's standard library.
+    2. `internal/service/session.go` analogical to the `speaker.go`
+    3. Add Speaker and Session Service environment variables to the Config
+3. Speaker service
+    1. Remove all the handlers besides the speaker handlers and remove the `speakers` part from the handler routes.
+    2. Remove all the business logic from `internal/service/event.go` and `internal/service/session.go`. Leave only the `SpeakerInput`, `Speaker`, `EventInput`, `Event` structs.
+    3. Adjust the config
+    4. (optionally) Remove `RUN mkdir /images` and `COPY --from=builder /images /images` from Dockerfile
+4. Session service: analogical to the speaker service
+5. Adjust `docker-compose.yml` appropriately
