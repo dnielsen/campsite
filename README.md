@@ -16,8 +16,8 @@ Now you should see the UI at `http://localhost:3000` and the Event Service API s
 1. Make 3 copies of `server` directory and call them `event-service`, `speaker-service`, `session-service`.
 2. Event service
     1. `internal/service/speaker.go`
-        - delete the existing fuctions
-        - instead of calling the database here, it should call the speaker service via HTTP. You can do that using the HTTP client provided by the Go's standard library.
+        -delete the existing fuctions    
+        -instead of calling the database here, it should call the speaker service via HTTP. You can do that using the HTTP client provided by the Go's standard library.
     2. `internal/service/session.go` analogical to the `speaker.go`
     3. Add Speaker and Session Service environment variables to the Config
 3. Speaker service
