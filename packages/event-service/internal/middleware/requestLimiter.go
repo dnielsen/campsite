@@ -10,7 +10,9 @@ import (
 )
 
 const (
-	RATE = 1
+	// The higher the RATE, the more requests you can fire within some time
+	// before you get the `Too Many Requests` error.
+	RATE = 2
 	BURST_SIZE = 3
 	VISITOR_EXPIRATION = time.Minute * 3
 )
@@ -26,7 +28,7 @@ type visitor struct {
 var visitors = make(map[string]*visitor)
 var mu sync.Mutex
 
-// Run a background goroutine to remove old entries from the visitors map.
+// Run a background go routine to remove old entries from the visitors map.
 func init() {
 	go cleanupVisitors()
 }

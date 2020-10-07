@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/google/uuid"
+	"sort"
 	"time"
 )
 
@@ -16,6 +17,7 @@ type Event struct {
 	OrganizerName string     `json:"organizerName" gorm:"not null"`
 	Address       *string    `json:"address"`
 	Sessions      []Session  `json:"sessions"`
+	Speakers []Speaker `json:"speakers,omitempty" gorm:"-"`
 }
 
 type EventInput struct {
@@ -61,6 +63,15 @@ func (api *API) GetEventById(id string) (*Event, error) {
 	if err := api.db.Preload("Sessions.Speakers").First(&e).Error; err != nil {
 		return nil, err
 	}
+
+	// We're sorting the sessions by start date so that we don't need
+	// to on the frontend. If our microservices were communicating with
+	// each other, we could've handled that in the session service.
+	// We're not sure if we can do that via a query in this case.
+	sort.Slice(e.Sessions, func(i, j int) bool {
+		return e.Sessions[i].StartDate.Before(*e.Sessions[j].StartDate)
+	})
+
 	return &e, nil
 }
 

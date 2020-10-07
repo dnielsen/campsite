@@ -23,6 +23,10 @@ func GetEventById(datastore service.EventAPI) http.HandlerFunc {
 			return
 		}
 
+		// Add the (unique) speakers property to the event for our <FullEvent />
+		// so that we don't need to do it on the frontend.
+		event.Speakers = service.GetUniqueSpeakersFromSessions(event.Sessions)
+
 		// Marshal the event.
 		eventBytes, err := json.Marshal(event)
 		if err != nil {
