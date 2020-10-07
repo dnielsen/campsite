@@ -5,9 +5,9 @@ import (
 )
 
 type MockAPI struct {
-	MockGetAllSessions func() (*[]Session, error)
+	MockGetAllSessions       func() (*[]Session, error)
 	MockGetSessionsByEventId func(id string) (*[]Session, error)
-	MockGetSessionById func(id string) (*Session, error)
+	MockGetSessionById       func(id string) (*Session, error)
 }
 
 func (api *MockAPI) GetSessionsByEventId(id string) (*[]Session, error) {
@@ -30,4 +30,3 @@ func (api *MockAPI) GetAllSessions() (*[]Session, error) {
 	}
 	return nil, errors.New("something went wrong")
 }
-

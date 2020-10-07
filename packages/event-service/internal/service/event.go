@@ -7,28 +7,28 @@ import (
 )
 
 type Event struct {
-	ID            string     `json:"id" gorm:"type:uuid"`
-	Name          string     `json:"name" gorm:"not null"`
-	Description   string     `json:"description" gorm:"not null"`
-	RegistrationUrl string `json:"registrationUrl" gorm:"not null"`
-	StartDate     *time.Time `json:"startDate" gorm:"not null"`
-	EndDate       *time.Time `json:"endDate" gorm:"not null"`
-	Photo         string     `json:"photo" gorm:"not null"`
-	OrganizerName string     `json:"organizerName" gorm:"not null"`
-	Address       *string    `json:"address"`
-	Sessions      []Session  `json:"sessions"`
-	Speakers []Speaker `json:"speakers,omitempty" gorm:"-"`
+	ID              string     `json:"id" gorm:"type:uuid"`
+	Name            string     `json:"name" gorm:"not null"`
+	Description     string     `json:"description" gorm:"not null"`
+	RegistrationUrl string     `json:"registrationUrl" gorm:"not null"`
+	StartDate       *time.Time `json:"startDate" gorm:"not null"`
+	EndDate         *time.Time `json:"endDate" gorm:"not null"`
+	Photo           string     `json:"photo" gorm:"not null"`
+	OrganizerName   string     `json:"organizerName" gorm:"not null"`
+	Address         *string    `json:"address"`
+	Sessions        []Session  `json:"sessions"`
+	Speakers        []Speaker  `json:"speakers,omitempty" gorm:"-"`
 }
 
 type EventInput struct {
-	Name string `json:"name,omitempty"`
-	StartDate     *time.Time `json:"startDate,omitempty"`
-	EndDate       *time.Time `json:"endDate,omitempty"`
-	RegistrationUrl string `json:"registrationUrl,omitempty"`
-	Description   string     `json:"description,omitempty"`
-	Photo         string     `json:"photo,omitempty"`
-	OrganizerName string     `json:"organizerName,omitempty"`
-	Address       *string    `json:"address,omitempty"`
+	Name            string     `json:"name,omitempty"`
+	StartDate       *time.Time `json:"startDate,omitempty"`
+	EndDate         *time.Time `json:"endDate,omitempty"`
+	RegistrationUrl string     `json:"registrationUrl,omitempty"`
+	Description     string     `json:"description,omitempty"`
+	Photo           string     `json:"photo,omitempty"`
+	OrganizerName   string     `json:"organizerName,omitempty"`
+	Address         *string    `json:"address,omitempty"`
 }
 
 func (api *API) GetAllEvents() (*[]Event, error) {

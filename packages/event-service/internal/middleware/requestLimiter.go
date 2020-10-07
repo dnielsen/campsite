@@ -12,8 +12,8 @@ import (
 const (
 	// The higher the RATE, the more requests you can fire within some time
 	// before you get the `Too Many Requests` error.
-	RATE = 2
-	BURST_SIZE = 3
+	RATE               = 2
+	BURST_SIZE         = 3
 	VISITOR_EXPIRATION = time.Minute * 3
 )
 

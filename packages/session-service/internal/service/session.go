@@ -6,15 +6,15 @@ import (
 )
 
 type Session struct {
-	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
-	Name        string    `json:"name" gorm:"not null"`
+	ID          string     `gorm:"primaryKey;type:uuid" json:"id"`
+	Name        string     `json:"name" gorm:"not null"`
 	StartDate   *time.Time `json:"startDate" gorm:"not null"`
 	EndDate     *time.Time `json:"endDate" gorm:"not null"`
-	Description string    `json:"description" gorm:"not null"`
-	Url         string    `json:"url" gorm:"not null"`
-	Event 		Event `json:"event,omitempty"`
-	EventID 	string `json:"eventId,omitempty" gorm:"type:uuid;not null"`
-	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
+	Description string     `json:"description" gorm:"not null"`
+	Url         string     `json:"url" gorm:"not null"`
+	Event       Event      `json:"event,omitempty"`
+	EventID     string     `json:"eventId,omitempty" gorm:"type:uuid;not null"`
+	Speakers    []Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 type SessionInput struct {
@@ -23,8 +23,8 @@ type SessionInput struct {
 	EndDate     *time.Time `json:"endDate,omitempty"`
 	Description string     `json:"description,omitempty"`
 	Url         string     `json:"url,omitempty"`
-	SpeakerIds []string `json:"speakerIds,omitempty"`
-	EventId string `json:"eventId,omitempty"`
+	SpeakerIds  []string   `json:"speakerIds,omitempty"`
+	EventId     string     `json:"eventId,omitempty"`
 }
 
 func (api *API) GetSessionById(id string) (*Session, error) {
@@ -63,7 +63,7 @@ func (api *API) CreateSession(i SessionInput) (*Session, error) {
 		Description: i.Description,
 		EventID:     i.EventId,
 		Url:         i.Url,
-		Speakers: speakers,
+		Speakers:    speakers,
 	}
 	if err := api.db.Create(&session).Error; err != nil {
 		return nil, err

@@ -11,6 +11,7 @@ import (
 )
 
 const SERVICE_NAME = "speaker-service"
+
 // TRACE_RECORD_RATE is a float from 0 to 1.
 // 1 means 100% of traces will be recorded.
 const TRACE_RECORD_RATE = 1

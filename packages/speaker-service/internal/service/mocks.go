@@ -6,8 +6,8 @@ import (
 
 type MockAPI struct {
 	MockGetSpeakersByIds func(ids []string) (*[]Speaker, error)
-	MockGetAllSpeakers func() (*[]Speaker, error)
-	MockGetSpeakerById func(id string) (*Speaker, error)
+	MockGetAllSpeakers   func() (*[]Speaker, error)
+	MockGetSpeakerById   func(id string) (*Speaker, error)
 }
 
 func (api *MockAPI) GetSpeakersByIds(ids []string) (*[]Speaker, error) {

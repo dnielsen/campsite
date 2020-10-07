@@ -12,7 +12,6 @@ import (
 	"net/http"
 )
 
-
 func main() {
 	// Initialize the config which includes
 	// database, server, and other services' configuration.

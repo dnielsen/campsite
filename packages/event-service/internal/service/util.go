@@ -1,6 +1,6 @@
 package service
 
-func GetUniqueSpeakersFromSessions(sessions []Session) []Speaker  {
+func GetUniqueSpeakersFromSessions(sessions []Session) []Speaker {
 	// Iterate through each session and each speaker of the sessions
 	// and create an array of unique speakers.
 	// The key of the map is a speaker id and the value is a speaker.
