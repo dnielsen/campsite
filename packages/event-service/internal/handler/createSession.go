@@ -18,7 +18,7 @@ func CreateSession(datastore service.SessionAPI) http.HandlerFunc {
 			return
 		}
 
-		// Request the speaker service to create a speaker.
+		// Request the session service to create a speaker.
 		session, err := datastore.CreateSession(i)
 		if err != nil {
 			log.Printf("Failed to create session: %v", err)
@@ -26,7 +26,7 @@ func CreateSession(datastore service.SessionAPI) http.HandlerFunc {
 			return
 		}
 
-		// Marshal the speaker.
+		// Marshal the session.
 		sessionBytes, err := json.Marshal(session)
 		if err != nil {
 			log.Printf("Failed to marshal session: %v", err)
@@ -34,7 +34,7 @@ func CreateSession(datastore service.SessionAPI) http.HandlerFunc {
 			return
 		}
 
-		// Respond JSON with the created speaker
+		// Respond JSON with the created session
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		w.Write(sessionBytes)

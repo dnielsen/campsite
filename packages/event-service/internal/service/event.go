@@ -33,7 +33,7 @@ type EventInput struct {
 
 func (api *API) GetAllEvents() (*[]Event, error) {
 	var events []Event
-	if err := api.db.Find(&events).Error; err != nil {
+	if err := api.db.Order("start_date desc").Find(&events).Error; err != nil {
 		return nil, err
 	}
 	return &events, nil

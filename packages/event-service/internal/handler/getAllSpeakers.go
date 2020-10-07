@@ -11,14 +11,12 @@ import (
 func GetAllSpeakers(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get all speakers from the speaker service.
-		log.Println("hi")
 		speakers, err := datastore.GetAllSpeakers()
 		if err != nil {
 			log.Printf("Failed to get speakers: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		log.Println("hi2")
 
 		// Marshal the speakers.
 		speakerBytes, err := json.Marshal(speakers)

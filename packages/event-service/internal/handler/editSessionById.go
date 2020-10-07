@@ -21,7 +21,7 @@ func EditSessionById(api service.SessionAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Edit the edit in the database.
+		// Edit the session in the database.
 		if err := api.EditSessionById(id, i); err != nil {
 			log.Printf("Failed to edit session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
