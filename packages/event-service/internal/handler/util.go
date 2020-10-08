@@ -10,9 +10,10 @@ import (
 // We'll design it better later (move it to cookie/auth package).
 
 const (
-	ID = "id"
-	FILENAME = "filename"
-	TOKEN_DURATION = time.Hour * 24 * 7
+	ID                = "id"
+	FILENAME          = "filename"
+	TOKEN_HEADER_NAME = "Authorization"
+	TOKEN_DURATION    = time.Hour * 24 * 7
 )
 
 // We'll later move it to an environment variable.
@@ -25,7 +26,7 @@ type Claims struct {
 }
 
 func verifyToken(r *http.Request) (*Claims, error) {
-	tokenString := r.Header.Get("Auth")
+	tokenString := r.Header.Get(TOKEN_HEADER_NAME)
 	claims := Claims{}
 	tkn, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return JWT_SECRET_KEY, nil
