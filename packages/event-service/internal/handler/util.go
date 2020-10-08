@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"net/http"
 	"time"
@@ -11,20 +12,20 @@ import (
 const (
 	ID = "id"
 	FILENAME = "filename"
-	TOKEN_COOKIE_NAME = "Authorization"
+	TOKEN_DURATION = time.Hour * 24 * 7
 )
 
+// We'll later move it to an environment variable.
+var JWT_SECRET_KEY = []byte("V3RY_S3CR3T_K3Y")
+
 // Token will expire in 7 days from now.
-var EXPIRY_TIME = time.Now().Add(time.Hour * 24 * 7)
-
-
 type Claims struct {
 	Email string `json:"email"`
 	jwt.StandardClaims
 }
 
-func verifyToken(w http.ResponseWriter, r *http.Request) (*Claims, error) {
-	tokenString := r.Header.Get(TOKEN_COOKIE_NAME)
+func verifyToken(r *http.Request) (*Claims, error) {
+	tokenString := r.Header.Get("Auth")
 	claims := Claims{}
 	tkn, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return JWT_SECRET_KEY, nil
@@ -34,9 +35,8 @@ func verifyToken(w http.ResponseWriter, r *http.Request) (*Claims, error) {
 		return nil, err
 	}
 
-	// Clear the cookie when token is invalid.
 	if !tkn.Valid {
-		http.SetCookie(w, nil)
+		return nil, errors.New("invalid token")
 	}
 
 	return &claims, nil
@@ -47,7 +47,8 @@ func generateToken(email string) (string, error) {
 		Email:          email,
 		StandardClaims: jwt.StandardClaims{
 			// In JWT, the expiry time is expressed in Unix milliseconds.
-			ExpiresAt: EXPIRY_TIME.Unix(),
+			ExpiresAt: time.Now().Add(TOKEN_DURATION).Unix(),
+			IssuedAt: time.Now().Unix(),
 		},
 	}
 
@@ -59,25 +60,5 @@ func generateToken(email string) (string, error) {
 		return "", err
 	}
 
-
 	return tokenString, nil
-}
-
-func setTokenCookie(w http.ResponseWriter, token string) {
-	// Set the cookie header with the token for the client.
-	c := http.Cookie{
-		Name:    TOKEN_COOKIE_NAME,
-		Value:   token,
-		Expires: EXPIRY_TIME,
-		// Currently we don't support `https` so we set
-		// the `secure` property to `false`.
-		Secure:     false,
-		HttpOnly:   true,
-		// No same site since our frontend url differs from the API url right now.
-		SameSite:   1,
-	}
-
-	//w.Header().Set(CO, c.String())
-	http.SetCookie(w, &c)
-
 }

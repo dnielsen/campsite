@@ -7,13 +7,7 @@ import (
 	"net/http"
 )
 
-
-
-
-// We'll later move it to an environment variable.
-var JWT_SECRET_KEY = []byte("V3RY_S3CR3T_K3Y")
-
-func SignIn(api service.EventAPI) http.HandlerFunc {
+func SignIn(api service.AuthAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SignInInput
@@ -22,24 +16,23 @@ func SignIn(api service.EventAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Validate that the credentials match some user.
+		// Validate the credentials match the user.
 		u, err := api.ValidateUser(i)
 		if err != nil {
-			log.Printf("Failed to sign in: %v", err)
+			log.Printf("Failed to authenticate: %v", err)
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
-
+		// Generate the access token.
 		token, err := generateToken(u.Email)
 		if err != nil {
 			log.Printf("Failed to generate token: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
-		//setTokenCookie(w, token)
-
+		// Respond plain text with the token. We might change the response later,
+		// to some json object
+		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(token))
-		// Respond that the sign in has been successful.
 	}
 }

@@ -27,8 +27,11 @@ type HttpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
-type EventAPI interface {
+type AuthAPI interface {
 	ValidateUser(i SignInInput) (*User, error)
+}
+
+type EventAPI interface {
 	GetAllEvents() (*[]Event, error)
 	CreateEvent(i EventInput) (*Event, error)
 	GetEventById(id string) (*Event, error)

@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-
-
 type SignInInput struct {
 	Email string `json:"email,omitempty"`
 	Password string `json:"password,omitempty"`

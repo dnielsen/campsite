@@ -16,8 +16,7 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Currently our database doesn't know about `User` entity
 		// so we're just ignoring claims.
-		_, err := verifyToken(w, r)
-		if err != nil {
+		if _, err := verifyToken(r); err != nil {
 			log.Printf("Failed to verify token: %v", err)
 			http.Error(w, err.Error(), http.StatusForbidden)
 			return
