@@ -36,6 +36,7 @@ func main() {
 	}
 
 	// Set up the handlers.
+	r.HandleFunc("/{id}/comments", handler.CreateComment(api)).Methods(http.MethodPost)
 	r.HandleFunc("/", handler.GetAllSessions(api)).Methods(http.MethodGet)
 	r.HandleFunc("/", handler.CreateSession(api)).Methods(http.MethodPost)
 	r.HandleFunc("/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)

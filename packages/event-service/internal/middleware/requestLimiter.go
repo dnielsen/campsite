@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	RATE = 1
+	RATE = 2
 	BURST_SIZE = 3
 	VISITOR_EXPIRATION = time.Minute * 3
 )

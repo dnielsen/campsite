@@ -49,13 +49,13 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	db := NewDb(c)
 
 	// Migrate the database.
-	if err := db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}); err != nil {
+	if err := db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}, &service.Comment{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
 	}
 	log.Println("Auto migrated database")
 
 	// Create a mock event in the database.
-	mockEvent := getMockEvent()
+	mockEvent := newMockEvent()
 	if err := db.Create(&mockEvent).Error; err != nil {
 		// The error will likely occur because we already created it already,
 		// that is, the primary keys we set up above already exists.
@@ -65,7 +65,7 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	log.Println("Created mock event in database")
 
 	// Create a mock OpenCloudConf event in the database.
-	mockOpenCloudConfEvent := getMockOpenCloudConfEvent()
+	mockOpenCloudConfEvent := newMockOpenCloudConfEvent()
 	if err := db.Create(&mockOpenCloudConfEvent).Error; err != nil {
 		// The error will likely occur because we already created it already,
 		// that is, the primary keys we set up above already exists.
@@ -77,7 +77,7 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	return db
 }
 
-func getMockEvent() service.Event {
+func newMockEvent() service.Event {
 	now := time.Now()
 	later := now.Add(time.Hour*5)
 	evenLater := later.Add(time.Hour*5)
@@ -136,7 +136,7 @@ func getMockEvent() service.Event {
 	return event
 }
 
-func getMockOpenCloudConfEvent() service.Event {
+func newMockOpenCloudConfEvent() service.Event {
 	spkRandy := newSpeaker("Randy Bias", "He has worked for over 20 years as a developer, team leader and founder & CEO. After seeing his company through to an acquisition by Oracle, he now leads Product Development for Oracle's API portfolio. Founder of cesko.digital.", "CloudScaling", "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3cfb15cabbb341f90be301_Cheryl%20Crane.jpeg")
 	spkGreg := newSpeaker("Greg Smith", "David is a Google Developer Expert for Android. He leads his startup and also works as a Senior Android Developer at JLL. He loves open-source, Tesla, and LARP.", "Eucalyptus", "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3a7e64ecda612e4c4ab82e_Jerome_Remote%20Future%20Summit.jpg")
 	spkJoe := newSpeaker("Joe Arnold", "Magda Miu is an enthusiastic and innovative Squad Lead Developer at Orange and Google Developer Expert for Android with more than 10 years experience in software development.", "Apple", "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3cf73b49bf9b6356f235a8_Katherine_Zaleski_Remote%20Future%20Summit.jpg")

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func DeleteSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
+func DeleteSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Currently our database doesn't know about `User` entity
 		// so we're just ignoring claims.
@@ -22,7 +22,7 @@ func DeleteSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 		id := vars[ID]
 
 		// Request the speaker service to delete the speaker from the database.
-		if err := datastore.DeleteSpeakerById(id); err != nil {
+		if err := api.DeleteSpeakerById(id); err != nil {
 			log.Printf("Failed to delete speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

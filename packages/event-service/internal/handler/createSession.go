@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func CreateSession(datastore service.SessionAPI) http.HandlerFunc {
+func CreateSession(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Currently our database doesn't know about `User` entity
 		// so we're just ignoring claims.
@@ -26,7 +26,7 @@ func CreateSession(datastore service.SessionAPI) http.HandlerFunc {
 		}
 
 		// Request the speaker service to create a speaker.
-		session, err := datastore.CreateSession(i)
+		session, err := api.CreateSession(i)
 		if err != nil {
 			log.Printf("Failed to create session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -2,45 +2,26 @@ package service
 
 import (
 	"github.com/google/uuid"
-	"time"
+	"log"
 )
 
-type Session struct {
-	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
-	Name        string    `json:"name" gorm:"not null"`
-	StartDate   *time.Time `json:"startDate" gorm:"not null"`
-	EndDate     *time.Time `json:"endDate" gorm:"not null"`
-	Description string    `json:"description" gorm:"not null"`
-	Url         string    `json:"url" gorm:"not null"`
-	Event 		Event `json:"event,omitempty"`
-	EventID 	string `json:"eventId,omitempty" gorm:"type:uuid;not null"`
-	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
-}
-
-type SessionInput struct {
-	Name        string     `json:"name,omitempty"`
-	StartDate   *time.Time `json:"startDate,omitempty"`
-	EndDate     *time.Time `json:"endDate,omitempty"`
-	Description string     `json:"description,omitempty"`
-	Url         string     `json:"url,omitempty"`
-	SpeakerIds []string `json:"speakerIds,omitempty"`
-	EventId string `json:"eventId,omitempty"`
-}
 
 func (api *API) GetSessionById(id string) (*Session, error) {
-	session := Session{ID: id}
-	if err := api.db.Preload("Speakers").Preload("Event.Sessions").First(&session).Error; err != nil {
+	s := Session{ID: id}
+	if err := api.db.Preload("Speakers").Preload("Event.Sessions").Preload("Comments").First(&s).Error; err != nil {
 		return nil, err
 	}
-	return &session, nil
+
+	log.Printf("session: %+v", s)
+	return &s, nil
 }
 
 func (api *API) GetAllSessions() (*[]Session, error) {
-	var sessions []Session
-	if err := api.db.Find(&sessions).Error; err != nil {
+	var ss []Session
+	if err := api.db.Find(&ss).Error; err != nil {
 		return nil, err
 	}
-	return &sessions, nil
+	return &ss, nil
 }
 
 func (api *API) DeleteSessionById(id string) error {
@@ -51,8 +32,8 @@ func (api *API) DeleteSessionById(id string) error {
 }
 
 func (api *API) CreateSession(i SessionInput) (*Session, error) {
-	var speakers []Speaker
-	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
+	var spks []Speaker
+	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&spks).Error; err != nil {
 		return nil, err
 	}
 	session := Session{
@@ -63,7 +44,7 @@ func (api *API) CreateSession(i SessionInput) (*Session, error) {
 		Description: i.Description,
 		EventID:     i.EventId,
 		Url:         i.Url,
-		Speakers: speakers,
+		Speakers: spks,
 	}
 	if err := api.db.Create(&session).Error; err != nil {
 		return nil, err
@@ -73,7 +54,7 @@ func (api *API) CreateSession(i SessionInput) (*Session, error) {
 
 func (api *API) EditSessionById(id string, i SessionInput) error {
 	// Update the session (besides speakers).
-	session := Session{
+	sess := Session{
 		ID:          id,
 		Name:        i.Name,
 		StartDate:   i.StartDate,
@@ -82,7 +63,7 @@ func (api *API) EditSessionById(id string, i SessionInput) error {
 		Url:         i.Url,
 		EventID:     i.EventId,
 	}
-	if err := api.db.Updates(&session).Error; err != nil {
+	if err := api.db.Updates(&sess).Error; err != nil {
 		return err
 	}
 	// Update the session speakers. We're doing it this way instead of adding it to the
@@ -90,13 +71,14 @@ func (api *API) EditSessionById(id string, i SessionInput) error {
 	// instead of replacing them.
 
 	// Get the speakers with just their ids.
-	var speakers []Speaker
-	if err := api.db.Where("id IN ?", i.SpeakerIds).Select("id").Find(&speakers).Error; err != nil {
+	var spks []Speaker
+	if err := api.db.Where("id IN ?", i.SpeakerIds).Select("id").Find(&spks).Error; err != nil {
 		return err
 	}
 	// Update the speakers
-	if err := api.db.Model(&session).Association("Speakers").Replace(speakers); err != nil {
+	if err := api.db.Model(&sess).Association("Speakers").Replace(spks); err != nil {
 		return err
 	}
 	return nil
 }
+

@@ -45,6 +45,7 @@ type SessionAPI interface {
 	GetSessionById(id string) (*Session, error)
 	EditSessionById(id string, i SessionInput) error
 	DeleteSessionById(id string) error
+	CreateComment(sessionId string, i CommentInput) (*Comment, error)
 }
 
 type SpeakerAPI interface {

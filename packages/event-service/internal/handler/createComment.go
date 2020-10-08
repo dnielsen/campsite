@@ -3,11 +3,13 @@ package handler
 import (
 	"campsite/packages/event-service/internal/service"
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func CreateEvent(api service.EventAPI) http.HandlerFunc {
+// `/sessions/{id}/comments` POST route.
+func CreateComment(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Currently our database doesn't know about `User` entity
 		// so we're just ignoring claims.
@@ -17,26 +19,30 @@ func CreateEvent(api service.EventAPI) http.HandlerFunc {
 			return
 		}
 
+		// Get the session id parameter.
+		vars := mux.Vars(r)
+		sessionId := vars[ID]
+
 		// Decode the body.
-		var i service.EventInput
+		var i service.CommentInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
-			log.Printf("Failed to unmarshal event input")
+			log.Printf("Failed to unmarshal comment input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		// Create the event in the database.
-		event, err := api.CreateEvent(i)
+		// Create the comment in the database.
+		c, err := api.CreateComment(sessionId, i)
 		if err != nil {
-			log.Printf("Failed to create event: %v", err)
+			log.Printf("Failed to create comment: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Marshal the event.
-		eventBytes, err := json.Marshal(event)
+		// Marshal the comment.
+		commentBytes, err := json.Marshal(c)
 		if err != nil {
-			log.Printf("Failed to marshal event: %v", err)
+			log.Printf("Failed to marshal comm: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -44,6 +50,6 @@ func CreateEvent(api service.EventAPI) http.HandlerFunc {
 		// Respond JSON with the created event
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
-		w.Write(eventBytes)
+		w.Write(commentBytes)
 	}
 }

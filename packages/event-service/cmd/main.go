@@ -100,6 +100,7 @@ func main() {
 	r.HandleFunc("/speakers/{id}", handler.EditSpeakerById(api)).Methods(http.MethodPut)
 	r.HandleFunc("/speakers/{id}", handler.DeleteSpeakerById(api)).Methods(http.MethodDelete)
 
+	r.HandleFunc("/sessions/{id}/comments", handler.CreateComment(api)).Methods(http.MethodPost)
 	// GetAllSessions handler selects all sessions along with all the properties
 	// from the database and sends them to the client. It doesn't join any tables.
 	// It's currently not being used by our `ui`.
@@ -116,6 +117,7 @@ func main() {
 	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/sessions/{id}", handler.EditSessionById(api)).Methods(http.MethodPut)
 	r.HandleFunc("/sessions/{id}", handler.DeleteSessionById(api)).Methods(http.MethodDelete)
+
 
 	// Start the server. It sets up CORS for us
 	// so that our `ui` or any other client can consume the API

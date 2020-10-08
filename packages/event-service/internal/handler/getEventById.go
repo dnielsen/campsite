@@ -8,19 +8,23 @@ import (
 	"net/http"
 )
 
-func GetEventById(datastore service.EventAPI) http.HandlerFunc {
+func GetEventById(api service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
 		// Get the event from the database.
-		event, err := datastore.GetEventById(id)
+		event, err := api.GetEventById(id)
 		if err != nil {
 			log.Printf("Failed to get event: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+
+		// Add the (unique) speakers property to the event for our <FullEvent />
+		// so that we don't need to do it on the frontend.
+		event.Speakers = service.GetUniqueSpeakersFromSessions(event.Sessions)
 
 		// Marshal the event.
 		eventBytes, err := json.Marshal(event)

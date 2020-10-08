@@ -3,42 +3,8 @@ package service
 import (
 	"errors"
 	"github.com/google/uuid"
-	"time"
 )
 
-type SignInInput struct {
-	Email string `json:"email,omitempty"`
-	Password string `json:"password,omitempty"`
-}
-
-type Event struct {
-	ID            string     `json:"id" gorm:"type:uuid"`
-	Name          string     `json:"name" gorm:"not null"`
-	Description   string     `json:"description" gorm:"not null"`
-	RegistrationUrl string `json:"registrationUrl" gorm:"not null"`
-	StartDate     *time.Time `json:"startDate" gorm:"not null"`
-	EndDate       *time.Time `json:"endDate" gorm:"not null"`
-	Photo         string     `json:"photo" gorm:"not null"`
-	OrganizerName string     `json:"organizerName" gorm:"not null"`
-	Address       *string    `json:"address"`
-	Sessions      []Session  `json:"sessions"`
-}
-
-type EventInput struct {
-	Name string `json:"name,omitempty"`
-	StartDate     *time.Time `json:"startDate,omitempty"`
-	EndDate       *time.Time `json:"endDate,omitempty"`
-	RegistrationUrl string `json:"registrationUrl,omitempty"`
-	Description   string     `json:"description,omitempty"`
-	Photo         string     `json:"photo,omitempty"`
-	OrganizerName string     `json:"organizerName,omitempty"`
-	Address       *string    `json:"address,omitempty"`
-}
-
-type User struct {
-	Email string `json:"email,omitempty"`
-	Password string `json:"password,omitempty"`
-}
 
 // We might change the return of the function to say `UserResponse` later
 // because we won't need, say, the password field.

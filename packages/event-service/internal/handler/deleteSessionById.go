@@ -8,7 +8,7 @@ import (
 )
 
 // `/sessions/{id}` DELETE route.
-func DeleteSessionById(datastore service.SessionAPI) http.HandlerFunc {
+func DeleteSessionById(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Currently our database doesn't know about `User` entity
 		// so we're just ignoring claims.
@@ -23,7 +23,7 @@ func DeleteSessionById(datastore service.SessionAPI) http.HandlerFunc {
 		id := vars[ID]
 
 		// Request the session service to delete the session from the database.
-		if err := datastore.DeleteSessionById(id); err != nil {
+		if err := api.DeleteSessionById(id); err != nil {
 			log.Printf("Failed to delete session: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

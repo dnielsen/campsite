@@ -32,3 +32,8 @@ type SessionAPI interface {
 	EditSessionById(id string, i SessionInput) error
 	DeleteSessionById(id string) error
 }
+
+type CommentAPI interface {
+	CreateComment(sessionId string, i CommentInput) (*Comment, error)
+
+}
