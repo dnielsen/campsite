@@ -12,6 +12,7 @@ import (
 const (
 	LIMIT = "limit"
 	CURSOR = "cursor"
+	DEFAULT_LIMIT = 3
 )
 
 type CommentsResponse struct {
@@ -26,8 +27,8 @@ func GetCommentsBySessionId(datastore service.CommentAPI) http.HandlerFunc {
 		vars := mux.Vars(r)
 		sessionId := vars[ID]
 
-		// If there's no limit parameter specified by default it's gonna be 5.
-		limit := 5
+		// limit == DEFAULT_LIMIT when there's no limit parameter specified
+		limit := DEFAULT_LIMIT
 
 		strLimit := r.URL.Query().Get(LIMIT)
 		if strLimit != "" {
