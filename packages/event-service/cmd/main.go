@@ -100,6 +100,7 @@ func main() {
 	r.HandleFunc("/speakers/{id}", handler.EditSpeakerById(api)).Methods(http.MethodPut)
 	r.HandleFunc("/speakers/{id}", handler.DeleteSpeakerById(api)).Methods(http.MethodDelete)
 
+	r.HandleFunc("/sessions/{id}/comments", handler.GetCommentsBySessionId(api)).Methods(http.MethodGet)
 	r.HandleFunc("/sessions/{id}/comments", handler.CreateComment(api)).Methods(http.MethodPost)
 	// GetAllSessions handler selects all sessions along with all the properties
 	// from the database and sends them to the client. It doesn't join any tables.

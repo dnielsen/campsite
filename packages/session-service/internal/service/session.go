@@ -6,11 +6,12 @@ import (
 
 func (api *API) GetSessionById(id string) (*Session, error) {
 	s := Session{ID: id}
-	if err := api.db.Preload("Speakers").Preload("Event.Sessions").Preload("Comments").First(&s).Error; err != nil {
+	if err := api.db.Preload("Speakers").Preload("Event.Sessions").First(&s).Error; err != nil {
 		return nil, err
 	}
 	return &s, nil
 }
+
 
 func (api *API) GetAllSessions() (*[]Session, error) {
 	var ss []Session

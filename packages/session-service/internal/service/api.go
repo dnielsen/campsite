@@ -35,5 +35,5 @@ type SessionAPI interface {
 
 type CommentAPI interface {
 	CreateComment(sessionId string, i CommentInput) (*Comment, error)
-
+	GetCommentsBySessionId(sessionId string, limit int, cursor string) (*[]Comment, *string, error)
 }
