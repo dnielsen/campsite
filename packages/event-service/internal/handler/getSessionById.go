@@ -9,14 +9,14 @@ import (
 )
 
 // `/sessions/{id}` GET route. It communicates with the session service only.
-func GetSessionById(datastore service.SessionAPI) http.HandlerFunc {
+func GetSessionById(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
 		// Get the session from the session service.
-		session, err := datastore.GetSessionById(id)
+		session, err := api.GetSessionById(id)
 		if err != nil {
 			log.Printf("Failed to get session: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

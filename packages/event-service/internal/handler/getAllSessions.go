@@ -8,10 +8,10 @@ import (
 )
 
 // `/sessions` GET route. It communicates with the session service only.
-func GetAllSessions(datastore service.SessionAPI) http.HandlerFunc {
+func GetAllSessions(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get all sessions from the session service.
-		sessions, err := datastore.GetAllSessions()
+		sessions, err := api.GetAllSessions()
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

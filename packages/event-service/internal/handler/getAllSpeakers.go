@@ -8,10 +8,10 @@ import (
 )
 
 // `/speakers` GET route. It communicates with the speaker service only.
-func GetAllSpeakers(datastore service.SpeakerAPI) http.HandlerFunc {
+func GetAllSpeakers(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get all speakers from the speaker service.
-		speakers, err := datastore.GetAllSpeakers()
+		speakers, err := api.GetAllSpeakers()
 		if err != nil {
 			log.Printf("Failed to get speakers: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

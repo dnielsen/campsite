@@ -9,14 +9,14 @@ import (
 )
 
 // `/speakers/{id}` GET route. It communicates with the speaker service only.
-func GetSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
+func GetSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 
 		// Get the speaker from the speaker service.
-		speaker, err := datastore.GetSpeakerById(id)
+		speaker, err := api.GetSpeakerById(id)
 		if err != nil {
 			log.Printf("Failed to get speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)

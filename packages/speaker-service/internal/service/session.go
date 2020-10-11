@@ -9,7 +9,7 @@ type Session struct {
 	EndDate     *time.Time `json:"endDate" gorm:"not null"`
 	Description string     `json:"description" gorm:"not null"`
 	Url         string     `json:"url" gorm:"not null"`
-	Event       Event      `json:"-"`
-	EventID     string     `json:"-" gorm:"type:uuid;not null"`
+	Event       Event      `json:"event,omitempty"`
+	EventID     string     `json:"eventId,omitempty" gorm:"type:uuid;not null"`
 	Speakers    []Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }

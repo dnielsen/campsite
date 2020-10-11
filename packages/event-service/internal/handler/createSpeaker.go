@@ -8,7 +8,7 @@ import (
 )
 
 // `/speakers` POST route. It communicates with the speaker service only.
-func CreateSpeaker(datastore service.SpeakerAPI) http.HandlerFunc {
+func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
 		var i service.SpeakerInput
@@ -19,7 +19,7 @@ func CreateSpeaker(datastore service.SpeakerAPI) http.HandlerFunc {
 		}
 
 		// Request the speaker service to create a speaker.
-		speaker, err := datastore.CreateSpeaker(i)
+		speaker, err := api.CreateSpeaker(i)
 		if err != nil {
 			log.Printf("Failed to create speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
