@@ -13,6 +13,7 @@ import (
 )
 
 func main() {
+
 	// Initialize the config which includes
 	// database, server, and other services' configuration.
 	c := config.NewConfig()
