@@ -120,7 +120,6 @@ func main() {
 	r.HandleFunc("/sessions/{id}", handler.EditSessionById(api)).Methods(http.MethodPut)
 	r.HandleFunc("/sessions/{id}", handler.DeleteSessionById(api)).Methods(http.MethodDelete)
 
-
 	// Start the server. It sets up CORS for us
 	// so that our `ui` or any other client can consume the API
 	// conveniently. Also it configures read, idle, and write timeouts.

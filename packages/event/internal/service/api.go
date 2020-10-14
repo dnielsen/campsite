@@ -35,7 +35,7 @@ type EventAPI interface {
 	GetAllEvents() (*[]Event, error)
 	CreateEvent(i EventInput) (*Event, error)
 	GetEventById(id string) (*Event, error)
-	EditEventById(id string, i EventInput) error
+	EditEventById(id string, i EventInput) (*Event, error)
 	DeleteEventById(id string) error
 }
 

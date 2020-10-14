@@ -30,12 +30,22 @@ func EditEventById(api service.EventAPI) http.HandlerFunc {
 			return
 		}
 		// Edit the event in the database.
-		if err := api.EditEventById(id, i); err != nil {
+		updatedEvent, err := api.EditEventById(id, i)
+		if err != nil {
 			log.Printf("Failed to edit event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond that the event has been edited successfully.
-		w.WriteHeader(http.StatusNoContent)
+		// Marshal the updated event.
+		b, err := json.Marshal(updatedEvent)
+		if err != nil {
+			log.Printf("Failed to marshal updated event: %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		// Respond with the updated event
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(b)
 	}
 }

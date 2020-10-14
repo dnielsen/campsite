@@ -1,4 +1,4 @@
-module campsite/packages/event-service
+module campsite/packages/event
 
 go 1.14
 

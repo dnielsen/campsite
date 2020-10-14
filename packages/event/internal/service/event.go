@@ -5,14 +5,13 @@ import (
 	"github.com/google/uuid"
 )
 
-
 // We might change the return of the function to say `UserResponse` later
 // because we won't need, say, the password field.
 func (api *API) ValidateUser(i SignInInput) (*User, error) {
 	// It's a temporary solution. Later we're gonna add proper validation,
 	// password encryption, and we're gonna save the users to the database.
 	if i.Email == "dave@platformd.com" && i.Password == "deepblue" {
-		u := User{Email:    i.Email, Password: i.Password}
+		u := User{Email: i.Email, Password: i.Password}
 		return &u, nil
 	}
 	// We could also have another case, that is "user not found",
@@ -64,7 +63,7 @@ func (api *API) DeleteEventById(id string) error {
 	return nil
 }
 
-func (api *API) EditEventById(id string, i EventInput) error {
+func (api *API) EditEventById(id string, i EventInput) (*Event, error) {
 	e := Event{
 		ID:            id,
 		Name:          i.Name,
@@ -76,7 +75,7 @@ func (api *API) EditEventById(id string, i EventInput) error {
 		Address:       i.Address,
 	}
 	if err := api.db.Updates(&e).Error; err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return &e, nil
 }

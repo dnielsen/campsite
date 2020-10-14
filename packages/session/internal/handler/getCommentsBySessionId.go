@@ -10,14 +10,14 @@ import (
 )
 
 const (
-	LIMIT = "limit"
-	CURSOR = "cursor"
+	LIMIT         = "limit"
+	CURSOR        = "cursor"
 	DEFAULT_LIMIT = 3
 )
 
 type CommentsResponse struct {
-	Comments *[]service.Comment `json:"comments"`
-	EndCursor *string `json:"endCursor"`
+	Comments  *[]service.Comment `json:"comments"`
+	EndCursor *string            `json:"endCursor"`
 }
 
 func GetCommentsBySessionId(datastore service.CommentAPI) http.HandlerFunc {

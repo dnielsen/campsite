@@ -9,10 +9,9 @@ import (
 )
 
 const (
-	LIMIT = "limit"
+	LIMIT  = "limit"
 	CURSOR = "cursor"
 )
-
 
 // `/sessions/{id}/comments` GET route.
 func GetCommentsBySessionId(api service.SessionAPI) http.HandlerFunc {

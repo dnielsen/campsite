@@ -1,4 +1,4 @@
-module campsite/packages/speaker-service
+module campsite/packages/speaker
 
 go 1.14
 

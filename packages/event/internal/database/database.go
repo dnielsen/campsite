@@ -79,8 +79,8 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 
 func newMockEvent() service.Event {
 	now := time.Now()
-	later := now.Add(time.Hour*5)
-	evenLater := later.Add(time.Hour*5)
+	later := now.Add(time.Hour * 5)
+	evenLater := later.Add(time.Hour * 5)
 
 	spk1 := newSpeaker("Spencer Waldron",
 		"Global Communications Director for Prezi Video - a tool for online classes and learning. Opinions are my own.",
@@ -97,10 +97,9 @@ func newMockEvent() service.Event {
 		"CEO of Grain",
 		"https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3f7be5fbaf556a9447ed80_Mike%20Adams.jpeg")
 
-
 	ss1 := newSession("How to build and maintain great company culture remotely",
 		now,
-		time.Minute * 180,
+		time.Minute*180,
 		"On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish.",
 		"https://google.com",
 		spk1,
@@ -108,30 +107,28 @@ func newMockEvent() service.Event {
 
 	ss2 := newSession("Connecting your workforce through your company values",
 		later,
-		time.Minute * 90,
+		time.Minute*90,
 		"In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.",
 		"https://google.com",
 		spk1)
 
-
 	ss3 := newSession("Connecting your workforce through your company values",
 		evenLater,
-		time.Minute * 45,
+		time.Minute*45,
 		"In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.",
 		"https://google.com",
 		spk3, spk2)
-
 
 	address := "San Francisco, CA"
 	event := newEvent("BigDataCamp",
 		"BigDataCamp is an unconference where early adopters of BigData technologies, such as Hadoop, exchange ideas. With the rapid change occurring in the industry, we need a place where we can meet to share our experiences, challenges and solutions. At BigDataCamp, you are encouraged to share your thoughts in several open discussions, as we strive for the advancement of BigData. Data Scientists, Developers, IT professionals, users and vendors are all encouraged to participate.",
 		"https://www.eventbrite.com/e/redis-day-london-2019-registration-71402886957#",
 		now,
-		now.Add(time.Hour * 10 + time.Minute * 45),
-	"https://events.redislabs.com/wp-content/uploads/2020/04/redisconf2020-hero-m-4.png",
-		 "Tim Apple",
-		 &address,
-		 ss1, ss2, ss3)
+		now.Add(time.Hour*10+time.Minute*45),
+		"https://events.redislabs.com/wp-content/uploads/2020/04/redisconf2020-hero-m-4.png",
+		"Tim Apple",
+		&address,
+		ss1, ss2, ss3)
 
 	return event
 }
@@ -166,7 +163,7 @@ func newMockOpenCloudConfEvent() service.Event {
 	// Day 2
 	ss11 := newSession("The Cloud: Open for Business", eventStartDate.Add(time.Hour*24), time.Minute*30, "", "", spkDave)
 	ss12 := newSession("Understand cloud begins with the public cloud", *ss11.EndDate, time.Minute*45, "", "", spkAdrian)
-	ss13 := newSession("OpenPhoto, Personal Clouds and Why it Matters", *ss12.EndDate, time.Minute*30, "", "",spkJaisen)
+	ss13 := newSession("OpenPhoto, Personal Clouds and Why it Matters", *ss12.EndDate, time.Minute*30, "", "", spkJaisen)
 	ss14 := newSession("Scripts, Images and PaaS, Oh My!", *ss13.EndDate, time.Minute*30, "", "", spkRandy)
 	// The next 2 sessions are being held simultaneously.
 	ss15 := newSession("DevOps/PaaS Workshop: Open Source Multi-cloud Application Management", *ss14.EndDate, time.Minute*300, "", "", spkJoe)

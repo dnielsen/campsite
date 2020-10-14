@@ -45,11 +45,11 @@ func verifyToken(r *http.Request) (*Claims, error) {
 
 func generateToken(email string) (string, error) {
 	claims := Claims{
-		Email:          email,
+		Email: email,
 		StandardClaims: jwt.StandardClaims{
 			// In JWT, the expiry time is expressed in Unix milliseconds.
 			ExpiresAt: time.Now().Add(TOKEN_DURATION).Unix(),
-			IssuedAt: time.Now().Unix(),
+			IssuedAt:  time.Now().Unix(),
 		},
 	}
 

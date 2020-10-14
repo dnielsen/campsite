@@ -10,8 +10,8 @@ import (
 )
 
 type CommentResponse struct {
-	Comments *[]Comment `json:"comments"`
-	EndCursor *string `json:"endCursor"`
+	Comments  *[]Comment `json:"comments"`
+	EndCursor *string    `json:"endCursor"`
 }
 
 func (api *API) GetCommentsBySessionId(sessionId string, limit string, cursor string) (*CommentResponse, error) {

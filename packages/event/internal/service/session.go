@@ -149,7 +149,6 @@ func (api *API) CreateSession(i SessionInput) (*Session, error) {
 	return &s, nil
 }
 
-
 func (api *API) CreateComment(sessionId string, i CommentInput) (*Comment, error) {
 	// Marshal the comment input.
 	b, err := json.Marshal(i)

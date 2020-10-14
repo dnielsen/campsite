@@ -4,8 +4,6 @@ import (
 	"github.com/google/uuid"
 )
 
-
-
 func (api *API) GetAllSpeakers() (*[]Speaker, error) {
 	var speakers []Speaker
 	if err := api.db.Find(&speakers).Error; err != nil {
@@ -31,11 +29,11 @@ func (api *API) DeleteSpeakerById(id string) error {
 
 func (api *API) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	s := Speaker{
-		ID:         uuid.New().String(),
-		Name:       i.Name,
-		Bio:        i.Bio,
-		Headline:   i.Headline,
-		Photo:      i.Photo,
+		ID:       uuid.New().String(),
+		Name:     i.Name,
+		Bio:      i.Bio,
+		Headline: i.Headline,
+		Photo:    i.Photo,
 	}
 	if err := api.db.Create(&s).Error; err != nil {
 		return nil, err

@@ -8,7 +8,6 @@ import (
 	"net/http"
 )
 
-
 func GetSessionById(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.

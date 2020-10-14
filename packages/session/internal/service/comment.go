@@ -22,7 +22,7 @@ func (api *API) CreateComment(sessionId string, i CommentInput) (*Comment, error
 func (api *API) GetCommentsBySessionId(sessionId string, limit int, cursor string) (*[]Comment, *string, error) {
 	var commentsPlusOne []Comment
 
-	tx := api.db.Where("session_id = ?", sessionId).Order("created_at DESC").Limit(limit+1)
+	tx := api.db.Where("session_id = ?", sessionId).Order("created_at DESC").Limit(limit + 1)
 	if cursor != "" {
 		tx = tx.Where("created_at <= ?", cursor)
 	}

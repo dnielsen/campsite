@@ -1,4 +1,4 @@
-module campsite/packages/session-service
+module campsite/packages/session
 
 go 1.14
 

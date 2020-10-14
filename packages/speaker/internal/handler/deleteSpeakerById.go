@@ -8,7 +8,7 @@ import (
 )
 
 // `/` DELETE route.
-func DeleteSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc   {
+func DeleteSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)

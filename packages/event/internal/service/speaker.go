@@ -9,7 +9,6 @@ import (
 	"net/http"
 )
 
-
 func (api *API) GetSpeakerById(id string) (*Speaker, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {
@@ -110,7 +109,6 @@ func (api *API) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
 	return &speaker, nil
 }
 
-
 func (api *API) EditSpeakerById(id string, i SpeakerInput) error {
 	// Marshal the speaker input.
 	b, err := json.Marshal(i)
@@ -132,8 +130,6 @@ func (api *API) EditSpeakerById(id string, i SpeakerInput) error {
 	}
 	return nil
 }
-
-
 
 func (api *API) DeleteSpeakerById(id string) error {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
