@@ -7,9 +7,8 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"time"
 )
-
-const GITHUB_CALLBACK_REDIRECT_URI = "http://localhost:6666/sign-in/github/callback"
 
 func GitHubSignIn() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +44,16 @@ func GitHubSignIn() http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		w.Header().Set("Location", fmt.Sprintf("/welcome.html?access_token=%s", t.AccessToken))
+		w.Header().Set("Location", "http://localhost:3000")
 		w.WriteHeader(http.StatusFound)
+		http.SetCookie(w, &http.Cookie{
+			Name:       "token",
+			Value:      t.AccessToken,
+			Expires:    time.Now().Add(time.Hour * 24 * 7),
+			Secure:     false,
+			HttpOnly:   true,
+			SameSite:   0,
+		})
+		w.Write([]byte(t.AccessToken))
 	}
 }
