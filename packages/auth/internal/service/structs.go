@@ -1,22 +1,28 @@
 package service
 
-type OAuthTokenInput struct {
-	ClientID string `json:"client_id"`
-	ClientSecret string `json:"client_secret"`
-	Code string `json:"code"`
-}
+import "github.com/dgrijalva/jwt-go"
 
-type OAuthTokenResponse struct {
-	AccessToken string `json:"access_token"`
-	TokenType string `json:"token_type"`
-	Scope string `json:"scope"`
-}
 
 type SignInInput struct {
 	Email string `json:"email"`
 	Password string `json:"password"`
 }
 
-type User struct {
+
+type SignUpInput struct {
 	Email string `json:"email"`
+	Password string `json:"password"`
+}
+
+
+type User struct {
+	ID string `json:"id"`
+	Email string `json:"email"`
+	PasswordHash string `json:"passwordHash"`
+}
+
+// Token will expire in 7 days from now.
+type Claims struct {
+	Email string `json:"email"`
+	jwt.StandardClaims
 }

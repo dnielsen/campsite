@@ -49,9 +49,7 @@ func main() {
 	// Register our handlers.
 	// Plain JWT sign in
 	r.HandleFunc("/sign-in", handler.SignIn(api)).Methods(http.MethodPost)
-	// GitHub Sign In
-	r.HandleFunc("/sign-in/github", handler.GitHubSignIn())
-	r.HandleFunc("/sign-in/github/callback", handler.GitHubSignInCallback(api))
+	r.HandleFunc("/sign-up", handler.SignUp(api)).Methods(http.MethodPost)
 
 
 	// Start the server. It sets up CORS for us

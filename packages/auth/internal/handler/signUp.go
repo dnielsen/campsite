@@ -7,19 +7,19 @@ import (
 	"net/http"
 )
 
-func SignIn(api service.AuthAPI) http.HandlerFunc {
+// `/sign-up` POST route. On successful sign up it returns a JWT token and the code 201 (Status Created).
+func SignUp(api service.AuthAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
-		var i service.SignInInput
+		var i service.SignUpInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
-			log.Printf("Failed to unmarshal sign in input")
+			log.Printf("Failed to unmarshal sign up input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Validate the credentials match the user.
-		u, err := api.ValidateUser(i)
+		u, err := api.CreateUser(i)
 		if err != nil {
-			log.Printf("Failed to authenticate: %v", err)
+			log.Printf("Failed to sign up: %v", err)
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
@@ -32,7 +32,7 @@ func SignIn(api service.AuthAPI) http.HandlerFunc {
 		}
 		// Respond plain text with the token. We might change the response later,
 		// to some json object
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusCreated)
 		w.Write([]byte(token))
 	}
 }

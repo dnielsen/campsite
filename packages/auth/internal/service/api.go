@@ -27,6 +27,8 @@ type HttpClient interface {
 
 type AuthAPI interface {
 	ValidateUser(i SignInInput) (*User, error)
-	GetGitHubAccessToken(code string) (string, error)
-	GetGitHubUserData(token string) (string, error)
+	CreateUser(i SignUpInput) (*User, error)
+	VerifyToken(r *http.Request) (*Claims, error)
+	GenerateToken(email string) (string, error)
+	GetUserByEmail(email string) (*User, error)
 }
