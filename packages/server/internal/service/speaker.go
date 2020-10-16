@@ -2,22 +2,7 @@ package service
 
 import "github.com/google/uuid"
 
-type Speaker struct {
-	ID         string    `json:"id" gorm:"type:uuid"`
-	Name       string    `json:"name" gorm:"not null"`
-	Bio        string    `json:"bio" gorm:"not null"`
-	Headline   string    `json:"headline" gorm:"not null"`
-	Photo      string    `json:"photo" gorm:"not null"`
-	Sessions   []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
-}
 
-type SpeakerInput struct {
-	// Name is a required field with a minimum and maximum length of 2 and 50 respectively.
-	Name     string `json:"name,omitempty"`
-	Bio      string `json:"bio,omitempty"`
-	Headline string `json:"headline,omitempty"`
-	Photo    string `json:"photo,omitempty"`
-}
 
 func (api *API) GetAllSpeakers() (*[]Speaker, error) {
 	var speakers []Speaker

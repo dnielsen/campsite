@@ -7,9 +7,7 @@ import (
 	"os"
 )
 
-type Upload struct {
-	Url string `json:"url"`
-}
+
 
 // If we were to make a production app, we'd store it, for example, using
 // Amazon S3.

@@ -4,6 +4,7 @@ import (
 	"campsite/packages/server/internal/config"
 	"gorm.io/gorm"
 	"mime/multipart"
+	"net/http"
 	"os"
 )
 
@@ -17,8 +18,9 @@ func NewAPI(db *gorm.DB, c *config.Config) *API {
 }
 
 type EventAPI interface {
+	AuthAPI
 	GetAllEvents() (*[]Event, error)
-	CreateEvent(i EventInput) (*Event, error)
+	CreateEvent(userId string, i EventInput) (*Event, error)
 	GetEventById(id string) (*Event, error)
 	EditEventById(id string, i EventInput) error
 	DeleteEventById(id string) error
@@ -43,4 +45,12 @@ type SpeakerAPI interface {
 type ImageAPI interface {
 	GetImage(filename string) (*os.File, error)
 	UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error)
+}
+
+type AuthAPI interface {
+	ValidateUser(i SignInInput) (*User, error)
+	CreateUser(i SignUpInput) (*User, error)
+	VerifyToken(r *http.Request) (*Claims, error)
+	GenerateToken(email string) (string, error)
+	GetUserByEmail(email string) (*User, error)
 }

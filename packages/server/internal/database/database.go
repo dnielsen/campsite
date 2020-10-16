@@ -3,9 +3,11 @@ package database
 import (
 	"campsite/packages/server/internal/config"
 	"campsite/packages/server/internal/service"
+	"campsite/packages/server/internal/service/role"
 	"campsite/packages/server/internal/util"
 	"fmt"
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -49,35 +51,45 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	db := NewDb(c)
 
 	// Migrate the database.
-	if err := db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}); err != nil {
+	if err := db.AutoMigrate(&service.Event{}, &service.Speaker{}, &service.Session{}, &service.User{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
+	} else {
+		log.Println("Auto migrated database")
 	}
-	log.Println("Auto migrated database")
 
-	// Create a mock event in the database.
-	mockEvent := newMockEvent()
+	mockEvent, err := newMockEvent()
+	if err != nil {
+		log.Printf("Failed to create mock event: %v", err)
+	}
+	// Create the mock event in the database.
 	if err := db.Create(&mockEvent).Error; err != nil {
 		// The error will likely occur because we already created it already,
 		// that is, the primary keys we set up above already exists.
 		// We can ignore this.
 		log.Printf("Failed to create mock event in database: %v", err)
+	} else {
+		log.Println("Created mock event in database")
 	}
-	log.Println("Created mock event in database")
 
 	// Create a mock OpenCloudConf event in the database.
-	mockOpenCloudConfEvent := newMockOpenCloudConfEvent()
+	mockOpenCloudConfEvent, err := newMockOpenCloudConfEvent()
+	if err != nil {
+		log.Printf("Failed to create mock event: %v", err)
+
+	}
 	if err := db.Create(&mockOpenCloudConfEvent).Error; err != nil {
 		// The error will likely occur because we already created it already,
 		// that is, the primary keys we set up above already exists.
 		// We can ignore this.
 		log.Printf("Failed to create mock OpenCloudConf event in database: %v", err)
+	} else {
+		log.Println("Created OpenCloudConf mock event in database")
 	}
-	log.Println("Created OpenCloudConf mock event in database")
 
 	return db
 }
 
-func newMockEvent() service.Event {
+func newMockEvent() (*service.Event, error) {
 	now := time.Now()
 	later := now.Add(time.Hour*5)
 	evenLater := later.Add(time.Hour*5)
@@ -121,9 +133,15 @@ func newMockEvent() service.Event {
 		"https://google.com",
 		spk3, spk2)
 
+	u, err := newUser("demo@demo.com", "demodemo")
+	if err != nil {
+		return nil, err
+	}
 
 	address := "San Francisco, CA"
-	event := newEvent("BigDataCamp",
+	event := newEvent(
+		u.ID,
+		"BigDataCamp",
 		"BigDataCamp is an unconference where early adopters of BigData technologies, such as Hadoop, exchange ideas. With the rapid change occurring in the industry, we need a place where we can meet to share our experiences, challenges and solutions. At BigDataCamp, you are encouraged to share your thoughts in several open discussions, as we strive for the advancement of BigData. Data Scientists, Developers, IT professionals, users and vendors are all encouraged to participate.",
 		"https://www.eventbrite.com/e/redis-day-london-2019-registration-71402886957#",
 		now,
@@ -133,10 +151,10 @@ func newMockEvent() service.Event {
 		&address,
 		ss1, ss2, ss3)
 
-	return event
+	return &event, nil
 }
 
-func newMockOpenCloudConfEvent() service.Event {
+func newMockOpenCloudConfEvent() (*service.Event, error) {
 	spkRandy := newSpeaker("Randy Bias", "He has worked for over 20 years as a developer, team leader and founder & CEO. After seeing his company through to an acquisition by Oracle, he now leads Product Development for Oracle's API portfolio. Founder of cesko.digital.", "CloudScaling", "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3cfb15cabbb341f90be301_Cheryl%20Crane.jpeg")
 	spkGreg := newSpeaker("Greg Smith", "David is a Google Developer Expert for Android. He leads his startup and also works as a Senior Android Developer at JLL. He loves open-source, Tesla, and LARP.", "Eucalyptus", "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3a7e64ecda612e4c4ab82e_Jerome_Remote%20Future%20Summit.jpg")
 	spkJoe := newSpeaker("Joe Arnold", "Magda Miu is an enthusiastic and innovative Squad Lead Developer at Orange and Google Developer Expert for Android with more than 10 years experience in software development.", "Apple", "https://uploads-ssl.webflow.com/5f329fb0017255d9d0baddec/5f3cf73b49bf9b6356f235a8_Katherine_Zaleski_Remote%20Future%20Summit.jpg")
@@ -173,8 +191,14 @@ func newMockOpenCloudConfEvent() service.Event {
 	ss16 := newSession("Developer/PaaS Workshop: Stackato/Cloud Foundry", *ss14.EndDate, time.Minute*300, "", "", spkDave)
 	ss17 := newSession("OpenShift + OpenStack + Fedora = Awesome!", *ss15.EndDate, time.Minute*45, "", "", spkMark, spkGreg)
 
+	u, err := newUser("dave@platformd.com", "deepblue")
+	if err != nil {
+		return nil, err
+	}
+
 	eventAddress := "Mountain View, CA"
 	event := newEvent(
+		u.ID,
 		"OpenCloudConf",
 		"Something new this year that we picked up along they way, as we know not every can and also not everyone wants to travel so that is why we are making Shift Dev a Hybrid event. What does that mean? Well for starters all talks will be professionally streamed so anyone from around the world can tune in. Second you will be able to chat remotely with everyone at the event - both live and remote, and lastly you will be able to remotely ask all the speakers direct questions via our Remote only AMA with each of our speakers! So in Short you get to meet new people, listen to all the talks and talk directly to the speakers themselves!",
 		"https://apple.com",
@@ -188,10 +212,10 @@ func newMockOpenCloudConfEvent() service.Event {
 		// Day 2
 		ss11, ss12, ss13, ss14, ss15, ss16, ss17)
 
-	return event
+	return &event, nil
 }
 
-func newEvent(name string, description string, registrationUrl string, startDate time.Time, endDate time.Time, photo string, organizerName string, address *string, sessions ...service.Session) service.Event {
+func newEvent(userId string, name string, description string, registrationUrl string, startDate time.Time, endDate time.Time, photo string, organizerName string, address *string, sessions ...service.Session) service.Event {
 	return service.Event{
 		ID:              uuid.New().String(),
 		Name:            name,
@@ -203,6 +227,7 @@ func newEvent(name string, description string, registrationUrl string, startDate
 		OrganizerName:   organizerName,
 		Address:         address,
 		Sessions:        sessions,
+		UserID: userId,
 	}
 }
 
@@ -227,4 +252,17 @@ func newSpeaker(name string, bio string, headline string, photo string) service.
 		Headline: headline,
 		Photo:    photo,
 	}
+}
+
+func newUser(email string, password string) (*service.User, error) {
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	if err != nil {
+		return nil, err
+	}
+	return &service.User{
+		ID:           uuid.New().String(),
+		Email:        email,
+		PasswordHash: string(passwordHash),
+		Role:         role.ADMIN,
+	}, nil
 }
