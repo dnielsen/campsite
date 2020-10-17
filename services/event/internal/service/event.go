@@ -1,24 +1,9 @@
 package service
 
 import (
-	"errors"
 	"github.com/google/uuid"
 )
 
-// We might change the return of the function to say `UserResponse` later
-// because we won't need, say, the password field.
-func (api *API) ValidateUser(i SignInInput) (*User, error) {
-	// It's a temporary solution. Later we're gonna add proper validation,
-	// password encryption, and we're gonna save the users to the database.
-	if i.Email == "dave@platformd.com" && i.Password == "deepblue" {
-		u := User{Email: i.Email, Password: i.Password}
-		return &u, nil
-	}
-	// We could also have another case, that is "user not found",
-	// but it's a good practice not to give out information about
-	// existing users. Therefore "user not found" == "wrong credentials".
-	return nil, errors.New("wrong credentials")
-}
 
 func (api *API) GetAllEvents() (*[]Event, error) {
 	var events []Event

@@ -28,6 +28,14 @@ type TracingConfig struct {
 type Config struct {
 	Db DbConfig
 	Server ServerConfig
+	Service ServiceConfig
+}
+
+type ServiceConfig struct {
+	User struct {
+		Host string `env:"SERVICE_USER_HOST" env-default:"localhost"`
+		Port string `env:"SERVICE_USER_PORT" env-default:"2222"`
+	}
 }
 
 // Read the environment variables into a `Config` struct.

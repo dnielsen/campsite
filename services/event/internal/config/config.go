@@ -33,6 +33,10 @@ type ServiceConfig struct {
 		Host string `env:"SERVICE_SESSION_HOST" env-default:"localhost"`
 		Port string `env:"SERVICE_SESSION_PORT" env-default:"5555"`
 	}
+	Auth struct {
+		Host string `env:"SERVICE_AUTH_HOST" env-default:"localhost"`
+		Port string `env:"SERVICE_AUTH_PORT" env-default:"2222"`
+	}
 }
 
 type Config struct {

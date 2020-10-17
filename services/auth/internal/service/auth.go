@@ -1,9 +1,9 @@
 package service
 
 import (
+	"campsite/packages/auth/internal/service/role"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"time"
@@ -18,53 +18,26 @@ const (
 // We'll later move it to an environment variable.
 var JWT_SECRET_KEY = []byte("V3RY_S3CR3T_K3Y")
 
-// TODO: implement me
 func (api *API) ValidateUser(i SignInInput) (*User, error) {
+	// We need `validationErr` so that whenever email or password don't match,
+	// it says the same message, that is we avoid giving out the information to the client
+	// about registered emails
+	validationErr := errors.New("invalid credentials")
+	// Grab the user from the database.
 	u, err := api.GetUserByEmail(i.Email)
 	if err != nil {
-		return nil, err
+		return nil, validationErr
 	}
-	if isPasswordValid := api.checkPasswordHash(u.PasswordHash, i.Password); !isPasswordValid{
-		return nil, err
+	// Verify the password is correct.
+	if err := api.checkPasswordHash(u.PasswordHash, i.Password); err != nil {
+		return nil, validationErr
 	}
 	return u, nil
 }
 
-func (api *API) checkPasswordHash(passwordHash, password string) bool {
+func (api *API) checkPasswordHash(passwordHash, password string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(password))
-	return err == nil
-}
-
-func (api *API) generatePasswordHash(password string) (string, error) {
-	b, err := bcrypt.GenerateFromPassword([]byte(password), SALT_ROUND_COUNT)
-	if err != nil {
-		return "", err
-	}
-	return string(b), nil
-}
-
-func (api *API) GetUserByEmail(email string) (*User, error)  {
-	u := &User{Email: email}
-	if err := api.db.First(&u).Error; err != nil {
-		return nil, err
-	}
-	return u, nil
-}
-
-func (api *API) CreateUser(i SignUpInput) (*User, error)  {
-	hash, err := api.generatePasswordHash(i.Password)
-	if err != nil {
-		return nil, err
-	}
-	u := User{
-		ID:           uuid.New().String(),
-		Email:        i.Email,
-		PasswordHash: hash,
-	}
-	if err := api.db.Create(&u).Error; err != nil {
-		return nil, err
-	}
-	return &u, nil
+	return err
 }
 
 func (api *API) VerifyToken(r *http.Request) (*Claims, error) {
@@ -86,9 +59,11 @@ func (api *API) VerifyToken(r *http.Request) (*Claims, error) {
 }
 
 
-func (api *API) GenerateToken(email string) (string, error) {
+// GenerateToken returns a jwt token string and an error if the token is somehow invalid
+func (api *API) GenerateToken(u *User) (string, error) {
 	claims := Claims{
-		Email:          email,
+		ID: u.ID,
+		Email:          u.Email,
 		StandardClaims: jwt.StandardClaims{
 			// In JWT, the expiry time is expressed in Unix milliseconds.
 			ExpiresAt: time.Now().Add(TOKEN_DURATION).Unix(),
@@ -105,4 +80,15 @@ func (api *API) GenerateToken(email string) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+// Checks if the user role is equal to one of the specified roles.
+func (api *API) VerifyRole(u *User, roleWhitelist []role.Role) (*User, error) {
+	// If user role isn't contained in the roles array then the user doesn't have
+	// the permissions needed.
+	if isPermitted := role.Contains(roleWhitelist, u.Role); !isPermitted {
+		// We're returning the user anyways, it might be useful in the future.
+		return u, errors.New("no permissions")
+	}
+	return u, nil
 }

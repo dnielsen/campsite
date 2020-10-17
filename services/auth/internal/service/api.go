@@ -25,9 +25,14 @@ type HttpClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
+type UserAPI interface {
+	AuthAPI
+	CreateUser(i CreateUserInput) (*User, error)
+	GetUserByEmail(email string) (*User, error)
+}
+
 type AuthAPI interface {
 	ValidateUser(i SignInInput) (*User, error)
-	CreateUser(i SignUpInput) (*User, error)
 	VerifyToken(r *http.Request) (*Claims, error)
 	GenerateToken(email string) (string, error)
 	GetUserByEmail(email string) (*User, error)
