@@ -1,14 +1,19 @@
 package database
 
 import (
-	"campsite/packages/auth/internal/config"
-	util "campsite/packages/auth/internal/util"
+	"campsite/pkg/config"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
 	"strings"
 )
+
+func setIfNotEmpty(m map[string]string, key, val string) {
+	if val != "" {
+		m[key] = val
+	}
+}
 
 func getDbConnString(c *config.DbConfig) string {
 	vals := getDbValues(c)
@@ -21,12 +26,12 @@ func getDbConnString(c *config.DbConfig) string {
 
 func getDbValues(c *config.DbConfig) map[string]string {
 	p := map[string]string{}
-	util.SetIfNotEmpty(p, "dbname", c.Name)
-	util.SetIfNotEmpty(p, "host", c.Host)
-	util.SetIfNotEmpty(p, "user", c.User)
-	util.SetIfNotEmpty(p, "password", c.Password)
-	util.SetIfNotEmpty(p, "port", c.Port)
-	util.SetIfNotEmpty(p, "sslmode", c.SSLMode)
+	setIfNotEmpty(p, "dbname", c.Name)
+	setIfNotEmpty(p, "host", c.Host)
+	setIfNotEmpty(p, "user", c.User)
+	setIfNotEmpty(p, "password", c.Password)
+	setIfNotEmpty(p, "port", c.Port)
+	setIfNotEmpty(p, "sslmode", c.SSLMode)
 	return p
 }
 
