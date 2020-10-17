@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"campsite/packages/speaker/internal/service"
+	"campsite/services/speaker/internal/service"
 	"encoding/json"
 	"log"
 	"net/http"

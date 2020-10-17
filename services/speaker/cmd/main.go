@@ -1,12 +1,12 @@
 package main
 
 import (
-	"campsite/packages/speaker/internal/config"
-	"campsite/packages/speaker/internal/database"
-	"campsite/packages/speaker/internal/handler"
-	"campsite/packages/speaker/internal/middleware"
-	"campsite/packages/speaker/internal/server"
-	"campsite/packages/speaker/internal/service"
+	"campsite/services/speaker/internal/config"
+	"campsite/services/speaker/internal/database"
+	"campsite/services/speaker/internal/handler"
+	"campsite/services/speaker/internal/middleware"
+	"campsite/services/speaker/internal/server"
+	"campsite/services/speaker/internal/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

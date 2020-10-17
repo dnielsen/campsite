@@ -22,23 +22,23 @@ type TracingConfig struct {
 type ServiceConfig struct {
 	User struct {
 		Host string `env:"SERVICE_USER_HOST" env-default:"localhost"`
-		Port string `env:"SERVICE_USER_PORT" env-default:"1111"`
+		Port int `env:"SERVICE_USER_PORT" env-default:"1111"`
 	}
 	Auth struct {
 		Host string `env:"SERVICE_AUTH_HOST" env-default:"localhost"`
-		Port string `env:"SERVICE_AUTH_PORT" env-default:"2222"`
+		Port int `env:"SERVICE_AUTH_PORT" env-default:"2222"`
 	}
 	Speaker struct {
 		Host string `env:"SERVICE_SPEAKER_HOST" env-default:"localhost"`
-		Port string `env:"SERVICE_SPEAKER_PORT" env-default:"3333"`
+		Port int `env:"SERVICE_SPEAKER_PORT" env-default:"3333"`
 	}
 	Event struct {
 		Host string `env:"SERVICE_EVENT_HOST" env-default:"localhost"`
-		Port string `env:"SERVICE_EVENT_PORT" env-default:"4444"`
+		Port int `env:"SERVICE_EVENT_PORT" env-default:"4444"`
 	}
 	Session struct {
 		Host string `env:"SERVICE_SESSION_HOST" env-default:"localhost"`
-		Port string `env:"SERVICE_SESSION_PORT" env-default:"5555"`
+		Port int `env:"SERVICE_SESSION_PORT" env-default:"5555"`
 	}
 }
 

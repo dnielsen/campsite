@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"campsite/packages/user/internal/service"
+	"campsite/services/user/internal/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"

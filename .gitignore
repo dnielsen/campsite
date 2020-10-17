@@ -3,17 +3,17 @@
 .vscode
 
 # UI
-packages/ui/node_modules
-packages/ui/build
-packages/ui/yarn-debug.log*
-packages/ui/yarn-error.log*
+services/ui/node_modules
+services/ui/build
+services/ui/yarn-debug.log*
+services/ui/yarn-error.log*
 
 #
-#packages/server
+#services/server
 
 # Server
-packages/event/images/*
-!packages/event/images/682841579-man.jpg
+services/event/images/*
+!services/event/images/682841579-man.jpg
 
 # We're ignoring those files in case they're
 # mistakenly added into the project root directory.

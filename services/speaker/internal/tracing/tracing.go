@@ -1,7 +1,7 @@
 package tracing
 
 import (
-	"campsite/packages/speaker/internal/config"
+	"campsite/services/speaker/internal/config"
 	"fmt"
 	"github.com/openzipkin/zipkin-go"
 	"github.com/openzipkin/zipkin-go/model"

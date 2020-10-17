@@ -11,7 +11,7 @@ services:
       - "event"
   event:
     container_name: campsite-event
-    build: packages/event
+    build: services/event
     ports:
       - "4444:4444"
     restart: always
@@ -26,7 +26,7 @@ services:
       - docker.env
   speaker:
     container_name: campsite-speaker
-    build: packages/speaker
+    build: services/speaker
     ports:
       - "3333:3333"
     restart: always
@@ -37,7 +37,7 @@ services:
         condition: service_healthy
   session:
     container_name: campsite-session
-    build: packages/session
+    build: services/session
     ports:
       - "5555:5555"
     restart: always

@@ -1,7 +1,7 @@
 package server
 
 import (
-	"campsite/packages/speaker/internal/config"
+	"campsite/services/speaker/internal/config"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"

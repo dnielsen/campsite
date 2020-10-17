@@ -1,8 +1,8 @@
 package database
 
 import (
-	"campsite/packages/user/internal/config"
-	"campsite/packages/user/internal/util"
+	"campsite/services/user/internal/config"
+	"campsite/services/user/internal/util"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

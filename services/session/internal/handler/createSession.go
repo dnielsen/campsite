@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"campsite/packages/session/internal/service"
+	"campsite/services/session/internal/service"
 	"encoding/json"
 	"log"
 	"net/http"

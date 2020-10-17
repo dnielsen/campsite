@@ -1,7 +1,7 @@
 package server
 
 import (
-	"campsite/packages/user/internal/config"
+	"campsite/services/user/internal/config"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"

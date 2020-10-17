@@ -1,12 +1,12 @@
 package main
 
 import (
-	"campsite/packages/session/internal/config"
-	"campsite/packages/session/internal/database"
-	"campsite/packages/session/internal/handler"
-	"campsite/packages/session/internal/middleware"
-	"campsite/packages/session/internal/server"
-	"campsite/packages/session/internal/service"
+	"campsite/services/session/internal/config"
+	"campsite/services/session/internal/database"
+	"campsite/services/session/internal/handler"
+	"campsite/services/session/internal/middleware"
+	"campsite/services/session/internal/server"
+	"campsite/services/session/internal/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

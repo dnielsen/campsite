@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"campsite/packages/speaker/internal/config"
-	"campsite/packages/speaker/internal/tracing"
+	"campsite/services/speaker/internal/config"
+	"campsite/services/speaker/internal/tracing"
 	"github.com/gorilla/mux"
 	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
 )

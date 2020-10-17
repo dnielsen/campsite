@@ -1,7 +1,7 @@
 package service
 
 import (
-	"campsite/packages/user/internal/config"
+	"campsite/services/user/internal/config"
 	"gorm.io/gorm"
 	"net/http"
 )
