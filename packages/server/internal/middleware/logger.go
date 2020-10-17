@@ -37,7 +37,7 @@ func Logger(next http.Handler) http.Handler {
 			if err := recover(); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				log.Printf("err: %v", err)
-				log.Printf("trace: %v", debug.Stack())
+				log.Printf("trace: %v", string(debug.Stack()))
 			}
 		}()
 

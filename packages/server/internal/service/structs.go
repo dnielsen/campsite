@@ -6,14 +6,7 @@ import (
 	"time"
 )
 
-const (
-	TOKEN_HEADER_NAME = "Authorization"
-	TOKEN_DURATION    = time.Hour * 24 * 7
-	SALT_ROUND_COUNT = 12
-)
 
-// We'll later move it to an environment variable.
-var JWT_SECRET_KEY = []byte("V3RY_S3CR3T_K3Y")
 
 type Session struct {
 	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
@@ -101,7 +94,7 @@ type User struct {
 	ID string `json:"id" gorm:"type:uuid;not null"`
 	Email string `json:"email"`
 	PasswordHash string `json:"passwordHash"`
-	Events []Event `json:"events,omitempty"`
+	Events []Event `json:"events"`
 	Role role.Role `json:"role"`
 }
 

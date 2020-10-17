@@ -133,14 +133,14 @@ func newMockEvent() (*service.Event, error) {
 		"https://google.com",
 		spk3, spk2)
 
-	u, err := newUser("demo@demo.com", "demodemo")
+	u, err := newAdminUser("demo@demo.com", "demodemo")
 	if err != nil {
 		return nil, err
 	}
 
 	address := "San Francisco, CA"
 	event := newEvent(
-		u.ID,
+		u,
 		"BigDataCamp",
 		"BigDataCamp is an unconference where early adopters of BigData technologies, such as Hadoop, exchange ideas. With the rapid change occurring in the industry, we need a place where we can meet to share our experiences, challenges and solutions. At BigDataCamp, you are encouraged to share your thoughts in several open discussions, as we strive for the advancement of BigData. Data Scientists, Developers, IT professionals, users and vendors are all encouraged to participate.",
 		"https://www.eventbrite.com/e/redis-day-london-2019-registration-71402886957#",
@@ -191,14 +191,14 @@ func newMockOpenCloudConfEvent() (*service.Event, error) {
 	ss16 := newSession("Developer/PaaS Workshop: Stackato/Cloud Foundry", *ss14.EndDate, time.Minute*300, "", "", spkDave)
 	ss17 := newSession("OpenShift + OpenStack + Fedora = Awesome!", *ss15.EndDate, time.Minute*45, "", "", spkMark, spkGreg)
 
-	u, err := newUser("dave@platformd.com", "deepblue")
+	u, err := newAdminUser("dave@platformd.com", "deepblue")
 	if err != nil {
 		return nil, err
 	}
 
 	eventAddress := "Mountain View, CA"
 	event := newEvent(
-		u.ID,
+		u,
 		"OpenCloudConf",
 		"Something new this year that we picked up along they way, as we know not every can and also not everyone wants to travel so that is why we are making Shift Dev a Hybrid event. What does that mean? Well for starters all talks will be professionally streamed so anyone from around the world can tune in. Second you will be able to chat remotely with everyone at the event - both live and remote, and lastly you will be able to remotely ask all the speakers direct questions via our Remote only AMA with each of our speakers! So in Short you get to meet new people, listen to all the talks and talk directly to the speakers themselves!",
 		"https://apple.com",
@@ -215,7 +215,7 @@ func newMockOpenCloudConfEvent() (*service.Event, error) {
 	return &event, nil
 }
 
-func newEvent(userId string, name string, description string, registrationUrl string, startDate time.Time, endDate time.Time, photo string, organizerName string, address *string, sessions ...service.Session) service.Event {
+func newEvent(user *service.User, name string, description string, registrationUrl string, startDate time.Time, endDate time.Time, photo string, organizerName string, address *string, sessions ...service.Session) service.Event {
 	return service.Event{
 		ID:              uuid.New().String(),
 		Name:            name,
@@ -227,7 +227,7 @@ func newEvent(userId string, name string, description string, registrationUrl st
 		OrganizerName:   organizerName,
 		Address:         address,
 		Sessions:        sessions,
-		UserID: userId,
+		User: *user,
 	}
 }
 
@@ -254,8 +254,10 @@ func newSpeaker(name string, bio string, headline string, photo string) service.
 	}
 }
 
-func newUser(email string, password string) (*service.User, error) {
+func newAdminUser(email string, password string) (*service.User, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+
+	log.Printf("new admin user: %v %v", password, string(passwordHash))
 	if err != nil {
 		return nil, err
 	}
