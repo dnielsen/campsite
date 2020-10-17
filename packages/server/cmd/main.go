@@ -48,6 +48,7 @@ func main() {
 
 	// Register our handlers.
 	r.HandleFunc("/auth/sign-in", handler.SignIn(api)).Methods(http.MethodPost)
+	r.HandleFunc("/auth/sign-up", handler.SignUp(api)).Methods(http.MethodPost)
 
 	r.HandleFunc("/images", handler.UploadImage(api)).Methods(http.MethodPost)
 	r.HandleFunc("/images/{filename}", handler.GetImage(api)).Methods(http.MethodGet)

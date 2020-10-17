@@ -27,7 +27,7 @@ func (api *API) DeleteSessionById(id string) error {
 	return nil
 }
 
-func (api *API) CreateSession(i SessionInput) (*Session, error) {
+func (api *API) CreateSession(i SessionInput, userId string) (*Session, error) {
 	var speakers []Speaker
 	if err := api.db.Where("id IN ?", i.SpeakerIds).Find(&speakers).Error; err != nil {
 		return nil, err

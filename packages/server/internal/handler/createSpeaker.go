@@ -10,6 +10,19 @@ import (
 // `/speakers` POST route.
 func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Verify that the user is logged in and get the claims with the user email.
+		claims, err := api.VerifyToken(r)
+		if err != nil {
+			log.Printf("Failed to verify token: %v", err)
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+		}
+		// Check permissions
+		u, err := api.VerifyRole(claims.ID, ADMIN_ONLY_ROLE_WHITELIST)
+		if err != nil {
+			log.Printf("Failed to verify permissions: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
 		// Decode the body.
 		var i service.SpeakerInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
@@ -17,9 +30,8 @@ func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
 		// Create the speaker in the database.
-		speaker, err := api.CreateSpeaker(i)
+		speaker, err := api.CreateSpeaker(i, u.ID)
 		if err != nil {
 			log.Printf("Failed to create speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

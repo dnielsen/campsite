@@ -1,10 +1,10 @@
 package service
 
 import (
+	"campsite/packages/server/internal/service/role"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 	"net/http"
 	"time"
 )
@@ -30,17 +30,15 @@ func (api *API) ValidateUser(i SignInInput) (*User, error) {
 		return nil, validationErr
 	}
 	// Verify the password is correct.
-	if isPasswordValid := api.checkPasswordHash(u.PasswordHash, i.Password); !isPasswordValid {
+	if err := api.checkPasswordHash(u.PasswordHash, i.Password); err != nil {
 		return nil, validationErr
 	}
 	return u, nil
 }
 
-func (api *API) checkPasswordHash(passwordHash, password string) bool {
-	log.Printf("pass: %v, passHash: %v", password, passwordHash)
+func (api *API) checkPasswordHash(passwordHash, password string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(password))
-	log.Printf("compare err: %+v", err)
-	return err == nil
+	return err
 }
 
 func (api *API) VerifyToken(r *http.Request) (*Claims, error) {
@@ -61,10 +59,11 @@ func (api *API) VerifyToken(r *http.Request) (*Claims, error) {
 	return &claims, nil
 }
 
-
-func (api *API) GenerateToken(email string) (string, error) {
+// GenerateToken returns a jwt token string and an error if the token is somehow invalid
+func (api *API) GenerateToken(u *User) (string, error) {
 	claims := Claims{
-		Email:          email,
+		ID: u.ID,
+		Email:          u.Email,
 		StandardClaims: jwt.StandardClaims{
 			// In JWT, the expiry time is expressed in Unix milliseconds.
 			ExpiresAt: time.Now().Add(TOKEN_DURATION).Unix(),
@@ -81,4 +80,29 @@ func (api *API) GenerateToken(email string) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+// Checks if the user role is equal to one of the specified roles.
+func (api *API) VerifyRole(userId string, roleWhitelist []role.Role) (*User, error) {
+	// Look for the user in the database.
+	u, err := api.GetUserById(userId)
+	if err != nil {
+		return u, err
+	}
+	// If user role isn't contained in the roles array then the user doesn't have
+	// the permissions needed.
+	if isPermitted := api.containsRole(roleWhitelist, u.Role); !isPermitted {
+		// We're returning the user anyways, it might be useful in the future.
+		return u, errors.New("forbidden")
+	}
+	return u, nil
+}
+
+func (api *API) containsRole(roles []role.Role, theRole role.Role) bool {
+	for _, r := range roles {
+		if r == theRole {
+			return true
+		}
+	}
+	return false
 }

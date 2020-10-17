@@ -100,6 +100,7 @@ type User struct {
 
 // Token will expire in 7 days from now.
 type Claims struct {
+	ID string `json:"id"`
 	Email string `json:"email"`
 	jwt.StandardClaims
 }

@@ -15,6 +15,19 @@ const FORM_DATA_NAME = "file"
 // It stores the image in the filesystem (`event-service/images`).
 func UploadImage(api service.ImageAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Verify that the user is logged in and get the claims with the user email.
+		claims, err := api.VerifyToken(r)
+		if err != nil {
+			log.Printf("Failed to verify token: %v", err)
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+		}
+		// Check permissions.
+		_, err = api.VerifyRole(claims.ID, ADMIN_ONLY_ROLE_WHITELIST)
+		if err != nil {
+			log.Printf("Failed to verify permissions: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
 		// Parse the request body, that is the form data.
 		// `10 << 20` specifies a maximum upload size of 10MB.
 		if err := r.ParseMultipartForm(10 << 20); err != nil {

@@ -27,7 +27,7 @@ func (api *API) DeleteSpeakerById(id string) error {
 	return nil
 }
 
-func (api *API) CreateSpeaker(i SpeakerInput) (*Speaker, error) {
+func (api *API) CreateSpeaker(i SpeakerInput, userId string) (*Speaker, error) {
 	s := Speaker{
 		ID:         uuid.New().String(),
 		Name:       i.Name,

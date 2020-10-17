@@ -13,7 +13,7 @@ func (api *API) GetAllEvents() (*[]Event, error) {
 	return &events, nil
 }
 
-func (api *API) CreateEvent(userId string, i EventInput) (*Event, error) {
+func (api *API) CreateEvent(i EventInput, userId string) (*Event, error) {
 	e := Event{
 		ID:            uuid.New().String(),
 		Name:          i.Name,

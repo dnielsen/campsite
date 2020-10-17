@@ -24,15 +24,12 @@ func SignIn(api service.AuthAPI) http.HandlerFunc {
 			return
 		}
 		// Generate the access token.
-		log.Printf("BEFORE GENERATE: %+v",u)
-		token, err := api.GenerateToken(u.Email)
+		token, err := api.GenerateToken(u)
 		if err != nil {
 			log.Printf("Failed to generate token: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
-
 		// Respond plain text with the token. We might change the response later,
 		// to some json object
 		w.WriteHeader(http.StatusOK)

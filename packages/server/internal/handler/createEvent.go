@@ -2,7 +2,6 @@ package handler
 
 import (
 	"campsite/packages/server/internal/service"
-	"campsite/packages/server/internal/service/role"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -11,21 +10,17 @@ import (
 // `/events` POST route.
 func CreateEvent(api service.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Verify that the user is logged in and get the claims with the user email.
 		claims, err := api.VerifyToken(r)
 		if err != nil {
 			log.Printf("Failed to verify token: %v", err)
 			http.Error(w, err.Error(), http.StatusUnauthorized)
-			return
 		}
-		u, err := api.GetUserByEmail(claims.Email)
+		// Check permissions
+		u, err := api.VerifyRole(claims.ID, ADMIN_ONLY_ROLE_WHITELIST)
 		if err != nil {
-			log.Printf("Failed to get user by email: %v", err)
-			http.Error(w, err.Error(), http.StatusNotFound)
-			return
-		}
-		if u.Role != role.ADMIN {
-			log.Printf("Failed to verify role: needed role: %v, current role: %v", role.ADMIN, u.Role)
-			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
+			log.Printf("Failed to verify permissions: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
 			return
 		}
 		// Decode the body.
@@ -35,15 +30,13 @@ func CreateEvent(api service.EventAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
 		// Create the event in the database.
-		event, err := api.CreateEvent(u.ID, i)
+		event, err := api.CreateEvent(i, u.ID)
 		if err != nil {
 			log.Printf("Failed to create event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Marshal the event.
 		eventBytes, err := json.Marshal(event)
 		if err != nil {
@@ -51,7 +44,6 @@ func CreateEvent(api service.EventAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Respond JSON with the created event
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)

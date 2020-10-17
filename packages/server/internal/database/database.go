@@ -256,11 +256,10 @@ func newSpeaker(name string, bio string, headline string, photo string) service.
 
 func newAdminUser(email string, password string) (*service.User, error) {
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), 12)
-
-	log.Printf("new admin user: %v %v", password, string(passwordHash))
 	if err != nil {
 		return nil, err
 	}
+	log.Printf("new admin user: %v:%v", email, password)
 	return &service.User{
 		ID:           uuid.New().String(),
 		Email:        email,
