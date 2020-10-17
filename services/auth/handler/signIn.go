@@ -24,7 +24,7 @@ func SignIn(api model.AuthAPI) http.HandlerFunc {
 			return
 		}
 		// Generate the access token.
-		token, err := api.GenerateToken(u.Email)
+		token, err := api.GenerateToken(u)
 		if err != nil {
 			log.Printf("Failed to generate token: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

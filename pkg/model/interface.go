@@ -39,8 +39,6 @@ type SessionAPI interface {
 	GetSessionById(id string) (*Session, error)
 	EditSessionById(id string, i SessionInput) (*Session, error)
 	DeleteSessionById(id string) error
-	CreateComment(sessionId string, i CommentInput) (*Comment, error)
-	GetCommentsBySessionId(sessionId string, limit string, cursor string) (*CommentResponse, error)
 }
 
 type SpeakerAPI interface {
@@ -54,4 +52,9 @@ type SpeakerAPI interface {
 type ImageAPI interface {
 	GetImage(filename string) (*os.File, error)
 	UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error)
+}
+
+type CommentAPI interface {
+	CreateComment(sessionId string, i CommentInput) (*Comment, error)
+	GetCommentsBySessionId(sessionId string, limit int, cursor string) (*[]Comment, *string, error)
 }

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"campsite/services/event/service"
+	"campsite/pkg/model"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -12,7 +12,7 @@ import (
 const FORM_DATA_NAME = "file"
 
 // `/upload` POST route.
-func UploadImage(api service.ImageAPI) http.HandlerFunc {
+func UploadImage(api model.ImageAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Currently our database doesn't know about `User` entity
 		// so we're just ignoring claims.
@@ -21,7 +21,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusForbidden)
 			return
 		}
-
 		// Parse the request body, that is the form data.
 		// `10 << 20` specifies a maximum upload size of 10MB.
 		if err := r.ParseMultipartForm(10 << 20); err != nil {
@@ -29,7 +28,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
 		// Read the form data.
 		file, fileHeader, err := r.FormFile(FORM_DATA_NAME)
 		if err != nil {
@@ -38,7 +36,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			return
 		}
 		defer file.Close()
-
 		// Upload the image (save it in the `images` directory).
 		u, err := api.UploadImage(file, fileHeader, r.Host)
 		if err != nil {
@@ -46,7 +43,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Marshal the upload.
 		bytes, err := json.Marshal(u)
 		if err != nil {
@@ -54,7 +50,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Respond JSON with the upload that has the url of our file.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)

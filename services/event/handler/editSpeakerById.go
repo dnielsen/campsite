@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"campsite/services/event/service"
+	"campsite/pkg/model"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
@@ -9,7 +9,7 @@ import (
 )
 
 // `/speaker/{id}` PUT route.
-func EditSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
+func EditSpeakerById(api model.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Currently our database doesn't know about `User` entity
 		// so we're just ignoring claims.
@@ -18,24 +18,33 @@ func EditSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusForbidden)
 			return
 		}
-
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 		// Decode the body.
-		var i service.SpeakerInput
+		var i model.SpeakerInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			log.Printf("Failed to unmarshal speaker input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		// Edit the speaker in the database.
-		if err := api.EditSpeakerById(id, i); err != nil {
+		s, err := api.EditSpeakerById(id, i)
+		if err != nil {
 			log.Printf("Failed to edit speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		// Marshal the speaker
+		b, err := json.Marshal(s)
+		if err != nil {
+			log.Printf("Failed to marshal speaker: %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		// Respond that the speaker has been edited successfully.
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNoContent)
+		w.Write(b)
 	}
 }

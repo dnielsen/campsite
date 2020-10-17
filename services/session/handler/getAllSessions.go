@@ -7,25 +7,25 @@ import (
 	"net/http"
 )
 
-func GetAllSessions(api model.SessionAPI) http.HandlerFunc {
+func GetAllSessions(datastore model.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get all sessions from the session service.
-		sessions, err := api.GetAllSessions()
+		// Grab the sessions from the database
+		sessions, err := datastore.GetAllSessions()
 		if err != nil {
 			log.Printf("Failed to get sessions: %v", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		// Marshal the sessions.
-		sessionBytes, err := json.Marshal(sessions)
+		b, err := json.Marshal(sessions)
 		if err != nil {
 			log.Printf("Failed to marshal sessions: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond json with the sessions.
+		// Respond JSON with the sessions.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(sessionBytes)
+		w.Write(b)
 	}
 }

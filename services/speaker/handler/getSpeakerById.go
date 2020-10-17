@@ -1,33 +1,37 @@
 package handler
 
 import (
-	"campsite/pkg/model"
+	"campsite/services/speaker/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-func GetSpeakerById(api model.SpeakerAPI) http.HandlerFunc {
+// `/{id}` GET route.
+func GetSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get the id parameter.
+		// Get the speaker id parameter
 		vars := mux.Vars(r)
 		id := vars[ID]
-		// Get the speaker from the speaker service.
-		speaker, err := api.GetSpeakerById(id)
+
+		// Get the speaker from the database.
+		speaker, err := datastore.GetSpeakerById(id)
 		if err != nil {
-			log.Printf("Failed to get speaker: %v", err)
+			log.Printf("Failed to get speaker by id: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+
 		// Marshal the speaker.
 		speakerBytes, err := json.Marshal(speaker)
 		if err != nil {
-			log.Printf("Failed to marshal speaker: %v", err)
+			log.Printf("Failed to marshal speakers: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond JSON with the speaker.
+
+		// Respond json with the speaker.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(speakerBytes)

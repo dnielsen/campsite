@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"campsite/services/event/service"
+	"campsite/pkg/model"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
@@ -9,7 +9,7 @@ import (
 )
 
 // `/events/{id}` PUT route.
-func EditEventById(api service.EventAPI) http.HandlerFunc {
+func EditEventById(api model.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Currently our database doesn't know about `User` entity
 		// so we're just ignoring claims.
@@ -18,12 +18,11 @@ func EditEventById(api service.EventAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusForbidden)
 			return
 		}
-
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
 		// Decode the body.
-		var i service.EventInput
+		var i model.EventInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			log.Printf("Failed to unmarshal event input")
 			http.Error(w, err.Error(), http.StatusBadRequest)

@@ -1,13 +1,13 @@
 package handler
 
 import (
-	"campsite/services/event/service"
+	"campsite/pkg/model"
 	"encoding/json"
 	"log"
 	"net/http"
 )
 
-func GetAllEvents(api service.EventAPI) http.HandlerFunc {
+func GetAllEvents(api model.EventAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get all events from the database.
 		events, err := api.GetAllEvents()
@@ -16,7 +16,6 @@ func GetAllEvents(api service.EventAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Marshal the events.
 		eventBytes, err := json.Marshal(events)
 		if err != nil {
@@ -24,7 +23,6 @@ func GetAllEvents(api service.EventAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Respond JSON with the events.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)

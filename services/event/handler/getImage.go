@@ -1,19 +1,18 @@
 package handler
 
 import (
-	"campsite/services/event/service"
+	"campsite/pkg/model"
 	"github.com/gorilla/mux"
 	"io"
 	"log"
 	"net/http"
 )
 
-func GetImage(api service.ImageAPI) http.HandlerFunc {
+func GetImage(api model.ImageAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the filename parameter.
 		vars := mux.Vars(r)
 		filename := vars[FILENAME]
-
 		// Get the image.
 		img, err := api.GetImage(filename)
 		if err != nil {
@@ -22,7 +21,6 @@ func GetImage(api service.ImageAPI) http.HandlerFunc {
 			return
 		}
 		defer img.Close()
-
 		// Respond with the image.
 		w.Header().Set("Content-Type", "image/jpeg")
 		w.WriteHeader(http.StatusOK)

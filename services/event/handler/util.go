@@ -8,7 +8,6 @@ import (
 )
 
 // We'll design it better later (move it to cookie/auth package).
-
 const (
 	ID                = "id"
 	FILENAME          = "filename"
