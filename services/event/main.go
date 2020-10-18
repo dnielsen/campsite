@@ -1,12 +1,12 @@
 package main
 
 import (
-	"campsite/services/event/handler"
-	"campsite/services/event/service"
 	"fmt"
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/database"
 	"github.com/dnielsen/campsite/pkg/middleware"
+	"github.com/dnielsen/campsite/services/event/handler"
+	"github.com/dnielsen/campsite/services/event/service"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"
