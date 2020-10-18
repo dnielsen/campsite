@@ -44,7 +44,7 @@ RUN upx -q -9 /bin/service
 FROM scratch
 COPY --from=builder /bin/service /bin/service
 # Since we're using `scratch` image, we can't execute `mkdir` here (there's no `/bin/sh`).
-COPY --from=builder ../../images /images
+COPY --from=builder ./images /images
 
 
 ENTRYPOINT ["/bin/service"]

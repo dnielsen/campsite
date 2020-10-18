@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"campsite/services/speaker/service"
 	"encoding/json"
+	"github.com/dnielsen/campsite/services/speaker/service"
 	"log"
 	"net/http"
 )

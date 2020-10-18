@@ -1,6 +1,6 @@
 package service
 
-import "campsite/pkg/model"
+import "github.com/dnielsen/campsite/pkg/model"
 
 func GetUniqueSpeakersFromSessions(sessions []model.Session) []model.Speaker {
 	// Iterate through each session and each speaker of the sessions
