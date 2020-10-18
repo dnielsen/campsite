@@ -15,11 +15,6 @@ const (
 	DEFAULT_LIMIT = 3
 )
 
-type CommentsResponse struct {
-	Comments  *[]model.Comment `json:"comments"`
-	EndCursor *string            `json:"endCursor"`
-}
-
 func GetCommentsBySessionId(datastore model.CommentAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var err error
@@ -50,13 +45,13 @@ func GetCommentsBySessionId(datastore model.CommentAPI) http.HandlerFunc {
 			return
 		}
 
-		resData := CommentsResponse{
+		res := model.CommentResponse{
 			Comments:  comments,
 			EndCursor: endCursor,
 		}
 
 		// Marshal the comments.
-		commentBytes, err := json.Marshal(resData)
+		b, err := json.Marshal(res)
 		if err != nil {
 			log.Printf("Failed to marshal comments data: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -66,6 +61,6 @@ func GetCommentsBySessionId(datastore model.CommentAPI) http.HandlerFunc {
 		// Respond JSON with the comments.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(commentBytes)
+		w.Write(b)
 	}
 }

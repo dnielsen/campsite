@@ -14,3 +14,13 @@ func NewAPI(db *gorm.DB, c *config.Config) *API {
 	var client model.HttpClient = http.DefaultClient
 	return &API{Db: db, Client: client, Config: c}
 }
+
+type CommentAPI interface {
+	CreateComment(sessionId string, i model.CommentInput) (*model.Comment, error)
+	GetCommentsBySessionId(sessionId string, limit string, cursor string) (*model.CommentResponse, error)
+}
+
+type AuthAPI interface {
+	SignIn(i model.SignInInput) (string, error)
+	SignUp(i model.SignUpInput) (string, error)
+}

@@ -8,17 +8,17 @@ import (
 	"net/http"
 )
 
-func SignIn(api service.AuthAPI) http.HandlerFunc {
+func SignUp(api service.AuthAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Decode the body.
-		var i model.SignInInput
+		var i model.SignUpInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
-			log.Printf("Failed to unmarshal sign in input")
+			log.Printf("Failed to unmarshal sign up input")
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		// Validate the credentials match the user.
-		token, err := api.SignIn(i)
+		token, err := api.SignUp(i)
 		if err != nil {
 			log.Printf("Failed to validate user: %v", err)
 			http.Error(w, err.Error(), http.StatusUnauthorized)

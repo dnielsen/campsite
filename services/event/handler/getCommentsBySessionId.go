@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"campsite/pkg/model"
+	"campsite/services/event/service"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
@@ -14,23 +14,23 @@ const (
 )
 
 // `/sessions/{id}/comments` GET route.
-func GetCommentsBySessionId(api model.SessionAPI) http.HandlerFunc {
+func GetCommentsBySessionId(api service.CommentAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		sessionId := vars[ID]
 		// Get the query parameters.
-		limit := r.URL.Query().Get(LIMIT)
 		cursor := r.URL.Query().Get(CURSOR)
+		limit := r.URL.Query().Get(LIMIT)
 		// Get comments from the database.
-		commentsData, err := api.GetCommentsBySessionId(sessionId, limit, cursor)
+		commentRes, err := api.GetCommentsBySessionId(sessionId, limit, cursor)
 		if err != nil {
 			log.Printf("Failed to get comments: %v", err)
 			http.Error(w, err.Error(), http.StatusNotFound)
 			return
 		}
 		// Marshal the comments.
-		b, err := json.Marshal(commentsData)
+		b, err := json.Marshal(commentRes)
 		if err != nil {
 			log.Printf("Failed to marshal comments data: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

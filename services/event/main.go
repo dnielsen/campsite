@@ -59,6 +59,7 @@ func main() {
 
 	// Register our handlers.
 	r.HandleFunc("/auth/sign-in", handler.SignIn(api)).Methods(http.MethodPost)
+	r.HandleFunc("/auth/sign-up", handler.SignUp(api)).Methods(http.MethodPost)
 	// UploadImage handler reads the form data and saves retrieved image
 	// into `images` directory placed in the `event` directory.
 	r.HandleFunc("/images", handler.UploadImage(api)).Methods(http.MethodPost)
