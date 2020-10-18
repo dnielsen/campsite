@@ -1,9 +1,9 @@
 package database
 
 import (
-	"campsite/pkg/config"
-	"campsite/pkg/model"
 	"fmt"
+	"github.com/dnielsen/campsite/pkg/config"
+	"github.com/dnielsen/campsite/pkg/model"
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

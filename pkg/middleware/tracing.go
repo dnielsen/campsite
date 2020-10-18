@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"campsite/pkg/config"
-	"campsite/pkg/tracing"
+	"github.com/dnielsen/campsite/pkg/config"
+	"github.com/dnielsen/campsite/pkg/tracing"
 	"github.com/gorilla/mux"
 	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
 )

@@ -1,8 +1,8 @@
 package tracing
 
 import (
-	"campsite/pkg/config"
 	"fmt"
+	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/openzipkin/zipkin-go"
 	"github.com/openzipkin/zipkin-go/model"
 	reporterHttp "github.com/openzipkin/zipkin-go/reporter/http"
