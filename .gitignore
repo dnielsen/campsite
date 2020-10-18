@@ -2,18 +2,12 @@
 .idea
 .vscode
 
-# UI
-packages/ui/node_modules
-packages/ui/build
-packages/ui/yarn-debug.log*
-packages/ui/yarn-error.log*
-
 #
-#packages/server
+#services/server
 
 # Server
-packages/event-service/images/*
-!packages/event-service/images/682841579-man.jpg
+images/*
+!images/682841579-man.jpg
 
 # We're ignoring those files in case they're
 # mistakenly added into the project root directory.
@@ -22,7 +16,8 @@ yarn-error.log*
 yarn-debug.log*
 yarn.lock
 
-
 # Docker
 #docker.env
 data
+
+.DS_STORE
