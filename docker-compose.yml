@@ -8,8 +8,8 @@ services:
     restart: always
     depends_on:
       - postgres
-      - "event"
-  event-service:
+      - event
+  event:
     container_name: campsite-event
     build: services/event
     ports:
@@ -18,13 +18,13 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      speaker-service:
+      speaker:
         condition: service_started
-      session-service:
+      session:
         condition: service_started
     env_file:
       - docker.env
-  speaker-service:
+  speaker:
     container_name: campsite-speaker
     build: services/speaker
     ports:
@@ -35,7 +35,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-  session-service:
+  session:
     container_name: campsite-session
     build: services/session
     ports:

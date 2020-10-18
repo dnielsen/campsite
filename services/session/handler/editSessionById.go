@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"campsite/pkg/model"
 	"campsite/services/session/service"
 	"encoding/json"
+	"github.com/dnielsen/campsite/pkg/model"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

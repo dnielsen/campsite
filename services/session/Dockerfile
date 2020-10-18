@@ -18,7 +18,7 @@ RUN go build \
   -installsuffix cgo \
   -tags netgo \
   -o /bin/service \
-  ./cmd/${SERVICE}
+  ./${SERVICE}
 
 # strip program removes information from executable binary programs
 # and object files that is not essential or required for normal

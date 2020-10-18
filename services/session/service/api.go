@@ -1,8 +1,8 @@
 package service
 
 import (
-	"campsite/pkg/config"
-	"campsite/pkg/model"
+	"github.com/dnielsen/campsite/pkg/config"
+	"github.com/dnielsen/campsite/pkg/model"
 	"gorm.io/gorm"
 	"net/http"
 )
