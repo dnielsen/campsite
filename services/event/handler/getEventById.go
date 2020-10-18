@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"campsite/services/event/service"
 	"encoding/json"
+	"github.com/dnielsen/campsite/services/event/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

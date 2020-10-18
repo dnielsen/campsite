@@ -2,9 +2,9 @@ package service
 
 import (
 	"bytes"
-	"campsite/pkg/model"
 	"encoding/json"
 	"fmt"
+	"github.com/dnielsen/campsite/pkg/model"
 	"io/ioutil"
 	"log"
 	"net/http"

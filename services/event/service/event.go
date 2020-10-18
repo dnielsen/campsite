@@ -1,7 +1,7 @@
 package service
 
 import (
-	"campsite/pkg/model"
+	"github.com/dnielsen/campsite/pkg/model"
 	"github.com/google/uuid"
 	"sort"
 )

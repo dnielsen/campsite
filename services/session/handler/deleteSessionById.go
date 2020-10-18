@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"campsite/services/session/service"
+	"github.com/dnielsen/campsite/services/session/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

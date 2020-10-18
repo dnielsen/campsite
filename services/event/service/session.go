@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"campsite/pkg/model"
+	"github.com/dnielsen/campsite/pkg/model"
 	"io/ioutil"
 	"log"
 	"net/http"

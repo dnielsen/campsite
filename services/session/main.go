@@ -1,12 +1,12 @@
 package main
 
 import (
-	"campsite/pkg/config"
-	"campsite/pkg/database"
-	"campsite/pkg/middleware"
-	"campsite/services/session/handler"
-	"campsite/services/session/service"
 	"fmt"
+	"github.com/dnielsen/campsite/pkg/config"
+	"github.com/dnielsen/campsite/pkg/database"
+	"github.com/dnielsen/campsite/pkg/middleware"
+	"github.com/dnielsen/campsite/services/session/handler"
+	"github.com/dnielsen/campsite/services/session/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
