@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"github.com/dnielsen/campsite/services/event/handler"
 	"github.com/dnielsen/campsite/services/event/service"
 	"github.com/gorilla/mux"
 	"log"
@@ -13,7 +14,7 @@ func GetSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
-		id := vars[ID]
+		id := vars[handler.ID]
 
 		// Get the speaker from the speaker service.
 		speaker, err := api.GetSpeakerById(id)

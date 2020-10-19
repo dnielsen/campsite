@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/dnielsen/campsite/services/event/handler"
 	"github.com/dnielsen/campsite/services/event/service"
 	"github.com/gorilla/mux"
 	"log"
@@ -12,7 +13,7 @@ func DeleteSessionById(datastore service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
-		id := vars[ID]
+		id := vars[handler.ID]
 
 		// Request the session service to delete the session from the database.
 		if err := datastore.DeleteSessionById(id); err != nil {

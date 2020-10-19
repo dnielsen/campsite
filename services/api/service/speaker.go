@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func (api *API) GetSpeakerById(id string) (*model.Speaker, error) {
+func (api *service.API) GetSpeakerById(id string) (*model.Speaker, error) {
 	// Create the request.
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func (api *API) GetSpeakerById(id string) (*model.Speaker, error) {
 	return &speaker, nil
 }
 
-func (api *API) GetAllSpeakers() (*[]model.Speaker, error) {
+func (api *service.API) GetAllSpeakers() (*[]model.Speaker, error) {
 	// Create the request.
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port), nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func (api *API) GetAllSpeakers() (*[]model.Speaker, error) {
 	return &speakers, nil
 }
 
-func (api *API) CreateSpeaker(i model.SpeakerInput) (*model.Speaker, error) {
+func (api *service.API) CreateSpeaker(i model.SpeakerInput) (*model.Speaker, error) {
 	// Marshal the speaker input.
 	b, err := json.Marshal(i)
 	if err != nil {
@@ -100,7 +100,7 @@ func (api *API) CreateSpeaker(i model.SpeakerInput) (*model.Speaker, error) {
 	return &speaker, nil
 }
 
-func (api *API) EditSpeakerById(id string, i model.SpeakerInput) error {
+func (api *service.API) EditSpeakerById(id string, i model.SpeakerInput) error {
 	// Marshal the speaker input.
 	b, err := json.Marshal(i)
 	if err != nil {
@@ -121,7 +121,7 @@ func (api *API) EditSpeakerById(id string, i model.SpeakerInput) error {
 	return nil
 }
 
-func (api *API) DeleteSpeakerById(id string) error {
+func (api *service.API) DeleteSpeakerById(id string) error {
 	// Create the request.
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {

@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"mime/multipart"
 	"os"
+	"github.com/dnielsen/campsite/services/api/service"
 )
 
 type Upload struct {
@@ -15,7 +16,7 @@ const IMAGES_DIRECTORY_PATH = "./images"
 
 // If we were to make a production app, we'd store it, for example, using
 // Amazon S3.
-func (api *API) UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error) {
+func (api *service.API) UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error) {
 	originalFilename := fileHeader.Filename
 	// Create a temporary file in our `images` directory with a unique filename
 	// so that we can later save the received file into it. `*` will be replaced
@@ -45,7 +46,7 @@ func (api *API) UploadImage(file multipart.File, fileHeader *multipart.FileHeade
 }
 
 // Retrieves the image from the filesystem.
-func (api *API) GetImage(filename string) (*os.File, error) {
+func (api *service.API) GetImage(filename string) (*os.File, error) {
 	// Get the path to the image
 	path := fmt.Sprintf("%v/%v", IMAGES_DIRECTORY_PATH, filename)
 

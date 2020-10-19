@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"github.com/dnielsen/campsite/pkg/model"
+	"github.com/dnielsen/campsite/services/event/handler"
 	"github.com/dnielsen/campsite/services/event/service"
 	"github.com/gorilla/mux"
 	"log"
@@ -14,7 +15,7 @@ func EditSessionById(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
-		id := vars[ID]
+		id := vars[handler.ID]
 		// Decode the body.
 		var i model.SessionInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {

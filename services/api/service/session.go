@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func (api *API) GetAllSessions() (*[]model.Session, error) {
+func (api *service.API) GetAllSessions() (*[]model.Session, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Session.Host, api.c.Service.Session.Port), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -41,7 +41,7 @@ func (api *API) GetAllSessions() (*[]model.Session, error) {
 	return &sessions, nil
 }
 
-func (api *API) GetSessionById(id string) (*model.Session, error) {
+func (api *service.API) GetSessionById(id string) (*model.Session, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -72,7 +72,7 @@ func (api *API) GetSessionById(id string) (*model.Session, error) {
 	return &session, nil
 }
 
-func (api *API) DeleteSessionById(id string) error {
+func (api *service.API) DeleteSessionById(id string) error {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -88,7 +88,7 @@ func (api *API) DeleteSessionById(id string) error {
 	return nil
 }
 
-func (api *API) EditSessionById(id string, i model.SessionInput) error {
+func (api *service.API) EditSessionById(id string, i model.SessionInput) error {
 	// Marshal the session input.
 	b, err := json.Marshal(i)
 	if err != nil {
@@ -112,7 +112,7 @@ func (api *API) EditSessionById(id string, i model.SessionInput) error {
 	return nil
 }
 
-func (api *API) CreateSession(i model.SessionInput) (*model.Session, error) {
+func (api *service.API) CreateSession(i model.SessionInput) (*model.Session, error) {
 	// Marshal the session input.
 	b, err := json.Marshal(i)
 	if err != nil {
