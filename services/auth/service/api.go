@@ -16,5 +16,9 @@ func NewAPI(db *gorm.DB, c *config.Config) *API {
 }
 
 type AuthAPI interface {
-	ValidateUser(i model.SignInInput) (*model.User, error)
+	SignIn(i model.SignInInput) (string, error)
+	getUserByEmail(email string) (*model.User, error)
+	validateUser(i model.SignInInput) (*model.User, error)
+	checkPasswordHash(passwordHash string, password string) error
+	generatePasswordHash(password string) (string, error)
 }

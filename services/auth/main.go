@@ -5,6 +5,8 @@ import (
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/database"
 	"github.com/dnielsen/campsite/pkg/middleware"
+	"github.com/dnielsen/campsite/services/auth/handler"
+	"github.com/dnielsen/campsite/services/auth/service"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 	"log"

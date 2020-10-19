@@ -3,9 +3,9 @@ package handler
 import (
 	"encoding/json"
 	"github.com/dnielsen/campsite/pkg/model"
+	"github.com/dnielsen/campsite/services/auth/service"
 	"log"
 	"net/http"
-	"time"
 )
 
 // `/sign-in` POST route. It communicates with the database only.
@@ -18,25 +18,19 @@ func SignIn(api service.AuthAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Validate the credentials match the user.
-		u, err := api.ValidateUser(i)
+		// Validate the credentials and generate the JWT token.
+		token, err := api.SignIn(i)
 		if err != nil {
-			log.Printf("Failed to validate user: %v", err)
+			log.Printf("Failed to sign in: %v", err)
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
-		// Generate the JWT token.
-		token, err := api.GenerateToken(u)
-		if err != nil {
-			log.Printf("Failed to generate token")
-		}
-		// Send the token with the cookies.
+
+		// Send the cookie with the token.
 		http.SetCookie(w, &http.Cookie{
 			Name:       "token",
 			Value:      token,
 			Path:       "/",
-			Expires:    time.Time{},
-			RawExpires: "",
 			MaxAge:     60 * 60 * 24 * 7,
 			Secure:     false,
 			HttpOnly:   true,

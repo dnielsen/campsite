@@ -15,16 +15,32 @@ const (
 	JWT_SECRET_KEY = "V3RY_S3CR3T_K3Y"
 )
 
+func (api *API) SignIn(i model.SignInInput) (string, error)  {
+	// Validate the credentials match a user in the database.
+	u, err := api.validateUser(i)
+	if err != nil {
+		return "", errors.New("invalid credentials")
+	}
+	// Get the JWT token.
+	t, err := api.GenerateToken(u)
+	if err != nil {
+		return "", err
+	}
 
-var USER_VALIDATION_ERR = errors.New("invalid credentials")
+	return t, nil
+}
 
-func (api *API) ValidateUser(i model.SignInInput) (*model.User, error) {
+func (api *API) validateUser(i model.SignInInput) (*model.User, error) {
+	// Grab the user from the database.
 	u, err := api.getUserByEmail(i.Email)
 	if err != nil {
-		return nil, USER_VALIDATION_ERR
+		return nil, err
 	}
 	// Verify the password is correct.
-	if err := api.checkPasswordHash
+	if err := api.checkPasswordHash(u.PasswordHash, i.Password); err != nil {
+		return nil, err
+	}
+	return u, nil
 }
 
 func (api *API) getUserByEmail(email string) (*model.User, error) {
@@ -45,14 +61,23 @@ func (api *API) GenerateToken(u *model.User) (string, error) {
 		ID: u.ID,
 		Email: u.Email,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(TOKEN_DURATION),
-			IssuedAt: time.Now(),
+			ExpiresAt: time.Now().Add(TOKEN_DURATION).Unix(),
+			IssuedAt: time.Now().Unix(),
 		},
 	}
 	tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, &claims)
-	tknStr, err := token.SignedString([]byte(JWT_SECRET_KEY))
+	tknStr, err := tkn.SignedString([]byte(JWT_SECRET_KEY))
 	if err != nil {
 		return "", err
 	}
 	return tknStr, nil
+}
+
+func (api *API) generatePasswordHash(password string) (string, error) {
+	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(password), SALT_ROUND_COUNT)
+	if err != nil {
+		return "", err
+	}
+	p := string(passwordBytes)
+	return p, nil
 }
