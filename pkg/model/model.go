@@ -2,6 +2,7 @@ package model
 
 import (
 	"time"
+	"github.com/dgrijalva/jwt-go"
 )
 
 type Speaker struct {
@@ -67,13 +68,22 @@ type SessionInput struct {
 	EventId     string     `json:"eventId,omitempty"`
 }
 
-type Comment struct {
-	ID        string    `gorm:"primaryKey;type:uuid" json:"id"`
-	Content   string    `json:"content"`
-	CreatedAt time.Time `json:"createdAt"`
-	SessionID string    `json:"sessionId,omitempty" gorm:"type:uuid;not null;constraint:OnUpdate:CASCADE;"`
+type User struct {
+	ID string `json:"id,omitempty"`
+	Email string `json:"email,omitempty"`
+	PasswordHash string `json:"-"`
 }
 
+type SignInInput struct {
+	Email string `json:"email,omitempty"`
+	Password string `json:"password,omitempty"`
+}
+
+type Claims struct {
+	ID string `json:"id"`
+	Email string `json:"email"`
+	jwt.StandardClaims
+}
 
 type Upload struct {
 	Url string `json:"url"`

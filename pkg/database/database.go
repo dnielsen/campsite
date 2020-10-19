@@ -54,11 +54,12 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	db := NewDb(c)
 
 	// Migrate the database.
-	if err := db.AutoMigrate(&model.Event{}, &model.Speaker{}, &model.Session{}, &model.Comment{}); err != nil {
+	if err := db.AutoMigrate(&model.Event{}, &model.Speaker{}, &model.Session{}, &model.User{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
 	} else {
 		log.Println("Auto migrated database")
 	}
+
 
 	// Create a mock event in the database.
 	mockEvent := newMockEvent()
@@ -84,6 +85,7 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 
 	return db
 }
+
 
 func newMockEvent() model.Event {
 	now := time.Now()
