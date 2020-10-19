@@ -23,12 +23,22 @@ func EditSessionById(api service.SessionAPI) http.HandlerFunc {
 			return
 		}
 		// Edit the session in the database.
-		if err := api.EditSessionById(id, i); err != nil {
+		s, err := api.EditSessionById(id, i)
+		if err != nil {
 			log.Printf("Failed to edit session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond that the session has been edited successfully.
-		w.WriteHeader(http.StatusNoContent)
+		// Marshal the session
+		b, err := json.Marshal(s)
+		if err != nil {
+			log.Printf("Failed to marshal session: %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		// Respond JSON with the session.
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(b)
 	}
 }
