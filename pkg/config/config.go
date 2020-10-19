@@ -20,6 +20,10 @@ type TracingConfig struct {
 }
 
 type ServiceConfig struct {
+	API struct {
+		Host string `env:"SERVICE_API_HOST" env-default:"localhost"`
+		Port int `env:"SERVICE_API_PORT" env-default:"2222"`
+	}
 	Speaker struct {
 		Host string `env:"SERVICE_SPEAKER_HOST" env-default:"localhost"`
 		Port int `env:"SERVICE_SPEAKER_PORT" env-default:"3333"`

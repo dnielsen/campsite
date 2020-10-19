@@ -1,8 +1,7 @@
 package handler
 
 import (
-	"github.com/dnielsen/campsite/services/event/handler"
-	"github.com/dnielsen/campsite/services/event/service"
+	"github.com/dnielsen/campsite/services/api/service"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -13,7 +12,7 @@ func DeleteSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
-		id := vars[handler.ID]
+		id := vars[ID]
 
 		// Request the speaker service to delete the speaker from the database.
 		if err := datastore.DeleteSpeakerById(id); err != nil {

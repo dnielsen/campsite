@@ -31,7 +31,7 @@ type EventAPI interface {
 	GetAllEvents() (*[]model.Event, error)
 	CreateEvent(i model.EventInput) (*model.Event, error)
 	GetEventById(id string) (*model.Event, error)
-	EditEventById(id string, i model.EventInput) error
+	EditEventById(id string, i model.EventInput) (*model.Event, error)
 	DeleteEventById(id string) error
 }
 
@@ -39,7 +39,7 @@ type SessionAPI interface {
 	GetAllSessions() (*[]model.Session, error)
 	CreateSession(i model.SessionInput) (*model.Session, error)
 	GetSessionById(id string) (*model.Session, error)
-	EditSessionById(id string, i model.SessionInput) error
+	EditSessionById(id string, i model.SessionInput) (*model.Session, error)
 	DeleteSessionById(id string) error
 }
 
@@ -47,7 +47,7 @@ type SpeakerAPI interface {
 	GetAllSpeakers() (*[]model.Speaker, error)
 	CreateSpeaker(i model.SpeakerInput) (*model.Speaker, error)
 	GetSpeakerById(id string) (*model.Speaker, error)
-	EditSpeakerById(id string, i model.SpeakerInput) error
+	EditSpeakerById(id string, i model.SpeakerInput) (*model.Speaker, error)
 	DeleteSpeakerById(id string) error
 }
 

@@ -2,7 +2,7 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/dnielsen/campsite/services/event/service"
+	"github.com/dnielsen/campsite/services/api/service"
 	"log"
 	"net/http"
 )
@@ -22,7 +22,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
 		// Read the form data.
 		file, fileHeader, err := r.FormFile(FORM_DATA_NAME)
 		if err != nil {
@@ -31,7 +30,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			return
 		}
 		defer file.Close()
-
 		// Upload the image (save it in the `images` directory).
 		u, err := api.UploadImage(file, fileHeader, r.Host)
 		if err != nil {
@@ -39,7 +37,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Marshal the upload.
 		bytes, err := json.Marshal(u)
 		if err != nil {
@@ -47,7 +44,6 @@ func UploadImage(api service.ImageAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Respond JSON with the upload that has the url of our file.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)

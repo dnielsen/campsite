@@ -56,13 +56,6 @@ func main() {
 	}
 
 	// Register our handlers.
-
-	// UploadImage handler reads the form data and saves the retrieved image
-	// into `images` directory placed in the `event` directory.
-	r.HandleFunc("/images", handler.UploadImage(api)).Methods(http.MethodPost)
-	// GetImage handler retrieves the image from the `images` directory
-	// placed in the `event` directory.
-	r.HandleFunc("/images/{filename}", handler.GetImage(api)).Methods(http.MethodGet)
 	// GetAllEvents handler selects all events along with all the properties
 	// from the database and sends them to the client. It doesn't join any tables.
 	// We could optimize this so that it would skip the `EndDate` property
@@ -89,44 +82,6 @@ func main() {
 	// It doesn't return the deleted event. If the event couldn't be found, it's gonna
 	// return an error, and status 404 (Not Found).
 	r.HandleFunc("/events/{id}", handler.DeleteEventById(api)).Methods(http.MethodDelete)
-
-	// GetAllSpeakers handler sends a `/` GET request to the speaker service
-	// which selects all the speakers along with all the properties
-	// from the database and sends them back to the event service which
-	// then sends them to the client (browser for example). It doesn't join any tables.
-	// We could optimize this so that it would skip the `bio` property since
-	// it's not used by our `ui`.
-	r.HandleFunc("/speakers", handler.GetAllSpeakers(api)).Methods(http.MethodGet)
-	// CreateSpeaker handler sends a `/` POST request with input body
-	// to the speaker service which creates a speaker in the database,
-	// and sends the newly created speaker back to the event service which
-	// then sends them to the client (browser for example).
-	// There's currently no input validation.
-	// We could optimize this by just returning the id of the created speaker
-	// since our `ui` isn't using this data besides the `id` to redirect
-	// to the created speaker.
-	r.HandleFunc("/speakers", handler.CreateSpeaker(api)).Methods(http.MethodPost)
-	// GetSpeakerById handler sends a `/{id}` GET request to the speaker service
-	// which retrieves the speaker from the database (if exists), and sends it back
-	// to the event service which then sends it to the client (browser). It returns
-	// all the properties of the speaker along with sessions.
-	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(api)).Methods(http.MethodGet)
-	// EditSpeakerById handler sends a `/{id}` PUT request with input body
-	// to the speaker service which edits the speaker (if exists)
-	// in the database. It returns the status 204 No Content and no body.
-	r.HandleFunc("/speakers/{id}", handler.EditSpeakerById(api)).Methods(http.MethodPut)
-	// DeleteSpeakerById handler sends a `/{id}` DELETE request the id
-	// parameter to the speaker service which deletes the speaker (if exists)
-	// in the database. It returns the status 204 No Content and no body.
-	r.HandleFunc("/speakers/{id}", handler.DeleteSpeakerById(api)).Methods(http.MethodDelete)
-
-	// For session handlers explanation look up the speaker handlers' comments.
-	// They're analogical.
-	r.HandleFunc("/sessions", handler.GetAllSessions(api)).Methods(http.MethodGet)
-	r.HandleFunc("/sessions", handler.CreateSession(api)).Methods(http.MethodPost)
-	r.HandleFunc("/sessions/{id}", handler.GetSessionById(api)).Methods(http.MethodGet)
-	r.HandleFunc("/sessions/{id}", handler.EditSessionById(api)).Methods(http.MethodPut)
-	r.HandleFunc("/sessions/{id}", handler.DeleteSessionById(api)).Methods(http.MethodDelete)
 
 	// Set up the server.
 	corsWrapper := cors.New(cors.Options{

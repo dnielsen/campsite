@@ -2,21 +2,17 @@ package service
 
 import (
 	"fmt"
+	"github.com/dnielsen/campsite/pkg/model"
 	"io/ioutil"
 	"mime/multipart"
 	"os"
-	"github.com/dnielsen/campsite/services/api/service"
 )
-
-type Upload struct {
-	Url string `json:"url"`
-}
 
 const IMAGES_DIRECTORY_PATH = "./images"
 
 // If we were to make a production app, we'd store it, for example, using
 // Amazon S3.
-func (api *service.API) UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error) {
+func (api *API) UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*model.Upload, error) {
 	originalFilename := fileHeader.Filename
 	// Create a temporary file in our `images` directory with a unique filename
 	// so that we can later save the received file into it. `*` will be replaced
@@ -41,12 +37,12 @@ func (api *service.API) UploadImage(file multipart.File, fileHeader *multipart.F
 
 	// Return with an Upload
 	path := tempFile.Name()
-	u := Upload{Url: fmt.Sprintf("http://%v/%v", host, path)}
+	u := model.Upload{Url: fmt.Sprintf("http://%v/%v", host, path)}
 	return &u, nil
 }
 
 // Retrieves the image from the filesystem.
-func (api *service.API) GetImage(filename string) (*os.File, error) {
+func (api *API) GetImage(filename string) (*os.File, error) {
 	// Get the path to the image
 	path := fmt.Sprintf("%v/%v", IMAGES_DIRECTORY_PATH, filename)
 

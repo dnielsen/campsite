@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func (api *service.API) GetAllSessions() (*[]model.Session, error) {
+func (api *API) GetAllSessions() (*[]model.Session, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Session.Host, api.c.Service.Session.Port), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -41,7 +41,7 @@ func (api *service.API) GetAllSessions() (*[]model.Session, error) {
 	return &sessions, nil
 }
 
-func (api *service.API) GetSessionById(id string) (*model.Session, error) {
+func (api *API) GetSessionById(id string) (*model.Session, error) {
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -72,7 +72,7 @@ func (api *service.API) GetSessionById(id string) (*model.Session, error) {
 	return &session, nil
 }
 
-func (api *service.API) DeleteSessionById(id string) error {
+func (api *API) DeleteSessionById(id string) error {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
@@ -88,31 +88,41 @@ func (api *service.API) DeleteSessionById(id string) error {
 	return nil
 }
 
-func (api *service.API) EditSessionById(id string, i model.SessionInput) error {
+func (api *API) EditSessionById(id string, i model.SessionInput) (*model.Session, error) {
 	// Marshal the session input.
 	b, err := json.Marshal(i)
 	if err != nil {
 		log.Printf("Failed to marshal session input: %v", err)
-		return err
+		return nil, err
 	}
-
 	// Create a request.
 	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Session.Host, api.c.Service.Session.Port, id), bytes.NewBuffer(b))
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
-		return err
+		return nil, err
 	}
-
 	// Make the request.
-	if _, err := api.client.Do(req); err != nil {
+	res, err := api.client.Do(req)
+	if err != nil {
 		log.Printf("Failed to do request: %v", err)
-		return err
+		return nil, err
 	}
-
-	return nil
+	// Read the response body.
+	readBytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return nil, err
+	}
+	// Unmarshal the session
+	var s model.Session
+	if err := json.Unmarshal(readBytes, &s); err != nil {
+		log.Printf("Failed to unmarshal session: %v", err)
+		return nil, err
+	}
+	return &s, nil
 }
 
-func (api *service.API) CreateSession(i model.SessionInput) (*model.Session, error) {
+func (api *API) CreateSession(i model.SessionInput) (*model.Session, error) {
 	// Marshal the session input.
 	b, err := json.Marshal(i)
 	if err != nil {

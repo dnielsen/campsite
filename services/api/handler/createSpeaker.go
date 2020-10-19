@@ -3,7 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"github.com/dnielsen/campsite/pkg/model"
-	"github.com/dnielsen/campsite/services/event/service"
+	"github.com/dnielsen/campsite/services/api/service"
 	"log"
 	"net/http"
 )
@@ -18,7 +18,6 @@ func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
 		// Request the speaker service to create a speaker.
 		speaker, err := api.CreateSpeaker(i)
 		if err != nil {
@@ -26,7 +25,6 @@ func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Marshal the speaker.
 		speakerBytes, err := json.Marshal(speaker)
 		if err != nil {
@@ -34,7 +32,6 @@ func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Respond JSON with the created speaker
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)

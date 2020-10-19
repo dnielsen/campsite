@@ -4,9 +4,7 @@ import (
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/model"
 	"gorm.io/gorm"
-	"mime/multipart"
 	"net/http"
-	"os"
 )
 
 type API struct {
@@ -35,25 +33,4 @@ type EventAPI interface {
 	GetEventById(id string) (*model.Event, error)
 	EditEventById(id string, i model.EventInput) error
 	DeleteEventById(id string) error
-}
-
-type SessionAPI interface {
-	GetAllSessions() (*[]model.Session, error)
-	CreateSession(i model.SessionInput) (*model.Session, error)
-	GetSessionById(id string) (*model.Session, error)
-	EditSessionById(id string, i model.SessionInput) error
-	DeleteSessionById(id string) error
-}
-
-type SpeakerAPI interface {
-	GetAllSpeakers() (*[]model.Speaker, error)
-	CreateSpeaker(i model.SpeakerInput) (*model.Speaker, error)
-	GetSpeakerById(id string) (*model.Speaker, error)
-	EditSpeakerById(id string, i model.SpeakerInput) error
-	DeleteSpeakerById(id string) error
-}
-
-type ImageAPI interface {
-	GetImage(filename string) (*os.File, error)
-	UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*Upload, error)
 }

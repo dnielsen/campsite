@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func (api *service.API) GetSpeakerById(id string) (*model.Speaker, error) {
+func (api *API) GetSpeakerById(id string) (*model.Speaker, error) {
 	// Create the request.
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func (api *service.API) GetSpeakerById(id string) (*model.Speaker, error) {
 	return &speaker, nil
 }
 
-func (api *service.API) GetAllSpeakers() (*[]model.Speaker, error) {
+func (api *API) GetAllSpeakers() (*[]model.Speaker, error) {
 	// Create the request.
 	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port), nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func (api *service.API) GetAllSpeakers() (*[]model.Speaker, error) {
 	return &speakers, nil
 }
 
-func (api *service.API) CreateSpeaker(i model.SpeakerInput) (*model.Speaker, error) {
+func (api *API) CreateSpeaker(i model.SpeakerInput) (*model.Speaker, error) {
 	// Marshal the speaker input.
 	b, err := json.Marshal(i)
 	if err != nil {
@@ -100,28 +100,41 @@ func (api *service.API) CreateSpeaker(i model.SpeakerInput) (*model.Speaker, err
 	return &speaker, nil
 }
 
-func (api *service.API) EditSpeakerById(id string, i model.SpeakerInput) error {
+func (api *API) EditSpeakerById(id string, i model.SpeakerInput) (*model.Speaker, error) {
 	// Marshal the speaker input.
 	b, err := json.Marshal(i)
 	if err != nil {
 		log.Printf("Failed to marshal speaker input: %v", err)
-		return err
+		return nil, err
 	}
 	// Create a request.
 	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), bytes.NewBuffer(b))
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
-		return err
+		return nil, err
 	}
 	// Make the request.
-	if _, err = api.client.Do(req); err != nil {
+	res, err := api.client.Do(req)
+	if err != nil {
 		log.Printf("Failed to do request: %v", err)
-		return err
+		return nil, err
 	}
-	return nil
+	// Read the response body.
+	readBytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return nil, err
+	}
+	// Unmarshal the speaker.
+	var s model.Speaker
+	if err := json.Unmarshal(readBytes, &s); err != nil {
+		log.Printf("Failed to read response body: %v", err)
+		return nil, err
+	}
+	return &s, nil
 }
 
-func (api *service.API) DeleteSpeakerById(id string) error {
+func (api *API) DeleteSpeakerById(id string) error {
 	// Create the request.
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Speaker.Host, api.c.Service.Speaker.Port, id), nil)
 	if err != nil {

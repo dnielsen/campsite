@@ -2,7 +2,7 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/dnielsen/campsite/services/event/service"
+	"github.com/dnielsen/campsite/services/api/service"
 	"log"
 	"net/http"
 )
