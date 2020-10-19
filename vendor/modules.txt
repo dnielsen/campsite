@@ -1,5 +1,10 @@
 # github.com/BurntSushi/toml v0.3.1
 github.com/BurntSushi/toml
+# github.com/dgrijalva/jwt-go v3.2.0+incompatible
+## explicit
+github.com/dgrijalva/jwt-go
+# github.com/gofrs/uuid v3.3.0+incompatible
+## explicit
 # github.com/google/uuid v1.1.2
 ## explicit
 github.com/google/uuid
@@ -35,6 +40,14 @@ github.com/jinzhu/inflection
 github.com/jinzhu/now
 # github.com/joho/godotenv v1.3.0
 github.com/joho/godotenv
+# github.com/kr/pretty v0.2.1
+## explicit
+# github.com/kr/text v0.2.0
+## explicit
+# github.com/lib/pq v1.8.0
+## explicit
+# github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e
+## explicit
 # github.com/openzipkin/zipkin-go v0.2.5
 ## explicit
 github.com/openzipkin/zipkin-go
@@ -45,9 +58,16 @@ github.com/openzipkin/zipkin-go/propagation
 github.com/openzipkin/zipkin-go/propagation/b3
 github.com/openzipkin/zipkin-go/reporter
 github.com/openzipkin/zipkin-go/reporter/http
+# github.com/pkg/errors v0.9.1
+## explicit
 # github.com/rs/cors v1.7.0
 ## explicit
-# golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
+# github.com/shopspring/decimal v1.2.0
+## explicit
+# github.com/stretchr/testify v1.6.1
+## explicit
+# golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
+## explicit
 golang.org/x/crypto/pbkdf2
 # golang.org/x/text v0.3.3
 golang.org/x/text/cases
@@ -66,13 +86,20 @@ golang.org/x/text/width
 # golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e
 ## explicit
 golang.org/x/time/rate
-# golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543
+# golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
+## explicit
 golang.org/x/xerrors
 golang.org/x/xerrors/internal
-# google.golang.org/grpc v1.30.0
+# google.golang.org/grpc v1.33.0
+## explicit
 google.golang.org/grpc/metadata
-# gopkg.in/yaml.v2 v2.2.2
+# gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b
+## explicit
+# gopkg.in/yaml.v2 v2.3.0
+## explicit
 gopkg.in/yaml.v2
+# gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776
+## explicit
 # gorm.io/driver/postgres v1.0.2
 ## explicit
 gorm.io/driver/postgres
@@ -85,5 +112,6 @@ gorm.io/gorm/logger
 gorm.io/gorm/migrator
 gorm.io/gorm/schema
 gorm.io/gorm/utils
-# olympos.io/encoding/edn v0.0.0-20200308123125-93e3b8dd0e24
+# olympos.io/encoding/edn v0.0.0-20201019073823-d3554ca0b0a3
+## explicit
 olympos.io/encoding/edn

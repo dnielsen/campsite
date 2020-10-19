@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/dnielsen/campsite/pkg/config"
+	"github.com/dnielsen/campsite/pkg/database"
 	"github.com/dnielsen/campsite/pkg/middleware"
 	"github.com/dnielsen/campsite/services/api/handler"
 	"github.com/dnielsen/campsite/services/api/service"
@@ -24,6 +25,11 @@ func main() {
 	// Initialize the config which includes
 	// Server, and other services' configuration.
 	c := config.NewConfig()
+
+	// We're running `database.NewDevDb` here so that `GORM` migrates the database for us
+	// and creates mock events there.
+	// It seems the least confusing to put it here rather than say the event or speaker service.
+	_ = database.NewDevDb(&c.Db)
 
 	// Set up the API.
 	api := service.NewAPI(c)

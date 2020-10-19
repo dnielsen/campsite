@@ -1,8 +1,8 @@
 package model
 
 import (
-	"time"
 	"github.com/dgrijalva/jwt-go"
+	"time"
 )
 
 type Speaker struct {

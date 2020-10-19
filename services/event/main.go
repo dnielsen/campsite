@@ -26,9 +26,8 @@ func main() {
 	// database, server, and other services' configuration.
 	c := config.NewConfig()
 
-	// Create a new database connection. Also, since it's a dev db,
-	// migrate it and create sample mock data there.
-	db := database.NewDevDb(&c.Db)
+	// Create a new database connection.
+	db := database.NewDb(&c.Db)
 
 	// Set up the API.
 	api := service.NewAPI(db, c)
