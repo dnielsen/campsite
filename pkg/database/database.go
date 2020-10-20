@@ -5,6 +5,7 @@ import (
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/model"
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -60,6 +61,19 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 		log.Println("Auto migrated database")
 	}
 
+	// Create the only user in the database that has permissions to create/edit/delete stuff.
+	p := "deepblue"
+	u, err := newUser("dave@platformd.com", p)
+	if err != nil {
+		log.Printf("Failed to auto create user: %v", err)
+	} else {
+		if err := db.Create(&u).Error; err != nil {
+			log.Printf("Failed to create mock user in database: %v", err)
+		} else {
+			log.Printf("Created user %v:%v in database", u.Email, p)
+		}
+	}
+
 
 	// Create a mock event in the database.
 	mockEvent := newMockEvent()
@@ -86,6 +100,18 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	return db
 }
 
+func newUser(email, password string) (*model.User, error) {
+	passwordHashBytes, err := bcrypt.GenerateFromPassword([]byte(password), 12)
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.User{
+		ID:           uuid.New().String(),
+		Email:        email,
+		PasswordHash: string(passwordHashBytes),
+	}, nil
+}
 
 func newMockEvent() model.Event {
 	now := time.Now()

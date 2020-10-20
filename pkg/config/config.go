@@ -42,10 +42,15 @@ type ServiceConfig struct {
 	}
 }
 
+type JwtConfig struct {
+	SecretKey string `env:"JWT_SECRET_KEY" env-default:"V3RY_S3CR3T_K3Y"`
+}
+
 type Config struct {
 	Db      DbConfig
 	Service ServiceConfig
 	Tracing TracingConfig
+	Jwt JwtConfig
 }
 
 // Read the environment variables into a `Config` struct.
