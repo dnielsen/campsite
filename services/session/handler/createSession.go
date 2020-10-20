@@ -9,17 +9,24 @@ import (
 )
 
 // `/` POST route.
-func CreateSession(datastore service.SessionAPI) http.HandlerFunc {
+func CreateSession(api service.SessionAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Verify the jwt token (currently there's no way to sign up through our API so all the users are "admins")
+		_, err := api.VerifyToken(r)
+		if err != nil {
+			log.Printf("Faild to verify token: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
 		// Decode the body.
 		var i model.SessionInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
-			log.Printf("Failed to unmarshal session input")
+			log.Printf("Failed to unmarshal session input: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 		// Create the session in the database.
-		session, err := datastore.CreateSession(i)
+		session, err := api.CreateSession(i)
 		if err != nil {
 			log.Printf("Failed to create session: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

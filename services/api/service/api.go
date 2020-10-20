@@ -55,3 +55,7 @@ type ImageAPI interface {
 	GetImage(filename string) (*os.File, error)
 	UploadImage(file multipart.File, fileHeader *multipart.FileHeader, host string) (*model.Upload, error)
 }
+
+type AuthAPI interface {
+	SignIn(i model.SignInInput) (string, error)
+}

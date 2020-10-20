@@ -11,8 +11,6 @@ import (
 const (
 	TOKEN_DURATION = time.Hour * 24 * 7
 	SALT_ROUND_COUNT = 12
-	TOKEN_HEADER_NAME = "Authorization"
-	JWT_SECRET_KEY = "V3RY_S3CR3T_K3Y"
 )
 
 func (api *API) SignIn(i model.SignInInput) (string, error)  {
@@ -66,7 +64,7 @@ func (api *API) GenerateToken(u *model.User) (string, error) {
 		},
 	}
 	tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, &claims)
-	tknStr, err := tkn.SignedString([]byte(JWT_SECRET_KEY))
+	tknStr, err := tkn.SignedString([]byte(api.c.Jwt.SecretKey))
 	if err != nil {
 		return "", err
 	}

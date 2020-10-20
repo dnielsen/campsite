@@ -40,8 +40,6 @@ github.com/jinzhu/inflection
 github.com/jinzhu/now
 # github.com/joho/godotenv v1.3.0
 github.com/joho/godotenv
-# github.com/kr/pretty v0.2.1
-## explicit
 # github.com/kr/text v0.2.0
 ## explicit
 # github.com/lib/pq v1.8.0
@@ -60,14 +58,14 @@ github.com/openzipkin/zipkin-go/reporter
 github.com/openzipkin/zipkin-go/reporter/http
 # github.com/pkg/errors v0.9.1
 ## explicit
-# github.com/rs/cors v1.7.0
-## explicit
 # github.com/shopspring/decimal v1.2.0
 ## explicit
 # github.com/stretchr/testify v1.6.1
 ## explicit
 # golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
 ## explicit
+golang.org/x/crypto/bcrypt
+golang.org/x/crypto/blowfish
 golang.org/x/crypto/pbkdf2
 # golang.org/x/text v0.3.3
 golang.org/x/text/cases

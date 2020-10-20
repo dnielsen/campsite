@@ -3,7 +3,7 @@ module github.com/dnielsen/campsite/services/api
 go 1.15
 
 require (
-	github.com/dnielsen/campsite v0.0.0-20201019191550-e567d0fa4af2
+	github.com/dnielsen/campsite v0.0.0-20201019211314-92ca02ff9a45
 	github.com/gorilla/mux v1.8.0
 	github.com/kr/text v0.2.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect

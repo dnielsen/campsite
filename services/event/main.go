@@ -59,28 +59,28 @@ func main() {
 	// from the database and sends them to the client. It doesn't join any tables.
 	// We could optimize this so that it would skip the `EndDate` property
 	// since our `ui` isn't using it currently.
-	r.HandleFunc("/events", handler.GetAllEvents(api)).Methods(http.MethodGet)
+	r.HandleFunc("/", handler.GetAllEvents(api)).Methods(http.MethodGet)
 	// CreateEvent handler creates an event in the database.
 	// If the event creation succeeds, it sends the created event and status 201 (Created).
 	// It doesn't validate the input currently.
-	r.HandleFunc("/events", handler.CreateEvent(api)).Methods(http.MethodPost)
+	r.HandleFunc("/", handler.CreateEvent(api)).Methods(http.MethodPost)
 	// GetEventById handler retrieves an event with a given id from the database.
 	// If it can't find it, it's gonna return an error, and send status 404 (Not Found).
 	// We could optimize this by just returning the id of the created event
 	// since our `ui` isn't using this data besides the `id` to redirect
 	// to the created event.
-	r.HandleFunc("/events/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
+	r.HandleFunc("/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
 	// EditEventById handler edits an event with a given id in the database.
 	// It sends a status 204 (No Content) if the edit has been performed successfully.
 	// It doesn't return the updated event. If the event couldn't be found, it's gonna
 	// return an error, and status 404 (Not Found).
 	// It doesn't validate the input currently.
-	r.HandleFunc("/events/{id}", handler.EditEventById(api)).Methods(http.MethodPut)
+	r.HandleFunc("/{id}", handler.EditEventById(api)).Methods(http.MethodPut)
 	// DeleteEventById handler deletes an event with a given id in the database.
 	// It sends a status 204 (No Content) if the delete has been performed successfully.
 	// It doesn't return the deleted event. If the event couldn't be found, it's gonna
 	// return an error, and status 404 (Not Found).
-	r.HandleFunc("/events/{id}", handler.DeleteEventById(api)).Methods(http.MethodDelete)
+	r.HandleFunc("/{id}", handler.DeleteEventById(api)).Methods(http.MethodDelete)
 
 	// Set up the server.
 	corsWrapper := cors.New(cors.Options{

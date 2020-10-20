@@ -74,7 +74,7 @@ func (api *API) GetAllEvents() (*[]model.Event, error) {
 
 func (api *API) GetEventById(id string) (*model.Event, error) {
 	// Create the request.
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", api.c.Service.Event.Host, api.c.Service.Event.Port), nil)
+	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v/%v", api.c.Service.Event.Host, api.c.Service.Event.Port, id), nil)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
 		return nil, err

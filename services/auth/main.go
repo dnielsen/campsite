@@ -55,7 +55,7 @@ func main() {
 	}
 
 	// Register our handlers.
-	r.HandleFunc("/auth/sign-in", handler.SignIn(api)).Methods(http.MethodPost)
+	r.HandleFunc("/sign-in", handler.SignIn(api)).Methods(http.MethodPost)
 
 	// Set up the server.
 	corsWrapper := cors.New(cors.Options{

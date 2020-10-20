@@ -63,6 +63,10 @@ func main() {
 	r.HandleFunc("/images", handler.UploadImage(api)).Methods(http.MethodPost)
 	// GetImage handler retrieves the image from the `images` directory placed in the project root directory.
 	r.HandleFunc("/images/{filename}", handler.GetImage(api)).Methods(http.MethodGet)
+
+	r.HandleFunc("/auth/sign-in", handler.SignIn(api)).Methods(http.MethodPost)
+
+	r.HandleFunc("/events", handler.GetAllEvents(api)).Methods(http.MethodGet)
 	r.HandleFunc("/events", handler.CreateEvent(api)).Methods(http.MethodPost)
 	r.HandleFunc("/events/{id}", handler.GetEventById(api)).Methods(http.MethodGet)
 	r.HandleFunc("/events/{id}", handler.EditEventById(api)).Methods(http.MethodPut)
