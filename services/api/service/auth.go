@@ -1,40 +1,45 @@
 package service
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"github.com/dnielsen/campsite/pkg/model"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func (api *API) SignIn(i model.SignInInput) (string, error) {
-	// Marshal the sign in input.
-	b, err := json.Marshal(i)
-	if err != nil {
-		log.Printf("Failed to marshal sign in input: %v", err)
-		return "", err
-	}
+func (api *API) SignIn(w http.ResponseWriter, r *http.Request) {
 	// Create the request.
-	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%v:%v/sign-in", api.c.Service.Auth.Host, api.c.Service.Auth.Port), bytes.NewBuffer(b))
+	req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%v:%v/sign-in", api.c.Service.Auth.Host, api.c.Service.Auth.Port), r.Body)
 	if err != nil {
 		log.Printf("Failed to create new request: %v", err)
-		return "", err
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	// Make the request.
 	res, err := api.client.Do(req)
 	if err != nil {
 		log.Printf("Failed to do request: %v", err)
-		return "", err
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	// Read the response body.
 	readBytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		log.Printf("Failed to read response body: %v", err)
-		return "", err
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 	token := string(readBytes)
-	return token, nil
+	// Send the cookie with the token.
+	http.SetCookie(w, &http.Cookie{
+		Name:       "token",
+		Value:      token,
+		Path:       "/",
+		MaxAge:     60 * 60 * 24 * 7,
+		Secure:     false,
+		HttpOnly:   true,
+		SameSite:   0,
+	})
+	// Respond with the received status code.
+	w.WriteHeader(res.StatusCode)
 }

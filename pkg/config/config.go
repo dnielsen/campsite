@@ -44,6 +44,7 @@ type ServiceConfig struct {
 
 type JwtConfig struct {
 	SecretKey string `env:"JWT_SECRET_KEY" env-default:"V3RY_S3CR3T_K3Y"`
+	CookieName string `env:"JWT_COOKIE_NAME" env-default:"token"`
 }
 
 type Config struct {

@@ -17,7 +17,6 @@ func GetAllSessions(api service.SessionAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
 		// Marshal the sessions.
 		sessionBytes, err := json.Marshal(sessions)
 		if err != nil {
@@ -25,7 +24,6 @@ func GetAllSessions(api service.SessionAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-
 		// Respond json with the sessions.
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)

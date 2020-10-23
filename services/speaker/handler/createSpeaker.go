@@ -9,8 +9,15 @@ import (
 )
 
 // `/` POST route.
-func CreateSpeaker(datastore service.SpeakerAPI) http.HandlerFunc {
+func CreateSpeaker(api service.SpeakerAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Check the permissions (see if there's a valid JWT cookie present)
+		_, err := api.VerifyToken(r)
+		if err != nil {
+			log.Printf("Failed to verify token: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
 		// Decode the body.
 		var i model.SpeakerInput
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
@@ -19,7 +26,7 @@ func CreateSpeaker(datastore service.SpeakerAPI) http.HandlerFunc {
 			return
 		}
 		// Create the speaker in the database.
-		speaker, err := datastore.CreateSpeaker(i)
+		speaker, err := api.CreateSpeaker(i)
 		if err != nil {
 			log.Printf("Failed to create speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

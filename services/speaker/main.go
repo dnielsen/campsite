@@ -28,7 +28,7 @@ func main() {
 	db := database.NewDb(&c.Db)
 
 	// Set up the API.
-	api := service.NewAPI(db)
+	api := service.NewAPI(db, c)
 
 	// Set up the router.
 	r := mux.NewRouter()

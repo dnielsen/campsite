@@ -8,12 +8,16 @@ import (
 	"net/http"
 )
 
-const TOKEN_HEADER_NAME = "Authorization"
-
 func VerifyToken(req *http.Request, jwtConfig *config.JwtConfig) (*model.Claims, error) {
-	tokenString := req.Header.Get(TOKEN_HEADER_NAME)
+	cookie, err := req.Cookie(jwtConfig.CookieName)
+	if err != nil {
+		return nil, err
+	}
+
+	tknString := cookie.Value
+
 	claims := model.Claims{}
-	tkn, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
+	tkn, err := jwt.ParseWithClaims(tknString, &claims, func(token *jwt.Token) (interface{}, error) {
 		return jwtConfig.SecretKey, nil
 	})
 	if err != nil {

@@ -57,5 +57,5 @@ type ImageAPI interface {
 }
 
 type AuthAPI interface {
-	SignIn(i model.SignInInput) (string, error)
+	SignIn(w http.ResponseWriter, r *http.Request)
 }
