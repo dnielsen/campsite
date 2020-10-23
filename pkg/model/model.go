@@ -80,11 +80,15 @@ type SignInInput struct {
 }
 
 type Claims struct {
-	ID string `json:"id"`
-	Email string `json:"email"`
+	Me
 	jwt.StandardClaims
 }
 
 type Upload struct {
 	Url string `json:"url"`
+}
+
+type Me struct {
+	ID string `json:"id,omitempty"`
+	Email string `json:"email,omitempty"`
 }
