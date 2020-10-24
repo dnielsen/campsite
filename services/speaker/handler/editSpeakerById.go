@@ -26,7 +26,7 @@ func EditSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 		s, err := api.EditSpeakerById(id, i)
 		if err != nil {
 			log.Printf("Failed to edit speaker: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.NotFound(w, r)
 			return
 		}
 		b, err := json.Marshal(s)

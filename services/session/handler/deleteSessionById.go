@@ -15,7 +15,7 @@ func DeleteSessionById(datastore service.SessionAPI) http.HandlerFunc {
 		// Delete the session from the database.
 		if err := datastore.DeleteSessionById(id); err != nil {
 			log.Printf("Failed to delete session: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.NotFound(w, r)
 			return
 		}
 		// Respond that the session deletion has been successful.

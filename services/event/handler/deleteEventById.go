@@ -17,10 +17,9 @@ func DeleteEventById(api service.EventAPI) http.HandlerFunc {
 		// Delete the event from the database.
 		if err := api.DeleteEventById(id); err != nil {
 			log.Printf("Failed to delete event: %v", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.NotFound(w, r)
 			return
 		}
-
 		// Respond that the event has been successfully deleted.
 		w.WriteHeader(http.StatusNoContent)
 	}

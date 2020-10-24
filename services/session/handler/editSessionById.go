@@ -26,7 +26,7 @@ func EditSessionById(api service.SessionAPI) http.HandlerFunc {
 		s, err := api.EditSessionById(id, i)
 		if err != nil {
 			log.Printf("Failed to edit session: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.NotFound(w, r)
 			return
 		}
 		// Marshal the session.

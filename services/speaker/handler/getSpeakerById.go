@@ -18,7 +18,7 @@ func GetSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 		speaker, err := datastore.GetSpeakerById(id)
 		if err != nil {
 			log.Printf("Failed to get speaker by id: %v", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.NotFound(w, r)
 			return
 		}
 		// Marshal the speaker.

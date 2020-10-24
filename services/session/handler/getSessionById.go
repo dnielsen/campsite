@@ -17,7 +17,7 @@ func GetSessionById(api service.SessionAPI) http.HandlerFunc {
 		session, err := api.GetSessionById(id)
 		if err != nil {
 			log.Printf("Failed to get session: %v", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.NotFound(w, r)
 			return
 		}
 		// Marshal the session.

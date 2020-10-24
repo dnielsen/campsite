@@ -18,14 +18,14 @@ func GetEventById(api service.EventAPI) http.HandlerFunc {
 		event, err := api.GetEventById(id)
 		if err != nil {
 			log.Printf("Failed to get event: %v", err)
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			http.NotFound(w, r)
 			return
 		}
 		// Add the (unique) speakers property to the event for our <FullEvent />
 		// so that we don't need to do it on the frontend.
 		event.Speakers = getUniqueSpeakersFromSessions(event.Sessions)
 		// Marshal the event.
-		eventBytes, err := json.Marshal(event)
+		b, err := json.Marshal(event)
 		if err != nil {
 			log.Printf("Failed to marshal event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -34,6 +34,6 @@ func GetEventById(api service.EventAPI) http.HandlerFunc {
 		// Respond JSON with the event
 		w.Header().Set(CONTENT_TYPE, APPLICATION_JSON)
 		w.WriteHeader(http.StatusOK)
-		w.Write(eventBytes)
+		w.Write(b)
 	}
 }

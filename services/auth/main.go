@@ -59,6 +59,7 @@ func main() {
 
 	// Set up the server.
 	corsWrapper := cors.New(cors.Options{
+		AllowCredentials: true,
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*"},
 	})

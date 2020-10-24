@@ -23,10 +23,10 @@ func EditEventById(api service.EventAPI) http.HandlerFunc {
 			return
 		}
 		// Edit the event in the database.
-		e, err := api.EditEventById(id, i);
+		e, err := api.EditEventById(id, i)
 		if err != nil {
 			log.Printf("Failed to edit event: %v", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.NotFound(w, r)
 			return
 		}
 		b, err := json.Marshal(e)
