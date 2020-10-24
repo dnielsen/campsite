@@ -5,11 +5,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/model"
+	"log"
 	"net/http"
 )
 
 func VerifyToken(req *http.Request, jwtConfig *config.JwtConfig) (*model.Claims, error) {
 	cookie, err := req.Cookie(jwtConfig.CookieName)
+	log.Printf("cookie: %+v err: %+v", cookie, err)
 	if err != nil {
 		return nil, err
 	}
