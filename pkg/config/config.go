@@ -49,8 +49,8 @@ type JwtConfig struct {
 }
 
 type AdminConfig struct {
-	Email string `env:"ADMIN_EMAIL"`
-	Password string `env:"ADMIN_PASSWORD"`
+	Email string `env:"ADMIN_EMAIL" env-default:"admin@admin.com"`
+	Password string `env:"ADMIN_PASSWORD" env-default:"admin"`
 }
 
 type Config struct {

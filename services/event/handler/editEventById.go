@@ -29,13 +29,14 @@ func EditEventById(api service.EventAPI) http.HandlerFunc {
 			http.NotFound(w, r)
 			return
 		}
+		// Marshal the event.
 		b, err := json.Marshal(e)
 		if err != nil {
 			log.Printf("Failed to marshal event: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond with the edited event.
+		// Respond JSON with the edited event.
 		w.Header().Set(CONTENT_TYPE, APPLICATION_JSON)
 		w.WriteHeader(http.StatusOK)
 		w.Write(b)

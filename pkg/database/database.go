@@ -51,30 +51,25 @@ func NewDb(c *config.DbConfig) *gorm.DB {
 
 // The same as NewDb but additionally migrates the database and creates
 // mock data in the database.
-func NewDevDb(c *config.DbConfig) *gorm.DB {
-	db := NewDb(c)
-
+func NewDevDb(c *config.Config) *gorm.DB {
+	db := NewDb(&c.Db)
 	// Migrate the database.
 	if err := db.AutoMigrate(&model.Event{}, &model.Speaker{}, &model.Session{}, &model.User{}); err != nil {
 		log.Fatalf("Failed to auto migrate: %v", err)
 	} else {
 		log.Println("Auto migrated database")
 	}
-
 	// Create the only user in the database that has permissions to create/edit/delete stuff.
-	p := "deepblue"
-	u, err := newUser("dave@platformd.com", p)
+	u, err := newUser(c.Admin.Email, c.Admin.Password)
 	if err != nil {
 		log.Printf("Failed to auto create user: %v", err)
 	} else {
 		if err := db.Create(&u).Error; err != nil {
 			log.Printf("Failed to create mock user in database: %v", err)
 		} else {
-			log.Printf("Created user %v:%v in database", u.Email, p)
+			log.Printf("Created admin user %v:%v in database", c.Admin.Email, c.Admin.Password)
 		}
 	}
-
-
 	// Create a mock event in the database.
 	mockEvent := newMockEvent()
 	if err := db.Create(&mockEvent).Error; err != nil {
@@ -85,7 +80,6 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	} else {
 		log.Println("Created mock event in database")
 	}
-
 	// Create a mock OpenCloudConf event in the database.
 	mockOpenCloudConfEvent := newMockOpenCloudConfEvent()
 	if err := db.Create(&mockOpenCloudConfEvent).Error; err != nil {
@@ -96,7 +90,6 @@ func NewDevDb(c *config.DbConfig) *gorm.DB {
 	} else {
 		log.Println("Created OpenCloudConf mock event in database")
 	}
-
 	return db
 }
 
@@ -184,7 +177,6 @@ func newMockOpenCloudConfEvent() model.Event {
 	loc := time.FixedZone("UTC-7", -7*60*60)
 	eventStartDate := time.Date(2012, time.May, 1, 9, 0, 0, 0, loc)
 	eventEndDate := time.Date(2012, time.May, 2, 5, 0, 0, 0, loc)
-
 	// Day 1
 	ss1 := newSession("Best of Breed: Why Open Clouds are Better", eventStartDate, time.Minute*30, "Navigation is one the most fundamental element to any Android application. We will talk about how to use Android Navigation component to get this crucial aspect of our apps right, maintainable and easy to reason with.\n\nWe will talk about how the navigation component allows us to isolate the navigation from rest of the application logic and gives a nice overview of the whole application navigation in one single graph.", "https://apple.com", spkDave)
 	ss2 := newSession("The State of the Open Cloud", *ss1.EndDate, time.Minute*45, "In 90 minutes we'll debunk the myth of iOS being secure-by-default, walk through the various techniques of penetration testing, try out a plethora of tools for security testing and learn how to make our systems as robust as possible.", "https://apple.com", spkRandy)

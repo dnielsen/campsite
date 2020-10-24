@@ -13,7 +13,6 @@ func DeleteEventById(api service.EventAPI) http.HandlerFunc {
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
-
 		// Delete the event from the database.
 		if err := api.DeleteEventById(id); err != nil {
 			log.Printf("Failed to delete event: %v", err)
