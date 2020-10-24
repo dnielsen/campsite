@@ -20,6 +20,11 @@ RUN go build \
   -o /bin/service \
   ./${SERVICE}
 
+# We need the images directory so that we can store our uploads there since
+# we're not using Amazon S3 or any other cloud storage provider.
+# Since we're using `scratch` image, we can't execute `mkdir` there (there's no `/bin/sh`).
+RUN mkdir /images
+
 # strip program removes information from executable binary programs
 # and object files that is not essential or required for normal
 # and correct execution, thus potentially resulting in better
@@ -38,5 +43,8 @@ RUN upx -q -9 /bin/service
 # It doesn't contain any folders/files.
 FROM scratch
 COPY --from=builder /bin/service /bin/service
+# Since we're using `scratch` image, we can't execute `mkdir` here (there's no `/bin/sh`).
+COPY --from=builder ./images /images
+
 
 ENTRYPOINT ["/bin/service"]

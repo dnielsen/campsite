@@ -7,21 +7,35 @@ services:
       - "3000:3000"
     restart: always
     depends_on:
-      - postgres
-      - event
-  event:
-    container_name: campsite-event
-    build: services/event
+      - api
+  api:
+    container_name: campsite-api
+    build: services/api
     ports:
-      - "4444:4444"
+      - "1111:1111"
     restart: always
     depends_on:
       postgres:
         condition: service_healthy
+      auth:
+        condition: service_started
+      event:
+        condition: service_started
       speaker:
         condition: service_started
       session:
         condition: service_started
+    env_file:
+      - docker.env
+  auth:
+    container_name: campsite-auth
+    build: services/auth
+    ports:
+      - "2222:2222"
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
     env_file:
       - docker.env
   speaker:
@@ -35,6 +49,17 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+  event:
+    container_name: campsite-event
+    build: services/event
+    ports:
+      - "4444:4444"
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - docker.env
   session:
     container_name: campsite-session
     build: services/session

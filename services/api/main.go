@@ -28,7 +28,7 @@ func main() {
 	// We're running `database.NewDevDb` here so that `GORM` migrates the database for us
 	// and creates mock events there.
 	// It seems the least confusing to put it here rather than say the event or speaker service.
-	_ = database.NewDevDb(&c.Db)
+	_ = database.NewDevDb(c)
 
 	// Set up the router.
 	r := mux.NewRouter()
