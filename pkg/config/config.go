@@ -48,11 +48,17 @@ type JwtConfig struct {
 	HeaderName string `env:"JWT_HEADER_NAME" env-default:"Authorization"`
 }
 
+type AdminConfig struct {
+	Email string `env:"ADMIN_EMAIL"`
+	Password string `env:"ADMIN_PASSWORD"`
+}
+
 type Config struct {
 	Db      DbConfig
 	Service ServiceConfig
 	Tracing TracingConfig
 	Jwt JwtConfig
+	Admin AdminConfig
 }
 
 // Read the environment variables into a `Config` struct.
