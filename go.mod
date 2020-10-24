@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/dnielsen/campsite/services/api v0.0.0-20201024175842-cfd9b2ebba8d // indirect
 	github.com/gofrs/uuid v3.3.0+incompatible // indirect
 	github.com/google/uuid v1.1.2
 	github.com/gorilla/mux v1.8.0

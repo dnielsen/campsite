@@ -66,8 +66,6 @@ services:
     ports:
       - "5555:5555"
     restart: always
-    environment:
-      - SERVER_PORT=5555
     env_file:
       - docker.env
     depends_on:

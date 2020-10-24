@@ -12,6 +12,8 @@ ENV GO111MODULE=on \
 WORKDIR /src
 COPY . .
 
+RUN go mod init github.com/dnielsen/campsite/services/auth
+
 RUN go build \
   -trimpath \
   -ldflags "-s -w -extldflags '-static'" \
