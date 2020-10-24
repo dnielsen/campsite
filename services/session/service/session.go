@@ -49,7 +49,7 @@ func (api *API) CreateSession(i model.SessionInput) (*model.Session, error) {
 	return &session, nil
 }
 
-func (api *API) EditSessionById(id string, i model.SessionInput) error {
+func (api *API) EditSessionById(id string, i model.SessionInput) (*model.Session, error) {
 	// Update the session (besides speakers).
 	session := model.Session{
 		ID:          id,
@@ -61,7 +61,7 @@ func (api *API) EditSessionById(id string, i model.SessionInput) error {
 		EventID:     i.EventId,
 	}
 	if err := api.db.Updates(&session).Error; err != nil {
-		return err
+		return nil, err
 	}
 	// Update the session speakers. We're doing it this way instead of adding it to the
 	// session struct because otherwise we would just add new speaker ids to the session_speaker table
@@ -70,11 +70,11 @@ func (api *API) EditSessionById(id string, i model.SessionInput) error {
 	// Get the speakers with just their ids.
 	var speakers []model.Speaker
 	if err := api.db.Where("id IN ?", i.SpeakerIds).Select("id").Find(&speakers).Error; err != nil {
-		return err
+		return &session, err
 	}
 	// Update the speakers
 	if err := api.db.Model(&session).Association("Speakers").Replace(speakers); err != nil {
-		return err
+		return &session, err
 	}
-	return nil
+	return &session, nil
 }

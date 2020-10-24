@@ -23,12 +23,21 @@ func EditSpeakerById(api service.SpeakerAPI) http.HandlerFunc {
 			return
 		}
 		// Edit the speaker in the database.
-		if err := api.EditSpeakerById(id, i); err != nil {
+		s, err := api.EditSpeakerById(id, i)
+		if err != nil {
 			log.Printf("Failed to edit speaker: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		b, err := json.Marshal(s)
+		if err != nil {
+			log.Printf("Failed to marshal speaker: %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		// Respond that the speaker has been edited successfully.
-		w.WriteHeader(http.StatusNoContent)
+		w.Header().Set(CONTENT_TYPE, APPLICATION_JSON)
+		w.WriteHeader(http.StatusOK)
+		w.Write(b)
 	}
 }

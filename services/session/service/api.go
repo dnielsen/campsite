@@ -4,7 +4,6 @@ import (
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/model"
 	"gorm.io/gorm"
-	"net/http"
 )
 
 type API struct {
@@ -18,14 +17,9 @@ func NewAPI(db *gorm.DB, c *config.Config) *API {
 }
 
 type SessionAPI interface {
-	AuthAPI
 	GetAllSessions() (*[]model.Session, error)
 	CreateSession(i model.SessionInput) (*model.Session, error)
 	GetSessionById(id string) (*model.Session, error)
-	EditSessionById(id string, i model.SessionInput) error
+	EditSessionById(id string, i model.SessionInput) (*model.Session, error)
 	DeleteSessionById(id string) error
-}
-
-type AuthAPI interface {
-	VerifyToken(r *http.Request) (*model.Claims, error)
 }

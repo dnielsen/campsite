@@ -42,7 +42,7 @@ func (api *API) CreateSpeaker(i model.SpeakerInput) (*model.Speaker, error) {
 	return &s, nil
 }
 
-func (api *API) EditSpeakerById(id string, i model.SpeakerInput) error {
+func (api *API) EditSpeakerById(id string, i model.SpeakerInput) (*model.Speaker, error) {
 	s := model.Speaker{
 		ID:       id,
 		Name:     i.Name,
@@ -51,7 +51,7 @@ func (api *API) EditSpeakerById(id string, i model.SpeakerInput) error {
 		Photo:    i.Photo,
 	}
 	if err := api.db.Updates(&s).Error; err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return &s, nil
 }

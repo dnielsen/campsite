@@ -1,44 +1,58 @@
 package handler
 
 import (
-	"encoding/json"
-	"github.com/dnielsen/campsite/pkg/model"
-	"github.com/dnielsen/campsite/services/api/service"
+	"fmt"
+	"github.com/dnielsen/campsite/pkg/config"
+	"github.com/dnielsen/campsite/pkg/jwt"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-// `/events/{id}` PUT route. It communicates with the event service only.
-func EditEventById(api service.EventAPI) http.HandlerFunc {
+// `/events/{id}` PUT route. It's a protected route. It communicates with the event service only.
+func EditEventById(c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Verify the JWT token since it's a protected route.
+		tokenCookie, err := r.Cookie(c.Jwt.CookieName)
+		if err != nil {
+			log.Printf("Failed to get cookie: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
+		_, err = jwt.VerifyToken(tokenCookie.Value, &c.Jwt)
+		if err != nil {
+			log.Printf("Failed to verify token: %v", err)
+			http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
+			return
+		}
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
-		// Decode the body.
-		var i model.EventInput
-		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
-			log.Printf("Failed to unmarshal event input")
+		// Create the request that calls our event service to edit it.
+		req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("http://%v:%v/%v", c.Service.Event.Host, c.Service.Event.Port, id), r.Body)
+		if err != nil {
+			log.Printf("Failed to create new request: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Edit the event in the database.
-		event, err := api.EditEventById(id, i);
+		// Make the request.
+		res, err := http.DefaultClient.Do(req)
 		if err != nil {
-			log.Printf("Failed to edit event: %v", err)
+			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Marshal the event.
-		b, err := json.Marshal(event)
+		// Read the response body (hopefully our edited event).
+		b, err := ioutil.ReadAll(res.Body)
 		if err != nil {
-			log.Printf("Failed to marshal event: %v", err)
+			log.Printf("Failed to read body: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond JSON with the edited event.
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+		// Respond with the received response (hopefully it's 200 Status OK).
+		w.Header().Set(CONTENT_TYPE, r.Header.Get(CONTENT_TYPE))
+		w.WriteHeader(res.StatusCode)
 		w.Write(b)
 	}
 }

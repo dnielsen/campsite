@@ -239,7 +239,7 @@ func newEvent(name string, description string, registrationUrl string, startDate
 	}
 }
 
-func newSession(name string, startDate time.Time, duration time.Duration, description string, url string, speakers ...*model.Speaker) model.Session {
+func newSession(name string, startDate time.Time, duration time.Duration, description string, url string, speakers ...model.Speaker) model.Session {
 	endDate := startDate.Add(duration)
 	return model.Session{
 		ID:          uuid.New().String(),
@@ -252,8 +252,8 @@ func newSession(name string, startDate time.Time, duration time.Duration, descri
 	}
 }
 
-func newSpeaker(name string, bio string, headline string, photo string) *model.Speaker {
-	return &model.Speaker{
+func newSpeaker(name string, bio string, headline string, photo string) model.Speaker {
+	return model.Speaker{
 		ID:       uuid.New().String(),
 		Name:     name,
 		Bio:      bio,

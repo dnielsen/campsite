@@ -58,7 +58,7 @@ func (api *API) DeleteEventById(id string) error {
 	return nil
 }
 
-func (api *API) EditEventById(id string, i model.EventInput) error {
+func (api *API) EditEventById(id string, i model.EventInput) (*model.Event, error) {
 	e := model.Event{
 		ID:            id,
 		Name:          i.Name,
@@ -70,7 +70,7 @@ func (api *API) EditEventById(id string, i model.EventInput) error {
 		Address:       i.Address,
 	}
 	if err := api.db.Updates(&e).Error; err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return &e, nil
 }

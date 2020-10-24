@@ -1,32 +1,40 @@
 package handler
 
 import (
-	"encoding/json"
-	"github.com/dnielsen/campsite/services/api/service"
+	"fmt"
+	"github.com/dnielsen/campsite/pkg/config"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-// `/events` GET route. It communicates with the events service only.
-func GetAllEvents(api service.EventAPI) http.HandlerFunc {
+// `/events` GET route. It communicates with the event service only.
+func GetAllEvents(c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Get all events from the events service.
-		events, err := api.GetAllEvents()
+		// Create the request that calls our event service to get the events.
+		req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", c.Service.Event.Host, c.Service.Event.Port), nil)
 		if err != nil {
-			log.Printf("Failed to get events: %v", err)
+			log.Printf("Failed to create new request: %v", err)
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		// Make the request.
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Marshal the events.
-		b, err := json.Marshal(events)
+		// Read the response body (hopefully it's our events).
+		b, err := ioutil.ReadAll(res.Body)
 		if err != nil {
-			log.Printf("Failed to marshal events: %v", err)
+			log.Printf("Failed to read body: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond json with the events.
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+		// Respond with the received response (hopefully it's 200 Status OK).
+		w.Header().Set(CONTENT_TYPE, r.Header.Get(CONTENT_TYPE))
+		w.WriteHeader(res.StatusCode)
 		w.Write(b)
 	}
 }

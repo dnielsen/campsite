@@ -18,14 +18,14 @@ func SignIn(api service.AuthAPI) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Validate the credentials and generate the JWT token.
+		// Validate the credentials, generate the JWT token, and add it to the header.
 		token, err := api.SignIn(i)
 		if err != nil {
 			log.Printf("Failed to sign in: %v", err)
 			http.Error(w, err.Error(), http.StatusUnauthorized)
 			return
 		}
-		// Respond plain text with the token
+		// Respond plain text with the token.
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(token))
 	}

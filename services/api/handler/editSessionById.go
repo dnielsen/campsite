@@ -1,44 +1,58 @@
 package handler
 
 import (
-	"encoding/json"
-	"github.com/dnielsen/campsite/pkg/model"
-	"github.com/dnielsen/campsite/services/api/service"
+	"fmt"
+	"github.com/dnielsen/campsite/pkg/config"
+	"github.com/dnielsen/campsite/pkg/jwt"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-// `/sessions/{id}` PUT route. It communicates with the session service only.
-func EditSessionById(api service.SessionAPI) http.HandlerFunc {
+// `/sessions/{id}` PUT route. It's a protected route. It communicates with the session service only.
+func EditSessionById(c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Verify the JWT token since it's a protected route.
+		tokenCookie, err := r.Cookie(c.Jwt.CookieName)
+		if err != nil {
+			log.Printf("Failed to get cookie: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
+		_, err = jwt.VerifyToken(tokenCookie.Value, &c.Jwt)
+		if err != nil {
+			log.Printf("Failed to verify token: %v", err)
+			http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
+			return
+		}
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
-		// Decode the body.
-		var i model.SessionInput
-		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
-			log.Printf("Failed to unmarshal session input")
+		// Create the request that calls our session service to edit it.
+		req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("http://%v:%v/%v", c.Service.Session.Host, c.Service.Session.Port, id), r.Body)
+		if err != nil {
+			log.Printf("Failed to create new request: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Edit the session in the database.
-		s, err := api.EditSessionById(id, i)
+		// Make the request.
+		res, err := http.DefaultClient.Do(req)
 		if err != nil {
-			log.Printf("Failed to edit session: %v", err)
+			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Marshal the session
-		b, err := json.Marshal(s)
+		// Read the response body (hopefully our edited session event).
+		b, err := ioutil.ReadAll(res.Body)
 		if err != nil {
-			log.Printf("Failed to marshal session: %v", err)
+			log.Printf("Failed to read body: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		// Respond JSON with the session.
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+		// Respond with the received response (hopefully it's 200 Status OK).
+		w.Header().Set(CONTENT_TYPE, r.Header.Get(CONTENT_TYPE))
+		w.WriteHeader(res.StatusCode)
 		w.Write(b)
 	}
 }

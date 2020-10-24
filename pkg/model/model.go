@@ -55,7 +55,7 @@ type Session struct {
 	Url         string     `json:"url" gorm:"not null"`
 	Event       Event      `json:"event,omitempty" gorm:"constraint:OnDelete:CASCADE"`
 	EventID     string     `json:"eventId,omitempty" gorm:"type:uuid;not null"`
-	Speakers    []*Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
+	Speakers    []Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 type SessionInput struct {

@@ -29,7 +29,7 @@ func GetSpeakerById(datastore service.SpeakerAPI) http.HandlerFunc {
 			return
 		}
 		// Respond json with the speaker.
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set(CONTENT_TYPE, APPLICATION_JSON)
 		w.WriteHeader(http.StatusOK)
 		w.Write(speakerBytes)
 	}

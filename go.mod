@@ -13,6 +13,7 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/openzipkin/zipkin-go v0.2.5
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/rs/cors v1.7.0
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/stretchr/testify v1.6.1 // indirect
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897

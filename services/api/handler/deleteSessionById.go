@@ -1,25 +1,48 @@
 package handler
 
 import (
-	"github.com/dnielsen/campsite/services/api/service"
+	"fmt"
+	"github.com/dnielsen/campsite/pkg/config"
+	"github.com/dnielsen/campsite/pkg/jwt"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
-// `/sessions/{id}` DELETE route. It communicates with the session service only.
-func DeleteSessionById(api service.SessionAPI) http.HandlerFunc {
+// `/sessions/{id}` DELETE route. It's a protected route. It communicates with the session service only.
+func DeleteSessionById(c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// Verify the JWT token since it's a protected route.
+		tokenCookie, err := r.Cookie(c.Jwt.CookieName)
+		if err != nil {
+			log.Printf("Failed to get cookie: %v", err)
+			http.Error(w, err.Error(), http.StatusForbidden)
+			return
+		}
+		_, err = jwt.VerifyToken(tokenCookie.Value, &c.Jwt)
+		if err != nil {
+			log.Printf("Failed to verify token: %v", err)
+			http.Error(w, http.StatusText(http.StatusForbidden), http.StatusForbidden)
+			return
+		}
 		// Get the id parameter.
 		vars := mux.Vars(r)
 		id := vars[ID]
-		// Request the session service to delete the session from the database.
-		if err := api.DeleteSessionById(id); err != nil {
-			log.Printf("Failed to delete session: %v", err)
+		// Create the request that calls our session service to delete it.
+		req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("http://%v:%v/%v", c.Service.Session.Host, c.Service.Session.Port, id), nil)
+		if err != nil {
+			log.Printf("Failed to create new request: %v", err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		// Respond that the session has been successfully deleted.
-		w.WriteHeader(http.StatusNoContent)
+		// Make the request.
+		res, err := http.DefaultClient.Do(req)
+		if err != nil {
+			log.Printf("Failed to do request: %v", err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		// Respond with the received response (hopefully it's 204 No Content).
+		w.WriteHeader(res.StatusCode)
 	}
 }
