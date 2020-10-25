@@ -90,7 +90,7 @@ func main() {
 		AllowCredentials: true,
 		AllowedOrigins: []string{"http://localhost:3000", "http://localhost:1111"},
 		AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
-		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*", "Authorization", "Cookies"},
+		AllowedHeaders: []string{"Content-Type", "Origin", "Accept", "*", "Authorization", "Cookie"},
 	})
 
 	// Set up the server.
