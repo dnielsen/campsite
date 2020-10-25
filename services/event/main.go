@@ -27,7 +27,7 @@ func main() {
 	c := config.NewConfig()
 
 	// Create a new database connection.
-	db := database.NewDb(&c.Db)
+	db := database.NewDevDb(c)
 
 	// Set up the API.
 	api := service.NewAPI(db, c)
@@ -64,6 +64,7 @@ func main() {
 	// If the event creation succeeds, it sends the created event and status 201 (Created).
 	// It doesn't validate the input currently.
 	r.HandleFunc("/", handler.CreateEvent(api)).Methods(http.MethodPost)
+
 	// GetEventById handler retrieves an event with a given id from the database.
 	// If it can't find it, it's gonna return an error, and send status 404 (Not Found).
 	// We could optimize this by just returning the id of the created event
@@ -76,11 +77,17 @@ func main() {
 	// return an error, and status 404 (Not Found).
 	// It doesn't validate the input currently.
 	r.HandleFunc("/{id}", handler.EditEventById(api)).Methods(http.MethodPut)
+
+
+
 	// DeleteEventById handler deletes an event with a given id in the database.
 	// It sends a status 204 (No Content) if the delete has been performed successfully.
 	// It doesn't return the deleted event. If the event couldn't be found, it's gonna
 	// return an error, and status 404 (Not Found).
 	r.HandleFunc("/{id}", handler.DeleteEventById(api)).Methods(http.MethodDelete)
+
+
+
 
 	// Set up the server.
 	corsWrapper := cors.New(cors.Options{

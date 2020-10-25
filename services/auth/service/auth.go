@@ -56,8 +56,10 @@ func (api *API) checkPasswordHash(passwordHash string, password string) error {
 
 func (api *API) GenerateToken(u *model.User) (string, error) {
 	claims := model.Claims{
-		ID: u.ID,
-		Email: u.Email,
+		Me: model.Me{
+			ID: u.ID,
+			Email: u.Email,
+		},
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(TOKEN_DURATION).Unix(),
 			IssuedAt: time.Now().Unix(),
