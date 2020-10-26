@@ -231,7 +231,7 @@ func newEvent(name string, description string, registrationUrl string, startDate
 	}
 }
 
-func newSession(name string, startDate time.Time, duration time.Duration, description string, url string, speakers ...model.Speaker) model.Session {
+func newSession(name string, startDate time.Time, duration time.Duration, description string, videoUrl string, speakers ...model.Speaker) model.Session {
 	endDate := startDate.Add(duration)
 	return model.Session{
 		ID:          uuid.New().String(),
@@ -239,7 +239,7 @@ func newSession(name string, startDate time.Time, duration time.Duration, descri
 		StartDate:   &startDate,
 		EndDate:     &endDate,
 		Description: description,
-		Url:         url,
+		VideoUrl:    videoUrl,
 		Speakers:    speakers,
 	}
 }

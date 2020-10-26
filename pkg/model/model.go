@@ -6,11 +6,11 @@ import (
 )
 
 type Speaker struct {
-	ID       string    `json:"id" gorm:"type:uuid"`
-	Name     string    `json:"name" gorm:"not null"`
-	Bio      string    `json:"bio" gorm:"not null"`
-	Headline string    `json:"headline" gorm:"not null"`
-	Photo    string    `json:"photo" gorm:"not null"`
+	ID       string    `json:"id,omitempty" gorm:"type:uuid"`
+	Name     string    `json:"name,omitempty" gorm:"not null"`
+	Bio      string    `json:"bio,omitempty" gorm:"not null"`
+	Headline string    `json:"headline,omitempty" gorm:"not null"`
+	Photo    string    `json:"photo,omitempty" gorm:"not null"`
 	Sessions []Session `json:"sessions,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
@@ -22,16 +22,16 @@ type SpeakerInput struct {
 }
 
 type Event struct {
-	ID              string     `json:"id" gorm:"type:uuid"`
-	Name            string     `json:"name" gorm:"not null"`
-	Description     string     `json:"description" gorm:"not null"`
-	RegistrationUrl string     `json:"registrationUrl" gorm:"not null"`
-	StartDate       *time.Time `json:"startDate" gorm:"not null"`
-	EndDate         *time.Time `json:"endDate" gorm:"not null"`
-	Photo           string     `json:"photo" gorm:"not null"`
-	OrganizerName   string     `json:"organizerName" gorm:"not null"`
-	Address         *string    `json:"address"`
-	Sessions        []Session  `json:"sessions"`
+	ID              string     `json:"id,omitempty" gorm:"type:uuid"`
+	Name            string     `json:"name,omitempty" gorm:"not null"`
+	Description     string     `json:"description,omitempty" gorm:"not null"`
+	RegistrationUrl string     `json:"registrationUrl,omitempty" gorm:"not null"`
+	StartDate       *time.Time `json:"startDate,omitempty" gorm:"not null"`
+	EndDate         *time.Time `json:"endDate,omitempty" gorm:"not null"`
+	Photo           string     `json:"photo,omitempty" gorm:"not null"`
+	OrganizerName   string     `json:"organizerName,omitempty" gorm:"not null"`
+	Address         *string    `json:"address,omitempty"`
+	Sessions        []Session  `json:"sessions,omitempty"`
 	Speakers        []Speaker  `json:"speakers,omitempty" gorm:"-"`
 }
 
@@ -47,12 +47,12 @@ type EventInput struct {
 }
 
 type Session struct {
-	ID          string     `gorm:"primaryKey;type:uuid" json:"id"`
-	Name        string     `json:"name" gorm:"not null"`
-	StartDate   *time.Time `json:"startDate" gorm:"not null"`
-	EndDate     *time.Time `json:"endDate" gorm:"not null"`
-	Description string     `json:"description" gorm:"not null"`
-	Url         string     `json:"url" gorm:"not null"`
+	ID          string     `json:"id,omitempty" gorm:"primaryKey;type:uuid"`
+	Name        string     `json:"name,omitempty" gorm:"not null"`
+	StartDate   *time.Time `json:"startDate,omitempty" gorm:"not null"`
+	EndDate     *time.Time `json:"endDate,omitempty" gorm:"not null"`
+	Description string     `json:"description,omitempty" gorm:"not null"`
+	VideoUrl    string     `json:"url,omitempty" gorm:"not null"`
 	Event       Event      `json:"event,omitempty" gorm:"constraint:OnDelete:CASCADE"`
 	EventID     string     `json:"eventId,omitempty" gorm:"type:uuid;not null"`
 	Speakers    []Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
@@ -63,7 +63,7 @@ type SessionInput struct {
 	StartDate   *time.Time `json:"startDate,omitempty"`
 	EndDate     *time.Time `json:"endDate,omitempty"`
 	Description string     `json:"description,omitempty"`
-	Url         string     `json:"url,omitempty"`
+	VideoUrl    string     `json:"videoUrl,omitempty"`
 	SpeakerIds  []string   `json:"speakerIds,omitempty"`
 	EventId     string     `json:"eventId,omitempty"`
 }

@@ -40,7 +40,7 @@ func (api *API) CreateSession(i model.SessionInput) (*model.Session, error) {
 		EndDate:     i.EndDate,
 		Description: i.Description,
 		EventID:     i.EventId,
-		Url:         i.Url,
+		VideoUrl:    i.VideoUrl,
 		Speakers:    speakers,
 	}
 	if err := api.db.Create(&session).Error; err != nil {
@@ -57,7 +57,7 @@ func (api *API) EditSessionById(id string, i model.SessionInput) (*model.Session
 		StartDate:   i.StartDate,
 		EndDate:     i.EndDate,
 		Description: i.Description,
-		Url:         i.Url,
+		VideoUrl:    i.VideoUrl,
 		EventID:     i.EventId,
 	}
 	if err := api.db.Updates(&session).Error; err != nil {
