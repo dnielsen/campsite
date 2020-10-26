@@ -6,7 +6,7 @@ type Role string
 
 const (
 	ADMIN Role = "ADMIN"
-	USER = "USER"
+	USER       = "USER"
 )
 
 

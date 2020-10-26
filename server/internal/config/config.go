@@ -16,7 +16,7 @@ type DbConfig struct {
 
 type ServerConfig struct {
 	Tracing TracingConfig
-	Port string `env:"SERVER_PORT" env-default:"4444"`
+	Port    string `env:"SERVER_PORT" env-default:"4444"`
 }
 
 type TracingConfig struct {

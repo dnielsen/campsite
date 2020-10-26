@@ -24,7 +24,7 @@ func (api *API) CreateUser(i SignUpInput) (*User, error)  {
 		ID:           uuid.New().String(),
 		Email:        i.Email,
 		PasswordHash: hash,
-		Role: role.USER,
+		Role:         role.USER,
 	}
 	if err := api.db.Create(&u).Error; err != nil {
 		return nil, err

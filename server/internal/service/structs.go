@@ -9,15 +9,15 @@ import (
 
 
 type Session struct {
-	ID          string    `gorm:"primaryKey;type:uuid" json:"id"`
-	Name        string    `json:"name" gorm:"not null"`
+	ID          string     `gorm:"primaryKey;type:uuid" json:"id"`
+	Name        string     `json:"name" gorm:"not null"`
 	StartDate   *time.Time `json:"startDate" gorm:"not null"`
 	EndDate     *time.Time `json:"endDate" gorm:"not null"`
-	Description string    `json:"description" gorm:"not null"`
-	Url         string    `json:"url" gorm:"not null"`
-	Event 		Event `json:"event,omitempty" gorm:"constraint:OnDelete:CASCADE"`
-	EventID 	string `json:"eventId,omitempty" gorm:"type:uuid;not null"`
-	Speakers    []Speaker `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
+	Description string     `json:"description" gorm:"not null"`
+	Url         string     `json:"url" gorm:"not null"`
+	Event       Event      `json:"event,omitempty" gorm:"constraint:OnDelete:CASCADE"`
+	EventID     string     `json:"eventId,omitempty" gorm:"type:uuid;not null"`
+	Speakers    []Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
 }
 
 type SessionInput struct {
@@ -36,19 +36,19 @@ type Upload struct {
 }
 
 type Event struct {
-	ID            string     `json:"id" gorm:"type:uuid"`
-	Name          string     `json:"name" gorm:"not null"`
-	Description   string     `json:"description" gorm:"not null"`
-	RegistrationUrl string `json:"registrationUrl" gorm:"not null"`
-	StartDate     *time.Time `json:"startDate" gorm:"not null"`
-	EndDate       *time.Time `json:"endDate" gorm:"not null"`
-	Photo         string     `json:"photo" gorm:"not null"`
-	OrganizerName string     `json:"organizerName" gorm:"not null"`
-	Address       *string    `json:"address"`
-	Sessions      []Session  `json:"sessions"`
-	Speakers []Speaker `json:"speakers,omitempty" gorm:"-"`
-	User 		User `json:"user,omitempty" gorm:"constraint:OnDelete:CASCADE"`
-	UserID 	string `json:"userId,omitempty" gorm:"type:uuid;not null"`
+	ID              string     `json:"id" gorm:"type:uuid"`
+	Name            string     `json:"name" gorm:"not null"`
+	Description     string     `json:"description" gorm:"not null"`
+	RegistrationUrl string     `json:"registrationUrl" gorm:"not null"`
+	StartDate       *time.Time `json:"startDate" gorm:"not null"`
+	EndDate         *time.Time `json:"endDate" gorm:"not null"`
+	Photo           string     `json:"photo" gorm:"not null"`
+	OrganizerName   string     `json:"organizerName" gorm:"not null"`
+	Address         *string    `json:"address"`
+	Sessions        []Session  `json:"sessions"`
+	Speakers        []Speaker  `json:"speakers,omitempty" gorm:"-"`
+	User            User       `json:"user,omitempty" gorm:"constraint:OnDelete:CASCADE"`
+	UserID          string     `json:"userId,omitempty" gorm:"type:uuid;not null"`
 
 }
 
@@ -91,11 +91,11 @@ type SignUpInput struct {
 }
 
 type User struct {
-	ID string `json:"id" gorm:"type:uuid;not null"`
-	Email string `json:"email"`
-	PasswordHash string `json:"passwordHash"`
-	Events []Event `json:"events"`
-	Role role.Role `json:"role"`
+	ID           string    `json:"id" gorm:"type:uuid;not null"`
+	Email        string    `json:"email"`
+	PasswordHash string    `json:"passwordHash"`
+	Events       []Event   `json:"events"`
+	Role         role.Role `json:"role"`
 }
 
 // Token will expire in 7 days from now.

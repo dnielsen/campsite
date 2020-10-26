@@ -10,7 +10,7 @@ services:
       - server
   server:
     container_name: campsite-server
-    build: ./packages/server
+    build: server
     ports:
       - "4444:4444"
     restart: always

@@ -10,8 +10,8 @@ packages/ui/yarn-error.log*
 
 # Server
 #packages/server/images
-packages/server/images/*
-!packages/server/images/golang.png
+images/*
+!images/011771327-golang-2.png
 
 # In case node_modules are mistakenly downloaded into the project root directory
 node_modules
