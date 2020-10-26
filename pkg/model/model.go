@@ -52,7 +52,7 @@ type Session struct {
 	StartDate   *time.Time `json:"startDate" gorm:"not null"`
 	EndDate     *time.Time `json:"endDate" gorm:"not null"`
 	Description string     `json:"description" gorm:"not null"`
-	VideoUrl    string     `json:"url" gorm:"not null"`
+	VideoUrl    string     `json:"videoUrl" gorm:"not null"`
 	Event       Event      `json:"event,omitempty" gorm:"constraint:OnDelete:CASCADE"`
 	EventID     string     `json:"eventId,omitempty" gorm:"type:uuid;not null"`
 	Speakers    []Speaker  `json:"speakers,omitempty" gorm:"many2many:session_speakers;constraint:OnDelete:CASCADE;"`
