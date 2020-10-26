@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/openzipkin/zipkin-go"
-	"github.com/openzipkin/zipkin-go/model"
 	reporterHttp "github.com/openzipkin/zipkin-go/reporter/http"
 	"log"
 )
@@ -13,16 +12,16 @@ import (
 // 1 means 100% of traces will be recorded.
 const TRACE_RECORD_RATE = 1
 
-func NewTracer(serviceName string, servicePort int, c *config.Config) *zipkin.Tracer {
+func NewTracer(serviceName string, servicePort string, c *config.Config) *zipkin.Tracer {
 	endpointUrl := fmt.Sprintf("http://%v:9411/api/v2/spans", c.Tracing.Host)
 	// The reporter sends traces to the zipkin server.
 	reporter := reporterHttp.NewReporter(endpointUrl)
 
 	// Local endpoint represents the local service information.
 	// The port needs to be of type `uint16` so we're converting it.
-	localEndpoint := &model.Endpoint{
-		ServiceName: serviceName,
-		Port:        uint16(servicePort),
+	localEndpoint, err := zipkin.NewEndpoint(serviceName, servicePort)
+	if err != nil {
+		log.Fatalf("Failed to create endpoint: %v", err)
 	}
 
 	// TRACE_RECORD_RATE is a float from 0 to 1.
@@ -33,9 +32,7 @@ func NewTracer(serviceName string, servicePort int, c *config.Config) *zipkin.Tr
 	}
 
 	// Create a new tracer.
-	t, err := zipkin.NewTracer(reporter, zipkin.WithSampler(sampler), zipkin.WithLocalEndpoint(localEndpoint), zipkin.WithTags(map[string]string{
-		"hi": "hello",
-	}))
+	t, err := zipkin.NewTracer(reporter, zipkin.WithSampler(sampler), zipkin.WithLocalEndpoint(localEndpoint))
 	if err != nil {
 		log.Fatalf("Failed to create tracer: %v", err)
 	}
