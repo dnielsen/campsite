@@ -71,8 +71,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    environment:
-      - CAMPSITE_SERVICE=session
   postgres:
     image: postgres:latest
     ports:

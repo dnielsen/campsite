@@ -2,17 +2,15 @@ FROM golang:1.15.3 AS builder
 
 ARG SERVICE
 
+WORKDIR /src
+COPY . .
+
 RUN apt-get -qq update && apt-get -yqq install upx
 
 ENV GO111MODULE=on \
   CGO_ENABLED=0 \
   GOOS=linux \
   GOARCH=amd64
-
-WORKDIR /src
-COPY . .
-
-RUN go mod init api
 
 RUN go build \
   -trimpath \
@@ -47,6 +45,5 @@ FROM scratch
 COPY --from=builder /bin/service /bin/service
 # Since we're using `scratch` image, we can't execute `mkdir` here (there's no `/bin/sh`).
 COPY --from=builder ./images /images
-
 
 ENTRYPOINT ["/bin/service"]

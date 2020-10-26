@@ -2,29 +2,23 @@ FROM golang:1.15.3 AS builder
 
 ARG SERVICE
 
-RUN apt-get -qq update && apt-get -yqq install upx
 
 WORKDIR /src
-
 COPY . .
-#COPY --from=vendor . vendor
+
+RUN apt-get -qq update && apt-get -yqq install upx
 
 ENV GO111MODULE=on \
   CGO_ENABLED=0 \
   GOOS=linux \
   GOARCH=amd64
 
-
-RUN go mod init github.com/campsite/dnielsen/services/session
-
 RUN go build \
   -trimpath \
   -ldflags "-s -w -extldflags '-static'" \
   -installsuffix cgo \
   -tags netgo \
-#  -mod=mod \
   -o /bin/service \
-#  -a \
   ./${SERVICE}
 
 # strip program removes information from executable binary programs

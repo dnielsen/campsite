@@ -2,17 +2,15 @@ FROM golang:1.15.2 AS builder
 
 ARG SERVICE
 
+WORKDIR /src
+COPY . .
+
 RUN apt-get -qq update && apt-get -yqq install upx
 
 ENV GO111MODULE=on \
   CGO_ENABLED=0 \
   GOOS=linux \
   GOARCH=amd64
-
-WORKDIR /src
-COPY . .
-
-RUN go mod init speaker
 
 RUN go build \
   -trimpath \
