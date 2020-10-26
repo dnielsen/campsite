@@ -1,4 +1,4 @@
-FROM golang:1.15.2 AS builder
+FROM golang:1.15.3 AS builder
 
 ARG SERVICE
 
@@ -12,7 +12,7 @@ ENV GO111MODULE=on \
 WORKDIR /src
 COPY . .
 
-RUN go mod init github.com/dnielsen/campsite/services/event
+RUN go mod init event
 
 RUN go build \
   -trimpath \

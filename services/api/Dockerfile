@@ -12,7 +12,7 @@ ENV GO111MODULE=on \
 WORKDIR /src
 COPY . .
 
-RUN go mod init github.com/dnielsen/campsite/services/api
+RUN go mod init api
 
 RUN go build \
   -trimpath \

@@ -1,0 +1,3 @@
+FROM scratch AS vendor
+COPY vendor .
+COPY pkg github.com/dnielsen/campsite/pkg
