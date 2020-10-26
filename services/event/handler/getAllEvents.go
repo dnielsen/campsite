@@ -25,7 +25,7 @@ func GetAllEvents(api service.EventAPI) http.HandlerFunc {
 			return
 		}
 		// Respond JSON with the events.
-		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set(CONTENT_TYPE, APPLICATION_JSON)
 		w.WriteHeader(http.StatusOK)
 		w.Write(eventBytes)
 	}

@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// `/auth` GET route. It communicates with the auth service only.
+// `/auth` GET route.
 func Auth(c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Try to get claims from the token if exists.

@@ -1,11 +1,12 @@
-FROM golang:1.15.2 AS builder
+FROM golang:1.15.3 AS builder
 
 ARG SERVICE
+
+RUN apt-get -qq update && apt-get -yqq install upx
 
 WORKDIR /src
 COPY . .
 
-RUN apt-get -qq update && apt-get -yqq install upx
 
 ENV GO111MODULE=on \
   CGO_ENABLED=0 \
