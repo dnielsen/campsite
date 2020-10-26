@@ -15,7 +15,7 @@ ENV GO111MODULE=on \
   GOARCH=amd64
 
 
-RUN go mod init session
+RUN go mod init github.com/campsite/dnielsen/services/session
 
 RUN go build \
   -trimpath \
@@ -24,7 +24,7 @@ RUN go build \
   -tags netgo \
 #  -mod=mod \
   -o /bin/service \
-  -a \
+#  -a \
   ./${SERVICE}
 
 # strip program removes information from executable binary programs
