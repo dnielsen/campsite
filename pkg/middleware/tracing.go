@@ -9,6 +9,6 @@ import (
 
 
 func Tracing(serviceName string, servicePort int, c *config.Config) mux.MiddlewareFunc {
-	t := tracing.NewTracer(serviceName, servicePort, c)
+	t := tracing.NewTracer(serviceName, string(rune(servicePort)), c)
 	return zipkinHttp.NewServerMiddleware(t)
 }
