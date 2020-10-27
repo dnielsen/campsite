@@ -48,7 +48,7 @@ func main() {
 	// Enable tracing middleware - forward our request data to the zipkin server
 	// that is running with Hypertrace.
 	if c.Tracing.Enabled == true {
-		r.Use(middleware.Tracing(SERVICE_NAME, c.Service.API.Port, c))
+		//r.Use(middleware.Tracing(SERVICE_NAME, c.Service.API.Port, c))
 		log.Println("Tracing middleware has been enabled")
 	}
 

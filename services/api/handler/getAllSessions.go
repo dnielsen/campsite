@@ -18,6 +18,8 @@ func GetAllSessions(c *config.Config) http.HandlerFunc {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
+
+
 		// Make the request.
 		res, err := http.DefaultClient.Do(req)
 		if err != nil {
