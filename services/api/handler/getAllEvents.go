@@ -3,8 +3,6 @@ package handler
 import (
 	"fmt"
 	"github.com/dnielsen/campsite/pkg/config"
-	"github.com/dnielsen/campsite/pkg/tracing"
-	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -21,12 +19,7 @@ func GetAllEvents(c *config.Config) http.HandlerFunc {
 			return
 		}
 		// Make the request.
-		client, err := zipkinHttp.NewClient(tracing.NewTracer("api", c.Service.API.Host, c))
-		if err != nil {
-			log.Fatal(err)
-		}
-		//res, err := http.DefaultClient.Do(req)
-		res, err := client.Do(req)
+		res, err := http.DefaultClient.Do(req)
 		if err != nil {
 			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
