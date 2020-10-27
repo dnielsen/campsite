@@ -48,7 +48,7 @@ func main() {
 	// Enable tracing middleware - forward our request data to the zipkin server
 	// that is running with Hypertrace.
 	if c.Tracing.Enabled == true {
-		//r.Use(middleware.Tracing(SERVICE_NAME, c.Service.API.Port, c))
+		r.Use(middleware.Tracing(SERVICE_NAME, c.Service.API.Port, c))
 		log.Println("Tracing middleware has been enabled")
 	}
 
@@ -87,7 +87,7 @@ func main() {
 
 	// Set up the server.
 	corsWrapper := cors.New(cors.Options{
-		AllowedOrigins:         []string{"http://localhost:3000", "http://localhost:1111"},
+		AllowedOrigins:         []string{"http://localhost:3000", "http://localhost:1111", "http://campsite-ui.s3-website.eu-central-1.amazonaws.com"},
 		AllowedMethods:         []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
 		AllowedHeaders:         []string{"Content-Type", "Origin", "Accept", "*", "Authorization", "Cookie", "Set-Cookie"},
 		ExposedHeaders:         []string{"Set-Cookie"},

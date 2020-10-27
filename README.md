@@ -56,8 +56,8 @@ Now your API should be available at `http://localhost:4444`. Please keep in mind
 10. Click `Add Rule` and set the `Type` to `All traffic` and `Source` to `Anywhere`.
 11. Click `Review and Launch`.
 12. Click `Launch`.
-13. Select `Create a new key` and click `Download Key Pair`.
-14. Click on the name of your instance (inside the green box, something like `i-0b39c78…`).
+13. Select `Create a new key`, give it a name, click `Download Key Pair`, and then `Launch Instance`.
+14. Click on the name of your instance (inside the green box, like `i-0b39c78…`).
 15. Go to the directory where you've saved the `.pem` file (key pair), and run `chmod 400 yourKeyName.pem`.
 16. Copy the project into the EC2 machine: `scp -r -i yourKeyName.pem ~/path/to/your/project/root/directory ec2-user@YOUR.EC2.IP.ADDRESS:~/`
 17. Connect to the EC2: `ssh -i yourKeyName.pem ec2-user@YOUR.EC2.IP.ADDRESS`
