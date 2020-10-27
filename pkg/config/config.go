@@ -23,6 +23,7 @@ type ServiceConfig struct {
 	API struct {
 		Host string `env:"SERVICE_API_HOST" env-default:"localhost"`
 		Port int `env:"SERVICE_API_PORT" env-default:"1111"`
+		AllowedOrigin string `env:"SERVICE_API_ALLOWED_ORIGIN" env-default:"http://localhost:1111"`
 	}
 	Auth struct {
 		Host string `env:"SERVICE_AUTH_HOST" env-default:"localhost"`
