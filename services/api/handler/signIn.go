@@ -43,7 +43,7 @@ func SignIn(c *config.Config) http.HandlerFunc {
 			MaxAge:     60 * 60 * 24 * 7,
 			Secure:     false,
 			HttpOnly:   true,
-			SameSite:   0,
+			SameSite:   1,
 		})
 		// Get the claims.
 		claims, err := jwt.VerifyToken(token, &c.Jwt)
