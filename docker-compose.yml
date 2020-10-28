@@ -1,5 +1,14 @@
 version: "2.4"
 services:
+  ui:
+    container_name: campsite-ui
+    image: dnielsen/campsite:ui
+    tty: true
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    restart: always
   api:
     container_name: campsite-api
     build: services/api
