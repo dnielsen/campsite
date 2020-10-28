@@ -20,20 +20,21 @@ func NewTracer(serviceName string, servicePort string, c *config.Config) *zipkin
 	// Local endpoint represents the local service information.
 	localEndpoint, err := zipkin.NewEndpoint(serviceName, servicePort)
 	if err != nil {
-		log.Fatalf("Failed to create endpoint: %v", err)
+		log.Printf("Failed to create endpoint: %v", err)
 	}
 
 	// TRACE_RECORD_RATE is a float from 0 to 1.
 	// 1 means 100% of traces will be recorded.
 	sampler, err := zipkin.NewCountingSampler(TRACE_RECORD_RATE)
 	if err != nil {
-		log.Fatalf("Failed to create counting sampler: %v", err)
+		log.Printf("Failed to create counting sampler: %v", err)
 	}
 
 	// Create a new tracer.
 	t, err := zipkin.NewTracer(reporter, zipkin.WithSampler(sampler), zipkin.WithLocalEndpoint(localEndpoint))
 	if err != nil {
 		log.Fatalf("Failed to create tracer: %v", err)
+		return nil
 	}
 
 	return t
