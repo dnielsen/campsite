@@ -33,6 +33,7 @@ func CreateSpeaker(c *config.Config) http.HandlerFunc {
 			return
 		}
 		// Make the request.
+		//zipkinHttp.NewClient(t, zipkinHttp.ClientTrace(true))
 		res, err := http.DefaultClient.Do(req)
 		if err != nil {
 			log.Printf("Failed to do request: %v", err)

@@ -7,6 +7,10 @@ RUN apt-get -qq update && apt-get -yqq install upx
 WORKDIR /src
 COPY . .
 
+RUN rm go.*
+
+RUN go mod init github.com/dnielsen/campsite/services/api
+
 ENV GO111MODULE=on \
   CGO_ENABLED=0 \
   GOOS=linux \
