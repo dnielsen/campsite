@@ -9,7 +9,7 @@ Prerequisites:
 docker-compose -f docker-compose.yml down && docker-compose -f docker-compose.yml up --build --force-recreate
 ```
 
-Now your API (without the React UI) should be available at `http://localhost:1111`. 
+Now your API (without the React UI) should be available at `http://localhost:1111/api`. You can for example try running `curl http://localhost:1111/api/events` in the terminal.
 
 ## How to run Campsite locally (without Docker Compose) (Mac).
 Prerequisites: 
@@ -20,7 +20,8 @@ Prerequisites:
 1. Start the database: `./scripts/dev dbstart` (you might need to stop it if you started it previously: `./scripts/dev dbstop`).
 2. Run all the services similarly, for `api` it is: `cd services/api` and then `go run main.go`
 
-Now your API should be available at `http://localhost:1111`. Please keep in mind it's just the API. If you wanna run the interface too, please visit the `campsite-ui` repo available at `https://github.com/dnielsen/campsite-ui`.
+Now your API (without the React UI) should be available at `http://localhost:1111/api`. You can for example try running `curl http://localhost:1111/api/events` in the terminal.
+Please keep in mind it's just the API. If you wanna run the interface too, please visit the `campsite-ui` repo available at `https://github.com/dnielsen/campsite-ui`.
 
 
 ## How to deploy on AWS EC2 (without the UI) (Mac)
