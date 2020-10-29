@@ -9,7 +9,6 @@ import (
 	"github.com/dnielsen/campsite/services/session/handler"
 	"github.com/dnielsen/campsite/services/session/service"
 	"github.com/gorilla/mux"
-	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
 	"log"
 	"net/http"
 	"time"
