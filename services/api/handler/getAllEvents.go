@@ -19,7 +19,7 @@ func GetAllEvents(client *http.Client, c *config.Config) http.HandlerFunc {
 			return
 		}
 		// Make the request.
-		res, err := http.DefaultClient.Do(req)
+		res, err := client.Do(req)
 		if err != nil {
 			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
