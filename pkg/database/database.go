@@ -49,7 +49,8 @@ func NewDb(c *config.DbConfig) *gorm.DB {
 	return db
 }
 
-// The same as NewDb but additionally migrates the database and creates
+
+// The same as NewDb but additionally migrates the database and might create
 // mock data in the database.
 func NewDevDb(c *config.Config) *gorm.DB {
 	db := NewDb(&c.Db)
@@ -59,6 +60,16 @@ func NewDevDb(c *config.Config) *gorm.DB {
 	} else {
 		log.Println("Auto migrated database")
 	}
+	// Create events, sessions, speakers, users in db.
+	if c.Dev.MockEnabled {
+		createMockDataInDb(db, c)
+		log.Printf("Created mock data in database")
+	}
+
+	return db
+}
+
+func createMockDataInDb(db *gorm.DB, c *config.Config) {
 	// Create the only user in the database that has permissions to create/edit/delete stuff.
 	u, err := newUser(c.Admin.Email, c.Admin.Password)
 	if err != nil {
@@ -90,7 +101,6 @@ func NewDevDb(c *config.Config) *gorm.DB {
 	} else {
 		log.Println("Created OpenCloudConf mock event in database")
 	}
-	return db
 }
 
 func newUser(email, password string) (*model.User, error) {

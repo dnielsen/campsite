@@ -6,43 +6,24 @@ Prerequisites:
 
 1. Run the services: 
 ```
-docker-compose down && docker-compose up --build
+docker-compose -f docker-compose.yml down && docker-compose -f docker-compose.yml up --build --force-recreate
 ```
 
-Now your API should be available at `http://localhost:4444`. 
-It also runs the UI made with React.js which should be available at `http://localhost:3000`. If you wanna check out the code of the UI, please visit the `campsite-ui` repo available at `https://github.com/dnielsen/campsite-ui`.
+Now your API (without the React UI) should be available at `http://localhost:1111`. 
 
-## How to run Campsite locally (without Docker Compose).
+## How to run Campsite locally (without Docker Compose) (Mac).
 Prerequisites: 
 - Go (Golang) installed (i.e. `brew install golang`)
 - Docker (installed and running in the background)
+- Possibly the Campsite repo cloned into `~/go/src/`
 
-If first time:
-1. Clone the repo: `git clone https://github.com/dnielsen/campsite/` (if you haven't installed Go using `brew`, you might need to clone it into `~/go/src`).
-2. Go to the cloned directory: `cd campsite`. 
-3. If you had previously started the database, stop it: `./scripts/dev dbstop`.
-4. Start the database: `./scripts/dev dbstart`.
-5. Go to the event service directory: `cd packages/event-service`
-6. Run the event service: `go run cmd/main.go`
-7. Open another terminal tab/window and go to session service directory: `cd packages/session-service`.
-8. Run the session service: `go run cmd/main.go`
-9. Open another terminal tab/window and go to speaker service directory: `cd packages/speaker-service`.
-8. Run the speaker service: `go run cmd/main.go`
+1. Start the database: `./scripts/dev dbstart` (you might need to stop it if you started it previously: `./scripts/dev dbstop`).
+2. Run all the services similarly, for `api` it is: `cd services/api` and then `go run main.go`
 
-(if already cloned:
-```
-cd campsite
-git checkout master
-docker-compose down
-./scripts/dev dbstop
-git pull
-```
-)
-
-Now your API should be available at `http://localhost:4444`. Please keep in mind it's just the API. If you wanna run the interface too, please visit the `campsite-ui` repo available at `https://github.com/dnielsen/campsite-ui`.
+Now your API should be available at `http://localhost:1111`. Please keep in mind it's just the API. If you wanna run the interface too, please visit the `campsite-ui` repo available at `https://github.com/dnielsen/campsite-ui`.
 
 
-## How to deploy on AWS EC2 (Mac)
+## How to deploy on AWS EC2 (without the UI) (Mac)
 
 1. Go to `https://aws.amazon.com/console` and sign in.
 2. Once signed in, click `Services` in the upper left corner and select `EC2`.

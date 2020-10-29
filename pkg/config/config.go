@@ -53,12 +53,17 @@ type AdminConfig struct {
 	Password string `env:"ADMIN_PASSWORD" env-default:"admin"`
 }
 
+type DevConfig struct {
+	MockEnabled bool `env:"DEV_MOCK_ENABLED" env-default:"false"`
+}
+
 type Config struct {
 	Db      DbConfig
 	Service ServiceConfig
 	Tracing TracingConfig
 	Jwt JwtConfig
 	Admin AdminConfig
+	Dev DevConfig
 }
 
 // Read the environment variables into a `Config` struct.
