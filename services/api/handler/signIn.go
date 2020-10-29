@@ -11,7 +11,7 @@ import (
 )
 
 // `/auth/sign-in` POST route. It communicates with the auth service only.
-func SignIn(c *config.Config) http.HandlerFunc {
+func SignIn(client *http.Client, c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Create the request.
 		req, err := http.NewRequest(http.MethodPost, fmt.Sprintf("http://%v:%v/sign-in", c.Service.Auth.Host, c.Service.Auth.Port), r.Body)
@@ -21,7 +21,7 @@ func SignIn(c *config.Config) http.HandlerFunc {
 			return
 		}
 		// Make the request.
-		res, err := http.DefaultClient.Do(req)
+		res, err := client.Do(req)
 		if err != nil {
 			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

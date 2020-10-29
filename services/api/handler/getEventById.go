@@ -10,7 +10,7 @@ import (
 )
 
 // `/events/{id}` GET route. It communicates with the event service only.
-func GetEventById(c *config.Config) http.HandlerFunc {
+func GetEventById(client *http.Client, c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Get the id parameter.
 		vars := mux.Vars(r)
@@ -23,7 +23,7 @@ func GetEventById(c *config.Config) http.HandlerFunc {
 			return
 		}
 		// Make the request.
-		res, err := http.DefaultClient.Do(req)
+		res, err := client.Do(req)
 		if err != nil {
 			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

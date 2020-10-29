@@ -5,6 +5,7 @@ import (
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/database"
 	"github.com/dnielsen/campsite/pkg/middleware"
+	"github.com/dnielsen/campsite/pkg/tracing"
 	"github.com/dnielsen/campsite/services/auth/handler"
 	"github.com/dnielsen/campsite/services/auth/service"
 	"github.com/gorilla/mux"
@@ -48,11 +49,11 @@ func main() {
 	// all the others.
 	r.Use(middleware.RequestLimiter)
 
-	// Enable tracing middleware - forward our request data to the zipkin server
-	// that is running with Hypertrace.
+	// Enable tracing - forward our requests to the zipkin server.
 	if c.Tracing.Enabled == true {
-		r.Use(middleware.Tracing(SERVICE_NAME, c.Service.Auth.Port, c))
-		log.Println("Tracing middleware has been enabled")
+		tracer := tracing.NewTracer(SERVICE_NAME, string(rune(c.Service.Auth.Port)), c)
+		r.Use(middleware.Tracing(tracer))
+		log.Println("Tracing has been enabled")
 	}
 
 	// Register our handlers.

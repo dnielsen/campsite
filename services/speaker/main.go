@@ -5,6 +5,7 @@ import (
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/database"
 	"github.com/dnielsen/campsite/pkg/middleware"
+	"github.com/dnielsen/campsite/pkg/tracing"
 	"github.com/dnielsen/campsite/services/speaker/handler"
 	"github.com/dnielsen/campsite/services/speaker/service"
 	"github.com/gorilla/mux"
@@ -39,8 +40,9 @@ func main() {
 
 	// Enable tracing - forward our requests to the zipkin server.
 	if c.Tracing.Enabled == true {
-		r.Use(middleware.Tracing(SERVICE_NAME, c.Service.Speaker.Port,c))
-		log.Println("Tracing middleware has been enabled")
+		tracer := tracing.NewTracer(SERVICE_NAME, string(rune(c.Service.Speaker.Port)), c)
+		r.Use(middleware.Tracing(tracer))
+		log.Println("Tracing has been enabled")
 	}
 
 	// Set up the handlers.

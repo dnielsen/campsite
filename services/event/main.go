@@ -5,6 +5,7 @@ import (
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/database"
 	"github.com/dnielsen/campsite/pkg/middleware"
+	"github.com/dnielsen/campsite/pkg/tracing"
 	"github.com/dnielsen/campsite/services/event/handler"
 	"github.com/dnielsen/campsite/services/event/service"
 	"github.com/gorilla/mux"
@@ -49,11 +50,12 @@ func main() {
 
 	// Enable tracing middleware - forward our request data to the zipkin server
 	// that is running with Hypertrace.
+	// Enable tracing - forward our requests to the zipkin server.
 	if c.Tracing.Enabled == true {
-		r.Use(middleware.Tracing(SERVICE_NAME, c.Service.Event.Port, c))
-		log.Println("Tracing middleware has been enabled")
+		tracer := tracing.NewTracer(SERVICE_NAME, string(rune(c.Service.Event.Port)), c)
+		r.Use(middleware.Tracing(tracer))
+		log.Println("Tracing has been enabled")
 	}
-
 	// Register our handlers.
 	// GetAllEvents handler selects all events along with all the properties
 	// from the database and sends them to the client. It doesn't join any tables.

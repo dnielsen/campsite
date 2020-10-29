@@ -9,7 +9,7 @@ import (
 )
 
 // `/sessions` GET route. It communicates with the session service only.
-func GetAllSessions(c *config.Config) http.HandlerFunc {
+func GetAllSessions(client *http.Client, c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Create the request that calls our session service to get the sessions.
 		req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", c.Service.Session.Host, c.Service.Session.Port), nil)
@@ -19,7 +19,7 @@ func GetAllSessions(c *config.Config) http.HandlerFunc {
 			return
 		}
 		// Make the request.
-		res, err := http.DefaultClient.Do(req)
+		res, err := client.Do(req)
 		if err != nil {
 			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)

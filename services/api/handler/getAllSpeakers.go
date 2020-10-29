@@ -9,7 +9,7 @@ import (
 )
 
 // `/speakers` GET route. It communicates with the speaker service only.
-func GetAllSpeakers(c *config.Config) http.HandlerFunc {
+func GetAllSpeakers(client *http.Client, c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Create the request that calls our speaker service to get the speakers.
 		req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", c.Service.Speaker.Host, c.Service.Speaker.Port), nil)
@@ -19,7 +19,7 @@ func GetAllSpeakers(c *config.Config) http.HandlerFunc {
 			return
 		}
 		// Make the request.
-		res, err := http.DefaultClient.Do(req)
+		res, err := client.Do(req)
 		if err != nil {
 			log.Printf("Failed to do request: %v", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
