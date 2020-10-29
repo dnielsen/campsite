@@ -56,42 +56,40 @@ func main() {
 
 	// UploadImage handler reads the form data and saves the retrieved image
 	// into `images` directory placed in the `event` directory.
-	r.HandleFunc("/images", handler.UploadImage(c)).Methods(http.MethodPost)
+	r.HandleFunc("/api/images", handler.UploadImage(c)).Methods(http.MethodPost)
 	// GetImageByFilename handler retrieves the image from the `images` directory placed in the project root directory.
-	r.HandleFunc("/images/{filename}", handler.GetImageByFilename(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/images/{filename}", handler.GetImageByFilename(c)).Methods(http.MethodGet)
 
 	// If the user is signed in (has the access token) it returns a `Me` struct
 	// with the user data such as `ID`, `Email`. Otherwise it returns an empty response.
 	// Either way the status code should be 200.
-	r.HandleFunc("/auth", handler.Auth(c)).Methods(http.MethodGet)
-	r.HandleFunc("/auth/sign-in", handler.SignIn(c)).Methods(http.MethodPost)
-	r.HandleFunc("/auth/sign-out", handler.SignOut(c)).Methods(http.MethodPost)
+	r.HandleFunc("/api/auth", handler.Auth(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/auth/sign-in", handler.SignIn(c)).Methods(http.MethodPost)
+	r.HandleFunc("/api/auth/sign-out", handler.SignOut(c)).Methods(http.MethodPost)
 
-	r.HandleFunc("/events", handler.GetAllEvents(c)).Methods(http.MethodGet)
-	r.HandleFunc("/events", handler.CreateEvent(c)).Methods(http.MethodPost)
-	r.HandleFunc("/events/{id}", handler.GetEventById(c)).Methods(http.MethodGet)
-	r.HandleFunc("/events/{id}", handler.EditEventById(c)).Methods(http.MethodPut)
-	r.HandleFunc("/events/{id}", handler.DeleteEventById(c)).Methods(http.MethodDelete)
+	r.HandleFunc("/api/events", handler.GetAllEvents(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/events", handler.CreateEvent(c)).Methods(http.MethodPost)
+	r.HandleFunc("/api/events/{id}", handler.GetEventById(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/events/{id}", handler.EditEventById(c)).Methods(http.MethodPut)
+	r.HandleFunc("/api/events/{id}", handler.DeleteEventById(c)).Methods(http.MethodDelete)
 
-	r.HandleFunc("/speakers", handler.GetAllSpeakers(c)).Methods(http.MethodGet)
-	r.HandleFunc("/speakers", handler.CreateSpeaker(c)).Methods(http.MethodPost)
-	r.HandleFunc("/speakers/{id}", handler.GetSpeakerById(c)).Methods(http.MethodGet)
-	r.HandleFunc("/speakers/{id}", handler.EditSpeakerById(c)).Methods(http.MethodPut)
-	r.HandleFunc("/speakers/{id}", handler.DeleteSpeakerById(c)).Methods(http.MethodDelete)
+	r.HandleFunc("/api/speakers", handler.GetAllSpeakers(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/speakers", handler.CreateSpeaker(c)).Methods(http.MethodPost)
+	r.HandleFunc("/api/speakers/{id}", handler.GetSpeakerById(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/speakers/{id}", handler.EditSpeakerById(c)).Methods(http.MethodPut)
+	r.HandleFunc("/api/speakers/{id}", handler.DeleteSpeakerById(c)).Methods(http.MethodDelete)
 
-	r.HandleFunc("/sessions", handler.GetAllSessions(c)).Methods(http.MethodGet)
-	r.HandleFunc("/sessions", handler.CreateSession(c)).Methods(http.MethodPost)
-	r.HandleFunc("/sessions/{id}", handler.GetSessionById(c)).Methods(http.MethodGet)
-	r.HandleFunc("/sessions/{id}", handler.EditSessionById(c)).Methods(http.MethodPut)
-	r.HandleFunc("/sessions/{id}", handler.DeleteSessionById(c)).Methods(http.MethodDelete)
+	r.HandleFunc("/api/sessions", handler.GetAllSessions(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/sessions", handler.CreateSession(c)).Methods(http.MethodPost)
+	r.HandleFunc("/api/sessions/{id}", handler.GetSessionById(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/sessions/{id}", handler.EditSessionById(c)).Methods(http.MethodPut)
+	r.HandleFunc("/api/sessions/{id}", handler.DeleteSessionById(c)).Methods(http.MethodDelete)
 
 	// Set up the server.
 	corsWrapper := cors.New(cors.Options{
-		AllowedOrigins:         []string{"http://localhost", "http://localhost:3000", "http://localhost:1111", "http://campsite-ui.s3-website.eu-central-1.amazonaws.com"},
+		AllowedOrigins:         []string{"http://localhost:3000"},
 		AllowedMethods:         []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
 		AllowedHeaders:         []string{"Content-Type", "Origin", "Accept", "Authorization", "Cookie", "Set-Cookie"},
-		ExposedHeaders:         []string{"Set-Cookie", "Cookie", "Authorization"},
-		MaxAge:                 999999,
 		AllowCredentials:       true,
 	})
 
