@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/jwt"
-	"github.com/dnielsen/campsite/services/api/service"
 	"io/ioutil"
 	"log"
 	"net/http"
