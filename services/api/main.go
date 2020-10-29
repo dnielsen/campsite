@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/dnielsen/campsite/pkg/config"
-	"github.com/dnielsen/campsite/pkg/database"
 	"github.com/dnielsen/campsite/pkg/middleware"
 	"github.com/dnielsen/campsite/pkg/tracing"
 	"github.com/dnielsen/campsite/services/api/handler"
@@ -12,6 +11,7 @@ import (
 	"github.com/rs/cors"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -31,7 +31,7 @@ func main() {
 	// We're running `database.NewDevDb` here so that `GORM` migrates the database for us
 	// and creates mock events there.
 	// It seems the least confusing to put it here rather than say the event or speaker service.
-	_ = database.NewDevDb(c)
+	//_ = database.NewDevDb(c)
 
 	// Set up the router.
 	r := mux.NewRouter()
@@ -51,7 +51,7 @@ func main() {
 	// Enable tracing middleware - forward our request data to the zipkin server
 	// that is running with Hypertrace.
 	if c.Tracing.Enabled {
-		tracer := tracing.NewTracer(SERVICE_NAME, string(rune(c.Service.API.Port)), c)
+		tracer := tracing.NewTracer(SERVICE_NAME, strconv.Itoa(c.Service.API.Port), c)
 
 		r.Use(middleware.Tracing(tracer))
 		transport, err := zipkinHttp.NewTransport(tracer, zipkinHttp.TransportTrace(true))

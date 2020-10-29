@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -40,7 +41,7 @@ func main() {
 
 	// Enable tracing - forward our requests to the zipkin server.
 	if c.Tracing.Enabled == true {
-		tracer := tracing.NewTracer(SERVICE_NAME, string(rune(c.Service.Session.Port)), c)
+		tracer := tracing.NewTracer(SERVICE_NAME, strconv.Itoa(c.Service.Session.Port), c)
 		r.Use(middleware.Tracing(tracer))
 		log.Println("Tracing has been enabled")
 	}

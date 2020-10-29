@@ -12,6 +12,7 @@ import (
 	"github.com/rs/cors"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -52,7 +53,7 @@ func main() {
 	// that is running with Hypertrace.
 	// Enable tracing - forward our requests to the zipkin server.
 	if c.Tracing.Enabled == true {
-		tracer := tracing.NewTracer(SERVICE_NAME, string(rune(c.Service.Event.Port)), c)
+		tracer := tracing.NewTracer(SERVICE_NAME, strconv.Itoa(c.Service.Event.Port), c)
 		r.Use(middleware.Tracing(tracer))
 		log.Println("Tracing has been enabled")
 	}

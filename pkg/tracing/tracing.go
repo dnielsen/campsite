@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/openzipkin/zipkin-go"
-	"github.com/openzipkin/zipkin-go/model"
 	reporterHttp "github.com/openzipkin/zipkin-go/reporter/http"
 	"log"
-	"strconv"
 )
 
 // TRACE_RECORD_RATE is a float from 0 to 1.
@@ -19,16 +17,10 @@ func NewTracer(serviceName string, servicePort string, c *config.Config) *zipkin
 	// The reporter sends traces to the zipkin server.
 	reporter := reporterHttp.NewReporter(endpointUrl)
 
-	//// Local endpoint represents the local service information.
-	//localEndpoint, err := zipkin.NewEndpoint(serviceName, servicePort)
-	//if err != nil {
-	//	log.Printf("Failed to create endpoint: %v", err)
-	//}
-
-	p, _ := strconv.Atoi(servicePort)
-	localEndpoint := &model.Endpoint{
-		ServiceName: serviceName,
-		Port:        uint16(p),
+	// Local endpoint represents the local service information.
+	localEndpoint, err := zipkin.NewEndpoint(serviceName, servicePort)
+	if err != nil {
+		log.Printf("Failed to create endpoint: %v", err)
 	}
 
 	// TRACE_RECORD_RATE is a float from 0 to 1.
