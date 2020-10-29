@@ -5,8 +5,10 @@ import (
 	"github.com/dnielsen/campsite/pkg/config"
 	"github.com/dnielsen/campsite/pkg/database"
 	"github.com/dnielsen/campsite/pkg/middleware"
+	"github.com/dnielsen/campsite/pkg/tracing"
 	"github.com/dnielsen/campsite/services/api/handler"
 	"github.com/gorilla/mux"
+	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
 	"github.com/rs/cors"
 	"log"
 	"net/http"
@@ -24,6 +26,7 @@ func main() {
 	// Initialize the config which includes
 	// Server, and other services' configuration.
 	c := config.NewConfig()
+	client := http.DefaultClient
 
 	// We're running `database.NewDevDb` here so that `GORM` migrates the database for us
 	// and creates mock events there.
@@ -47,9 +50,16 @@ func main() {
 
 	// Enable tracing middleware - forward our request data to the zipkin server
 	// that is running with Hypertrace.
-	if c.Tracing.Enabled == true {
-		r.Use(middleware.Tracing(SERVICE_NAME, c.Service.API.Port, c))
-		log.Println("Tracing middleware has been enabled")
+	if c.Tracing.Enabled {
+		tracer := tracing.NewTracer(SERVICE_NAME, string(rune(c.Service.API.Port)), c)
+
+		r.Use(middleware.Tracing(tracer))
+		transport, err := zipkinHttp.NewTransport(tracer, zipkinHttp.TransportTrace(true))
+		if err != nil {
+			log.Fatalf("Failed to create zipkin transport")
+		}
+		client = &http.Client{Transport: transport}
+		log.Println("Tracing has been enabled")
 	}
 
 	// Register our handlers.
@@ -67,7 +77,7 @@ func main() {
 	r.HandleFunc("/api/auth/sign-in", handler.SignIn(c)).Methods(http.MethodPost)
 	r.HandleFunc("/api/auth/sign-out", handler.SignOut(c)).Methods(http.MethodPost)
 
-	r.HandleFunc("/api/events", handler.GetAllEvents(c)).Methods(http.MethodGet)
+	r.HandleFunc("/api/events", handler.GetAllEvents(client, c)).Methods(http.MethodGet)
 	r.HandleFunc("/api/events", handler.CreateEvent(c)).Methods(http.MethodPost)
 	r.HandleFunc("/api/events/{id}", handler.GetEventById(c)).Methods(http.MethodGet)
 	r.HandleFunc("/api/events/{id}", handler.EditEventById(c)).Methods(http.MethodPut)

@@ -1,14 +1,11 @@
 package middleware
 
 import (
-	"github.com/dnielsen/campsite/pkg/config"
-	"github.com/dnielsen/campsite/pkg/tracing"
 	"github.com/gorilla/mux"
+	"github.com/openzipkin/zipkin-go"
 	zipkinHttp "github.com/openzipkin/zipkin-go/middleware/http"
 )
 
-
-func Tracing(serviceName string, servicePort int, c *config.Config) mux.MiddlewareFunc {
-	t := tracing.NewTracer(serviceName, string(rune(servicePort)), c)
+func Tracing(t *zipkin.Tracer) mux.MiddlewareFunc {
 	return zipkinHttp.NewServerMiddleware(t)
 }

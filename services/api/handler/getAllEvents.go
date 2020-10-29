@@ -9,7 +9,7 @@ import (
 )
 
 // `/events` GET route. It communicates with the event service only.
-func GetAllEvents(c *config.Config) http.HandlerFunc {
+func GetAllEvents(client *http.Client, c *config.Config) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Create the request that calls our event service to get the events.
 		req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://%v:%v", c.Service.Event.Host, c.Service.Event.Port), nil)
