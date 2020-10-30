@@ -19,6 +19,8 @@ services:
         condition: service_started
     env_file:
       - docker.env
+    networks:
+      - app
   auth:
     container_name: campsite-auth
     build: services/auth
@@ -28,6 +30,8 @@ services:
         condition: service_healthy
     env_file:
       - docker.env
+    networks:
+      - app
   speaker:
     container_name: campsite-speaker
     build: services/speaker
@@ -37,6 +41,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - app
   event:
     container_name: campsite-event
     build: services/event
@@ -46,6 +52,8 @@ services:
         condition: service_healthy
     env_file:
       - docker.env
+    networks:
+      - app
   session:
     container_name: campsite-session
     build: services/session
@@ -55,6 +63,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - app
   postgres:
     image: postgres:latest
     ports:
@@ -68,3 +78,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app
+networks:
+  app:
+    driver: bridge
