@@ -18,7 +18,7 @@ func NewTracer(serviceName string, servicePort string, c *config.Config) *zipkin
 	reporter := reporterHttp.NewReporter(endpointUrl)
 
 	// Local endpoint represents the local service information.
-	localEndpoint, err := zipkin.NewEndpoint(serviceName, fmt.Sprintf("http://%s:%s", serviceName, servicePort))
+	localEndpoint, err := zipkin.NewEndpoint(serviceName, fmt.Sprintf("http://localhost:%s", servicePort))
 	if err != nil {
 		log.Printf("Failed to create endpoint: %v", err)
 	}
