@@ -26,6 +26,8 @@ github.com/dnielsen/campsite/pkg v0.0.0-20201028083004-79edecd18f21 h1:gYc4ggQag
 github.com/dnielsen/campsite/pkg v0.0.0-20201028083004-79edecd18f21/go.mod h1:+ur1iXOo0DvYKzGL8iKBh/JItbbyOOSKcYDZHkpgSv8=
 github.com/dnielsen/campsite/pkg v0.0.0-20201030070358-3208b408ddc7 h1:w7TikzOfladbXGwc5iTS5jJ/KToGzAnL2oI9Oy9KtjI=
 github.com/dnielsen/campsite/pkg v0.0.0-20201030070358-3208b408ddc7/go.mod h1:+ur1iXOo0DvYKzGL8iKBh/JItbbyOOSKcYDZHkpgSv8=
+github.com/dnielsen/campsite/pkg v0.0.0-20201103211548-e6c56af5e3da h1:n6vKs540fxvM3arnlO67+A1J5YupE55fJndYMOQbIOE=
+github.com/dnielsen/campsite/pkg v0.0.0-20201103211548-e6c56af5e3da/go.mod h1:+ur1iXOo0DvYKzGL8iKBh/JItbbyOOSKcYDZHkpgSv8=
 github.com/eapache/go-resiliency v1.1.0/go.mod h1:kFI+JgMyC7bLPUVY133qvEBtVayf5mFgVsvEsIPBvNs=
 github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21/go.mod h1:+020luEh2TKB4/GOp8oxxtq0Daoen/Cii55CzbTV6DU=
 github.com/eapache/queue v1.1.0/go.mod h1:6eCeP0CKFpHLu8blIFXhExK/dRa7WDZfr6jVFPTqq+I=

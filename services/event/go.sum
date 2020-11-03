@@ -24,6 +24,8 @@ github.com/dnielsen/campsite/pkg v0.0.0-20201027150202-eaf6121f1a77 h1:YGyDUGilB
 github.com/dnielsen/campsite/pkg v0.0.0-20201027150202-eaf6121f1a77/go.mod h1:zB0HY1SpzQCeUmrNPaO0selqm6bhxr68G9vd7bEBovc=
 github.com/dnielsen/campsite/pkg v0.0.0-20201028083004-79edecd18f21 h1:gYc4ggQag6ESfKOWp+x/GscYmPhopl/yH1ifaGBBEx0=
 github.com/dnielsen/campsite/pkg v0.0.0-20201028083004-79edecd18f21/go.mod h1:+ur1iXOo0DvYKzGL8iKBh/JItbbyOOSKcYDZHkpgSv8=
+github.com/dnielsen/campsite/pkg v0.0.0-20201103211548-e6c56af5e3da h1:n6vKs540fxvM3arnlO67+A1J5YupE55fJndYMOQbIOE=
+github.com/dnielsen/campsite/pkg v0.0.0-20201103211548-e6c56af5e3da/go.mod h1:+ur1iXOo0DvYKzGL8iKBh/JItbbyOOSKcYDZHkpgSv8=
 github.com/eapache/go-resiliency v1.1.0/go.mod h1:kFI+JgMyC7bLPUVY133qvEBtVayf5mFgVsvEsIPBvNs=
 github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21/go.mod h1:+020luEh2TKB4/GOp8oxxtq0Daoen/Cii55CzbTV6DU=
 github.com/eapache/queue v1.1.0/go.mod h1:6eCeP0CKFpHLu8blIFXhExK/dRa7WDZfr6jVFPTqq+I=
@@ -78,6 +80,8 @@ github.com/jackc/pgconn v1.5.0/go.mod h1:QeD3lBfpTFe8WUnPZWN5KY/mB8FGMIYRdd8P8Jr
 github.com/jackc/pgconn v1.5.1-0.20200601181101-fa742c524853/go.mod h1:QeD3lBfpTFe8WUnPZWN5KY/mB8FGMIYRdd8P8Jr0fAI=
 github.com/jackc/pgconn v1.7.0 h1:pwjzcYyfmz/HQOQlENvG1OcDqauTGaqlVahq934F0/U=
 github.com/jackc/pgconn v1.7.0/go.mod h1:sF/lPpNEMEOp+IYhyQGdAvrG20gWf6A1tKlr0v7JMeA=
+github.com/jackc/pgconn v1.7.1 h1:Ii3hORkg9yTX+8etl2LtfFnL+YzmnR6VSLeTflQBkaQ=
+github.com/jackc/pgconn v1.7.1/go.mod h1:sF/lPpNEMEOp+IYhyQGdAvrG20gWf6A1tKlr0v7JMeA=
 github.com/jackc/pgio v1.0.0 h1:g12B9UwVnzGhueNavwioyEEpAmqMe1E/BN9ES+8ovkE=
 github.com/jackc/pgio v1.0.0/go.mod h1:oP+2QK2wFfUWgr+gxjoBH9KGBb31Eio69xUb0w5bYf8=
 github.com/jackc/pgmock v0.0.0-20190831213851-13a1b77aafa2 h1:JVX6jT/XfzNqIjye4717ITLaNwV9mWbJx0dLCpcRzdA=
@@ -104,6 +108,8 @@ github.com/jackc/pgtype v1.3.1-0.20200510190516-8cd94a14c75a/go.mod h1:vaogEUkAL
 github.com/jackc/pgtype v1.3.1-0.20200606141011-f6355165a91c/go.mod h1:cvk9Bgu/VzJ9/lxTO5R5sf80p0DiucVtN7ZxvaC4GmQ=
 github.com/jackc/pgtype v1.5.0 h1:jzBqRk2HFG2CV4AIwgCI2PwTgm6UUoCAK2ofHHRirtc=
 github.com/jackc/pgtype v1.5.0/go.mod h1:JCULISAZBFGrHaOXIIFiyfzW5VY0GRitRr8NeJsrdig=
+github.com/jackc/pgtype v1.6.1 h1:CAtFD7TS95KrxRAh3bidgLwva48WYxk8YkbHZsSWfbI=
+github.com/jackc/pgtype v1.6.1/go.mod h1:JCULISAZBFGrHaOXIIFiyfzW5VY0GRitRr8NeJsrdig=
 github.com/jackc/pgx/v4 v4.0.0-20190420224344-cc3461e65d96/go.mod h1:mdxmSJJuR08CZQyj1PVQBHy9XOp5p8/SHH6a0psbY9Y=
 github.com/jackc/pgx/v4 v4.0.0-20190421002000-1b8f0016e912/go.mod h1:no/Y67Jkk/9WuGR0JG/JseM9irFbnEPbuWV2EELPNuM=
 github.com/jackc/pgx/v4 v4.0.0-pre1.0.20190824185557-6972a5742186/go.mod h1:X+GQnOEnf1dqHGpw7JmHqHc1NxDoalibchSk9/RWuDc=
@@ -112,6 +118,8 @@ github.com/jackc/pgx/v4 v4.6.1-0.20200510190926-94ba730bb1e9/go.mod h1:t3/cdRQl6
 github.com/jackc/pgx/v4 v4.6.1-0.20200606145419-4e5062306904/go.mod h1:ZDaNWkt9sW1JMiNn0kdYBaLelIhw7Pg4qd+Vk6tw7Hg=
 github.com/jackc/pgx/v4 v4.9.0 h1:6STjDqppM2ROy5p1wNDcsC7zJTjSHeuCsguZmXyzx7c=
 github.com/jackc/pgx/v4 v4.9.0/go.mod h1:MNGWmViCgqbZck9ujOOBN63gK9XVGILXWCvKLGKmnms=
+github.com/jackc/pgx/v4 v4.9.1 h1:HdkvbReFKJpb/3A1AfJxo8ha7D+9HqHPPk63ZcX9kAM=
+github.com/jackc/pgx/v4 v4.9.1/go.mod h1:vSrgqR4kWR955lMpDpCgMmVLLC3bfzd0M4T/FT7wVOw=
 github.com/jackc/puddle v0.0.0-20190413234325-e4ced69a3a2b/go.mod h1:m4B5Dj62Y0fbyuIc15OsIqK0+JU8nkqQjsgx7dvjSWk=
 github.com/jackc/puddle v0.0.0-20190608224051-11cab39313c9/go.mod h1:m4B5Dj62Y0fbyuIc15OsIqK0+JU8nkqQjsgx7dvjSWk=
 github.com/jackc/puddle v1.1.0/go.mod h1:m4B5Dj62Y0fbyuIc15OsIqK0+JU8nkqQjsgx7dvjSWk=

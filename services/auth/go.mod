@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/dnielsen/campsite/pkg v0.0.0-20201030070358-3208b408ddc7
+	github.com/dnielsen/campsite/pkg v0.0.0-20201103211548-e6c56af5e3da
 	github.com/gorilla/mux v1.8.0
 	github.com/jackc/pgx/v4 v4.9.1 // indirect
 	github.com/rs/cors v1.7.0
