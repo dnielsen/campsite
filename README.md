@@ -15,7 +15,7 @@ Now your API (without the React UI) should be available at `http://localhost:111
 Prerequisites: 
 - Go (Golang) installed (i.e. `brew install golang`)
 - Docker (installed and running in the background)
-- Possibly the Campsite repo cloned into `~/go/src/`
+- The Campsite repo cloned into `~/go/src/`
 
 1. Start the database: `./scripts/dev dbstart` (you might need to stop it if you started it previously: `./scripts/dev dbstop`).
 2. Run all the services similarly, for `api` it is: `cd services/api` and then `go run main.go`
@@ -29,7 +29,7 @@ Please keep in mind it's just the API. If you wanna run the interface too, pleas
 1. Go to `https://aws.amazon.com/console` and sign in.
 2. Once signed in, click `Services` in the upper left corner and select `EC2`.
 3. Click `Launch Instance`.
-4. Select `Amazon Linux 2`
+4. Select `Ubuntu Server 20.04 LTS (HVM), SSD Volume Type`
 5. Select `t2.micro` (free tier eligible).
 6. Click `Next: Configure Instance Details`.
 7. Click `Next: Add Storage`.
@@ -41,17 +41,61 @@ Please keep in mind it's just the API. If you wanna run the interface too, pleas
 13. Select `Create a new key`, give it a name, click `Download Key Pair`, and then `Launch Instance`.
 14. Click on the name of your instance (inside the green box, like `i-0b39c78…`).
 15. Go to the directory where you've saved the `.pem` file (key pair), and run `chmod 400 yourKeyName.pem`.
-16. Copy the project into the EC2 machine: `scp -r -i yourKeyName.pem ~/path/to/your/project/root/directory ec2-user@YOUR.EC2.IP.ADDRESS:~/`
-17. Connect to the EC2: `ssh -i yourKeyName.pem ec2-user@YOUR.EC2.IP.ADDRESS`
-18. Update Linux and install Docker and Docker Compose on your EC2:
+17. Connect to the EC2: `ssh -i yourKeyName.pem ubuntu@YOUR.EC2.IP.ADDRESS`
+18. Update Linux and install Docker, Docker Compose, and Nginx on your EC2:
 ```
-sudo yum update
-sudo yum install docker
+sudo apt-get update
+sudo apt-get -y install docker
+sudo apt-get -y install nginx
 sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
 sudo chmod +x /usr/local/bin/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+sudo snap install docker
+sudo addgroup --system docker
+sudo adduser $USER docker
+newgrp docker
 ```
-19. Start Docker: `sudo service docker start`.
-20. Start your services: `sudo docker-compose up`
+19. Download your repos.
+```
+git clone https://github.com/dnielsen/campsite
+mv campsite api
+git clone https://github.com/dnielsen/campsite-ui
+mv campsite-ui ui
+git clone https://github.com/hypertrace/hypertrace
+```
+20. Add nginx config
+```
+cd
+sudo mv -f api/nginx/sites-available/default /etc/nginx/sites-available/default
+```
+21. Start Docker: `sudo service docker start`.
+22. Start Nginx: `sudo service nginx start`.
+23. Build the ui
+```
+cd
+cd ui
+sudo apt-get install -y npm
+sudo npm install
+sudo npm run build
+```
+24. Run the api: 
+```
+cd
+cd api
+sudo docker-compose up -d
+```
+25. (optional) Run Hypertrace
+```
+cd
+cd hypertrace/docker
+sudo docker-compose -f docker-compose.yml up
+```
 
 Your app has just been deployed. When you go to your EC2 Dashboard there's `Public IPv4 address` and `Public IPv4 DNS`. You can use either of them to connect to your API. 
+
+If you have run Hypertrace, it's available at `YOUR.PUBLIC.IP:2020`.
+
+
+## How to add AWS RDS
+1. Create the RDS
+2. Replace the database config in `docker.env` with the RDS configuration.
